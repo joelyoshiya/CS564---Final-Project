@@ -16,10 +16,8 @@ public class BTreeMain {
         /** Read the input file -- input.txt */
         Scanner scan = null;
         try {
-            scan = new Scanner(new File("src/input.txt"));
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found.");
-        }
+            scan = new Scanner(new File("Checkpoint 3\\B+Tree Skeleton\\input.txt"));
+
 
         /** Read the minimum degree of B+Tree first */
 
@@ -91,6 +89,9 @@ public class BTreeMain {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
         }
     }
 
