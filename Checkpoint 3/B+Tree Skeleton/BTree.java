@@ -49,6 +49,7 @@ class BTree {
     boolean delete(long studentId) {
         /**
          * TODO:
+         * @jyfoster - implement this function
          * Implement this function to delete in the B+Tree and student table.
          * Return true if the student is deleted successfully otherwise, return false.
          */
