@@ -93,7 +93,10 @@ static int recordcount=0;
             System.out.println("File not found.");
         }
     }
-
+    /**
+     * Extracts the students information from "Students.csv"
+     * return the list<Students>
+     */
     private static List<Student> getStudents() {
     	Scanner scan = null;
     	try {
@@ -117,7 +120,7 @@ static int recordcount=0;
     	recordcount++;
     	}
     	for(int i=0; i<studentList.size();i++) {
-    		studentList.get(i).print();
+    		System.out.println(studentList.get(i));
     	}
     	
     	
