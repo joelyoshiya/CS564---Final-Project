@@ -110,7 +110,27 @@ class BTree {
     List<Long> print() {
 
         List<Long> listOfRecordID = new ArrayList<>();
+        BTreeNode current = this.root;
 
+        //check if tree is empty
+        if(this.root==null) {
+            return listOfRecordID;
+        }
+
+        //find the leftmost leaf node
+        while(!current.leaf) {
+            current=current.children[0];
+        }
+
+        //print key and value in order, also add values to array list
+        while(current!=null) {
+            for(int i = 0; i<current.n; i++) {
+                System.out.println("Key: "+current.keys[i]+" Value:"+current.values[i]);
+                listOfRecordID.add(current.values[i]);
+            }
+            //use pointer to next leaf node
+            current = current.next;
+        }
 
         return listOfRecordID;
     }
