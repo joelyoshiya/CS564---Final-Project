@@ -10,15 +10,17 @@ import java.util.Scanner;
  * You do not need to change this class.
  */
 public class BTreeMain {
-
+static int recordcount=0;
     public static void main(String[] args) {
 
         /** Read the input file -- input.txt */
         Scanner scan = null;
         try {
-            scan = new Scanner(new File("Checkpoint 3\\B+Tree Skeleton\\input.txt"));
-
-
+            scan = new Scanner(new File("src/input.txt"));
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        }
+        getStudents();
         /** Read the minimum degree of B+Tree first */
 
         int degree = scan.nextInt();
@@ -28,7 +30,7 @@ public class BTreeMain {
         /** Reading the database student.csv into B+Tree Node*/
         List<Student> studentsDB = getStudents();
 
-        for (Student s : studentsDB) {
+       for (Student s : studentsDB) {
             bTree.insert(s);
         }
 
@@ -40,7 +42,7 @@ public class BTreeMain {
                 while (s2.hasNext()) {
 
                     String operation = s2.next();
-
+               
                     switch (operation) {
                         case "insert": {
 
@@ -50,8 +52,8 @@ public class BTreeMain {
                             String level = s2.next();
                             int age = Integer.parseInt(s2.next());
                             /** TODO: Write a logic to generate recordID*/
-                            long recordID = 0 ; //Temp just so that my editor stops throwing errors - joel
-
+                            long recordID = recordcount;
+                            recordcount++;
                             Student s = new Student(studentId, age, studentName, major, level, recordID);
                             bTree.insert(s);
 
@@ -88,21 +90,38 @@ public class BTreeMain {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-        } catch (FileNotFoundException e) {
             System.out.println("File not found.");
         }
     }
 
     private static List<Student> getStudents() {
-
-        /** TODO:
-         * Extract the students information from "Students.csv"
-         * return the list<Students>
-         */
-
-        List<Student> studentList = new ArrayList<>();
+    	Scanner scan = null;
+    	try {
+            scan = new Scanner(new File("src/Student.csv"));
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        }
+    	
+    	List<Student> studentList = new ArrayList<>();
+    	while(scan.hasNext()) {
+    	String Studentline = scan.nextLine();
+    	String[] studentarray = Studentline.split(",");
+    	//now time to stick in the parsing and the creation of the student
+    		long studentId = Long.parseLong(studentarray[0]);
+    		String studentName = studentarray[1];
+    		String major = studentarray[2];
+    		String level = studentarray[3];
+    		int age = Integer.parseInt(studentarray[4]);
+    		long recordID = Long.parseLong(studentarray[5]);
+    	studentList.add(new Student(studentId,age,studentName,major,level,recordID));
+    	recordcount++;
+    	}
+    	for(int i=0; i<studentList.size();i++) {
+    		studentList.get(i).print();
+    	}
+    	
+    	
         return studentList;
     }
+    
 }
