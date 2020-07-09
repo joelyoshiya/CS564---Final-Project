@@ -23,7 +23,10 @@ static int recordcount=0;
         getStudents();
         /** Read the minimum degree of B+Tree first */
 
-        int degree = scan.nextInt();
+        int degree = 0;
+        if (scan != null) {
+            degree = scan.nextInt();
+        }
 
         BTree bTree = new BTree(degree);
 
