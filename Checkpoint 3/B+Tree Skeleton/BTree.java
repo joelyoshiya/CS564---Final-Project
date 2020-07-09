@@ -61,14 +61,14 @@ class BTree {
                     
                 }
                 //If studentId is larger than all keys, go to the last pointer
-                if(i==2*t-1) {
+                if(i==current.n-1) {
                     if(current.keys[i]<=studentId) {
                         //If key is match with studentId and we are at a leaf, return the record
                         if(current.keys[i]==studentId && current.leaf) {
                             return current.values[i+1];
                         }
                         //If key does not match and we are at a leaf, return no result 
-                        else if(current.keys[i]>studentId && current.leaf) {
+                        else if(current.keys[i]<studentId && current.leaf) {
                             return -1;
                         }
                         //If we are not at a leaf, go to the correct child node
