@@ -91,27 +91,27 @@ class BTree {
          */
         return this;
     }
-
+    /**
+     * TODO:
+     * @jyfoster - implement this function
+     * Implement this function to delete in the B+Tree and student table.
+     * Return true if the student is deleted successfully otherwise, return false.
+     */
     boolean delete(long studentId) {
-        /**
-         * TODO:
-         * @jyfoster - implement this function
-         * Implement this function to delete in the B+Tree and student table.
-         * Return true if the student is deleted successfully otherwise, return false.
-         */
+
         return true;
     }
-
+    /**
+     * TODO:
+     * Implement this function to print the B+Tree.
+     * Return a list of recordIDs from left to right of leaf nodes.
+     *
+     */
     List<Long> print() {
 
         List<Long> listOfRecordID = new ArrayList<>();
 
-        /**
-         * TODO:
-         * Implement this function to print the B+Tree.
-         * Return a list of recordIDs from left to right of leaf nodes.
-         *
-         */
+
         return listOfRecordID;
     }
 }
