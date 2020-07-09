@@ -106,20 +106,22 @@ static int recordcount=0;
         }
     	
     	List<Student> studentList = new ArrayList<>();
-    	while(scan.hasNext()) {
-    	String Studentline = scan.nextLine();
-    	String[] studentarray = Studentline.split(",");
-    	//now time to stick in the parsing and the creation of the student
-    		long studentId = Long.parseLong(studentarray[0]);
-    		String studentName = studentarray[1];
-    		String major = studentarray[2];
-    		String level = studentarray[3];
-    		int age = Integer.parseInt(studentarray[4]);
-    		long recordID = Long.parseLong(studentarray[5]);
-    	studentList.add(new Student(studentId,age,studentName,major,level,recordID));
-    	recordcount++;
-    	}
-    	for(int i=0; i<studentList.size();i++) {
+        if (scan != null) {
+            while(scan.hasNext()) {
+            String Studentline = scan.nextLine();
+            String[] studentarray = Studentline.split(",");
+            //now time to stick in the parsing and the creation of the student
+                long studentId = Long.parseLong(studentarray[0]);
+                String studentName = studentarray[1];
+                String major = studentarray[2];
+                String level = studentarray[3];
+                int age = Integer.parseInt(studentarray[4]);
+                long recordID = Long.parseLong(studentarray[5]);
+            studentList.add(new Student(studentId,age,studentName,major,level,recordID));
+            recordcount++;
+            }
+        }
+        for(int i=0; i<studentList.size();i++) {
     		System.out.println(studentList.get(i));
     	}
     	
