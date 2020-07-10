@@ -112,7 +112,7 @@ class BTree {
 
         //   First figure out if entry exists
         //   If value exists, execute, else return false (value doesn't exist or nothing in Btree)
-        if(search(studentId) != -1 && root != null){
+        if(search(studentId) != -1){
             parentPtr = null;
             nodePtr = root;
             //studentId already passed from arg
@@ -138,43 +138,26 @@ class BTree {
      */
     boolean delete(BTreeNode parentPtr, BTreeNode nodePtr, long studentId, BTreeNode oldChildNode){
 
-        int childIndex = -1; // index we will use to get to correct subtree by accessing pointer in BTreeNodeChildren[]
-
         //Check if the current node we are at is an inner, non-leaf node:
         if(nodePtr.leaf == false){
             // Find the correct subtree (index to use), by comparing key values to studentId
-            for (int i = 0; i < nodePtr.n; i++){
-                //Check if studentId is less than all keys in current node
-                if(studentId < nodePtr.keys[0]){
-                    childIndex = 0;
-                }else {//entry key is greater than or equal to current node's key indices
-                    if (i < nodePtr.n - 1) {//As long as i is not at the last key in the keys field
-                        if ((nodePtr.keys[i] <= studentId) && (nodePtr.keys[i + 1] > studentId)) {
-                            childIndex = i + 1; //this is because the correct
-                            //childIndex will always be the index of the correct key index plus one
-                            //(except the case where the studenId is greater than or less than all index key values)
-                        }
-                    }
-                    //   at this point, we can say that the studentId is greater than all keys
-                    //   So, we will go the largest index for child
-                    childIndex = nodePtr.children.length - 1;
-                }
-            }
+            BTreeNode subTreeNode = findSubTree(nodePtr, studentId);
+
             //Now, child index is found, so we can recursively call delete again:
-            delete(nodePtr, nodePtr.children[childIndex], studentId, oldChildNode);
+            delete(nodePtr, subTreeNode, studentId, oldChildNode);
 
             //Check if oldChildNode is null
             if(oldChildNode == null){//usual case: child not deleted
                 // TODO figure out wtf to put here
                 //return;
-            }else{//we discarded a child node
-                //remove oldChildNode from nodePtr
-                removeChildNodeFrmParent(oldChildNode, nodePtr);
-
+            }else{//there exists an oldChildNode -> have to remove
+                  //remove oldChildNode from nodePtr
+                removeChildNodeFromParent(oldChildNode, nodePtr);
             }
 
         }
         //////////////////////////////////////////////////////////////////////////////////////////
+        // @ THE LEAF LEVEL NOW
         //nodePtr IS pointing to a LEAF, in which case:
         // Check if there the current node will still be half full after deletion
         if( nodePtr.n > nodePtr.t){
@@ -182,13 +165,51 @@ class BTree {
             nodePtr = deleteEntry(nodePtr, studentId);
             return true;// we're done!
         }else{
+            BTreeNode sibling = nodePtr.next;
+            if(sibling.n > sibling.t){//if there is enough entries to ensure t entries are left (after redis.)
+                //REDISTRIBUTE evenly between sibling and leaf node (nodePtr)
+            }else{
+                // MERGE Sibling and selected leaf node together
+                // Assign OldChildEntry
+                oldChildNode = findParentPtrFromSibling(sibling, parentPtr);
 
+
+            }
         }
 
 
         return false;
     }
 
+    /**
+     * Given a key, studentId, use the given node to find the correct sub-tree node that
+     * expands the path towards the key
+     * @param nodePtr
+     * @param studentId
+     * @return
+     */
+    BTreeNode findSubTree(BTreeNode nodePtr, long studentId) {
+        int childIndex = -1;// index we will use to get to correct subtree by accessing pointer in BTreeNodeChildren[]
+        // Find the correct subtree (index to use), by comparing key values to studentId
+        for (int i = 0; i < nodePtr.n; i++) {
+            //Check if studentId is less than all keys in current node
+            if (studentId < nodePtr.keys[0]) {
+                childIndex = 0;
+            } else {//entry key is greater than or equal to current node's key indices
+                if (i < nodePtr.n - 1) {//As long as i is not at the last key in the keys field
+                    if ((nodePtr.keys[i] <= studentId) && (nodePtr.keys[i + 1] > studentId)) {
+                        childIndex = i + 1; //this is because the correct
+                        //childIndex will always be the index of the correct key index plus one
+                        //(except the case where the studenId is greater than or less than all index key values)
+                    }
+                }
+                //   at this point, we can say that the studentId is greater than all keys
+                //   So, we will go the largest index for child
+                childIndex = nodePtr.children.length - 1;
+            }
+        }
+        return nodePtr.children[childIndex];
+    }
     /**
      * Helper method to actually do the work of removing the entry from the leaf node
      * @param leafNode
@@ -223,8 +244,22 @@ class BTree {
 
     }
 
-    void removeChildNodeFrmParent(BTreeNode removedChild, BTreeNode parent){
-        //TODO finish this method
+    void removeChildNodeFromParent(BTreeNode oldChildNode, BTreeNode parent){
+        for(int i = 0; i < parent.children.length; i++){
+            if(parent.children[i].equals(oldChildNode)){
+                parent.children[i] = null;
+                //if
+            }
+        }
+    }
+
+    BTreeNode findParentPtrFromSibling(BTreeNode sibling, BTreeNode parentNode){
+        for(int i = 0; i < parentNode.children.length; i++){
+            if(parentNode.children[i].equals(sibling)){
+                return parentNode.children[i];
+            }
+        }//if no match between sibling and child of parent can be found (should NOT be the case)
+        return null;
     }
 
     /**
