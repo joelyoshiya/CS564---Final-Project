@@ -112,7 +112,7 @@ class BTree {
 
         //   First figure out if entry exists
         //   If value exists, execute, else return false (value doesn't exist or nothing in Btree)
-        if(search(studentId) != -1 ){
+        if(search(studentId) != -1 && root != null){
             parentPtr = null;
             nodePtr = root;
             //studentId already passed from arg
@@ -133,10 +133,10 @@ class BTree {
      * @param parentPtr
      * @param nodePtr
      * @param studentId
-     * @param oldChildEntry
+     * @param oldChildNode
      * @return
      */
-    boolean delete(BTreeNode parentPtr, BTreeNode nodePtr, long studentId, BTreeNode oldChildEntry){
+    boolean delete(BTreeNode parentPtr, BTreeNode nodePtr, long studentId, BTreeNode oldChildNode){
 
         int childIndex = -1; // index we will use to get to correct subtree by accessing pointer in BTreeNodeChildren[]
 
@@ -161,12 +161,16 @@ class BTree {
                 }
             }
             //Now, child index is found, so we can recursively call delete again:
-            delete(nodePtr, nodePtr.children[childIndex], studentId, oldChildEntry);
+            delete(nodePtr, nodePtr.children[childIndex], studentId, oldChildNode);
 
-            //Check if oldChildEntry is null
-            if(oldChildEntry == null){
+            //Check if oldChildNode is null
+            if(oldChildNode == null){//usual case: child not deleted
                 // TODO figure out wtf to put here
                 //return;
+            }else{//we discarded a child node
+                //remove oldChildNode from nodePtr
+                removeChildNodeFrmParent(oldChildNode, nodePtr);
+
             }
 
         }
@@ -175,8 +179,8 @@ class BTree {
         // Check if there the current node will still be half full after deletion
         if( nodePtr.n > nodePtr.t){
             //deleting the entry will not infringe on minimum degree
-            deleteEntry(nodePtr, studentId);
-            return true;
+            nodePtr = deleteEntry(nodePtr, studentId);
+            return true;// we're done!
         }else{
 
         }
@@ -190,8 +194,37 @@ class BTree {
      * @param leafNode
      * @param studentID
      */
-    void deleteEntry(BTreeNode leafNode, long studentID){
-        //TODO flesh this out
+    BTreeNode deleteEntry(BTreeNode leafNode, long studentID){
+        int removeIndex = -1; //index to remove values from both BTreeNode's key[] and value[] arrays
+        long[] newKeys = new long[leafNode.n -1];
+        long[] newValues = new long[leafNode.n -1];
+
+        //Find a match between studentID to be removed, and nodes keys
+        for(int i = 0; i < leafNode.n; i++){
+            if(leafNode.keys[i] == studentID){
+                removeIndex = i;
+            }
+        }
+        int j = 0;// the index for the new arrays
+        // Copies into arrays all except those to be removed, in same order
+        for (int i = 0; i < leafNode.n; i++){
+            if (i == removeIndex) {
+                continue;// i still increments, but nothing is done (skips the removed index)
+            }
+            newKeys[j] = leafNode.keys[i];
+            newValues[j] = leafNode.values[i];
+            j++;
+        }
+        // Update arrays in the original node
+        leafNode.keys = newKeys;
+        leafNode.keys = newValues;
+
+        return leafNode;
+
+    }
+
+    void removeChildNodeFrmParent(BTreeNode removedChild, BTreeNode parent){
+        //TODO finish this method
     }
 
     /**
