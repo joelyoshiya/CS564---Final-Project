@@ -16,7 +16,7 @@ static int recordcount=0;
         /** Read the input file -- input.txt */
         Scanner scan = null;
         try {
-            scan = new Scanner(new File("src/input.txt"));
+            scan = new Scanner(new File("Checkpoint 3/B+Tree Skeleton/input.txt"));
         } catch (FileNotFoundException e) {
             System.out.println("File not found.");
         }
@@ -103,7 +103,7 @@ static int recordcount=0;
     private static List<Student> getStudents() {
     	Scanner scan = null;
     	try {
-            scan = new Scanner(new File("src/Student.csv"));
+            scan = new Scanner(new File("Checkpoint 3/B+Tree Skeleton/Student.csv"));
         } catch (FileNotFoundException e) {
             System.out.println("File not found.");
         }
