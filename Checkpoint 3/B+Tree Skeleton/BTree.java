@@ -148,11 +148,31 @@ class BTree {
 
             //Check if oldChildNode is null
             if(oldChildNode == null){//usual case: child not deleted
-                // TODO figure out wtf to put here
-                //return;
+                return true; // done, there was no child that needed to be deleted
             }else{//there exists an oldChildNode -> have to remove
                   //remove oldChildNode from nodePtr
                 removeChildNodeFromParent(oldChildNode, nodePtr);
+
+                if(nodePtr.n > nodePtr.t){//if we can remove without violating minimum degree prop
+                    oldChildNode = null; //delete doesn't go further
+                    return true;//done we, don't have to modify any more
+                }else{//This inner node VIOLATES minimum degree property
+                      //need to either redistribute or merge
+                    //TODO get sibling of nodePtr
+                    BTreeNode sibling = findSiblingPtrFromParent(parentPtr, nodePtr);
+                    if(sibling.n > sibling.t){
+                        // TODO REDISTRIBUTE EVENLY between nodePtr and Sibling through parent
+                        oldChildNode = null;
+                        return true;
+                    }else{
+                        // TODO MERGE sibling and nodePtr, (Call node on RHS "M")
+                        // reassign OldChildrenEntry to the current pointer entry in parent of M
+                        // pull splitting key from parent down into node on left
+                        // move all entries from M to node on left
+                        //discard empty node M
+                        return true;
+                    }
+                }
             }
 
         }
@@ -166,18 +186,18 @@ class BTree {
             return true;// we're done!
         }else{
             BTreeNode sibling = nodePtr.next;
-            if(sibling.n > sibling.t){//if there is enough entries to ensure t entries are left (after redis.)
-                //REDISTRIBUTE evenly between sibling and leaf node (nodePtr)
+            if(sibling.n > sibling.t){
+                //if there is enough entries to ensure t entries are left (after redis.)
+                //TODO REDISTRIBUTE evenly between sibling and leaf node (nodePtr)
             }else{
-                // MERGE Sibling and selected leaf node together
+                // TODO MERGE Sibling and selected leaf node together, (call node on rhs M)
                 // Assign OldChildEntry
                 oldChildNode = findParentPtrFromSibling(sibling, parentPtr);
-
-
+                //TODO move all entries from M (entry in parent for node on right)
+                //TODO discard empty node M, adjust sibling pointers, return;
             }
         }
-
-
+        //lies outside all if/else statements
         return false;
     }
 
@@ -259,6 +279,23 @@ class BTree {
                 return parentNode.children[i];
             }
         }//if no match between sibling and child of parent can be found (should NOT be the case)
+        return null;
+    }
+
+    /**
+     * Find the sibling of the current inner node using the parent
+     * Can't use node.next because not a leaf node
+     * @param parentPtr
+     * @param nodePtr
+     * @return
+     */
+    BTreeNode findSiblingPtrFromParent(BTreeNode parentPtr, BTreeNode nodePtr){
+        //Sibling should be one to the right in the children array
+        for(int i = 0; i < parentPtr.children.length; i++){
+            if(parentPtr.children[i].equals(nodePtr)){
+                return parentPtr.children[i + 1];//returns the right-hand-side sibling of the current node
+            }
+        }
         return null;
     }
 
