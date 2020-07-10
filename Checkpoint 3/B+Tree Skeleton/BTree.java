@@ -157,8 +157,6 @@ class BTree {
                     oldChildNode = null; //delete doesn't go further
                     return true;//done we, don't have to modify any more
                 }else{//This inner node VIOLATES minimum degree property
-                      //need to either redistribute or merge
-                    //TODO get sibling of nodePtr
                     BTreeNode sibling = findSiblingPtrFromParent(parentPtr, nodePtr);
                     if(sibling.n > sibling.t){
                         // TODO REDISTRIBUTE EVENLY between nodePtr and Sibling through parent
@@ -177,24 +175,30 @@ class BTree {
 
         }
         //////////////////////////////////////////////////////////////////////////////////////////
-        // @ THE LEAF LEVEL NOW
-        //nodePtr IS pointing to a LEAF, in which case:
-        // Check if there the current node will still be half full after deletion
-        if( nodePtr.n > nodePtr.t){
-            //deleting the entry will not infringe on minimum degree
-            nodePtr = deleteEntry(nodePtr, studentId);
-            return true;// we're done!
-        }else{
-            BTreeNode sibling = nodePtr.next;
-            if(sibling.n > sibling.t){
-                //if there is enough entries to ensure t entries are left (after redis.)
-                //TODO REDISTRIBUTE evenly between sibling and leaf node (nodePtr)
-            }else{
-                // TODO MERGE Sibling and selected leaf node together, (call node on rhs M)
-                // Assign OldChildEntry
-                oldChildNode = findParentPtrFromSibling(sibling, parentPtr);
-                //TODO move all entries from M (entry in parent for node on right)
-                //TODO discard empty node M, adjust sibling pointers, return;
+        if(nodePtr.leaf = true) {
+            //nodePtr IS pointing to a LEAF, in which case:
+            // Check if there the current node will still be half full after deletion
+            if (nodePtr.n > nodePtr.t) {
+                //deleting the entry will not infringe on minimum degree
+                nodePtr = deleteEntry(nodePtr, studentId);
+                oldChildNode = null;
+                return true;// we're done!
+            } else {//Removing entry will results in violation of minimum degree!
+                BTreeNode sibling = nodePtr.next;
+                if (sibling.n > sibling.t) {
+                    //if there is enough entries to ensure t entries are left (after redis.)
+                    // TODO REDISTRIBUTE evenly between sibling and leaf node (nodePtr)
+                    // find entry in parent for node on right (NOT the sibling, but right of sibling)
+                    // replace key value in parent entry by new low-key value in M
+                    oldChildNode = null;
+                    return true;
+                } else {
+                    // TODO MERGE Sibling and selected leaf node together, (call node on rhs M)
+                    // Assign OldChildEntry
+                    oldChildNode = findParentPtrToSibling(sibling, parentPtr);
+                    //TODO move all entries from M (entry in parent for node on right)
+                    //TODO discard empty node M, adjust sibling pointers, return;
+                }
             }
         }
         //lies outside all if/else statements
@@ -273,7 +277,7 @@ class BTree {
         }
     }
 
-    BTreeNode findParentPtrFromSibling(BTreeNode sibling, BTreeNode parentNode){
+    BTreeNode findParentPtrToSibling(BTreeNode sibling, BTreeNode parentNode){
         for(int i = 0; i < parentNode.children.length; i++){
             if(parentNode.children[i].equals(sibling)){
                 return parentNode.children[i];
