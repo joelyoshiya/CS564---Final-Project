@@ -183,7 +183,7 @@ class BTree {
                 nodePtr = deleteEntry(nodePtr, studentId);
                 oldChildNode = null;
                 return true;// we're done!
-            } else {//Removing entry will results in violation of minimum degree!
+            } else {//Removing entry will result in violation of minimum degree!
                 BTreeNode sibling = nodePtr.next;
                 if (sibling.n > sibling.t) {
                     //if there is enough entries to ensure t entries are left (after redis.)
@@ -285,6 +285,58 @@ class BTree {
         }//if no match between sibling and child of parent can be found (should NOT be the case)
         return null;
     }
+
+    /**
+     *
+     * @param leaf
+     * @param sibling
+     * @param parent
+     * @return
+     */
+    BTreeNode redistributeLeafNodes(BTreeNode leaf, BTreeNode sibling, BTreeNode parent){
+        //TODO expand
+        return parent;
+    }
+
+    /**
+     *
+     * @param inner
+     * @param sibling
+     * @param parent
+     * @return
+     */
+    BTreeNode redistributeInnerNode(BTreeNode inner, BTreeNode sibling, BTreeNode parent){
+        //TODO expand
+        return parent;
+    }
+
+    /**
+     *
+     * @param inner
+     * @param M
+     * @param parent
+     * @return
+     */
+    BTreeNode mergeInnerNode(BTreeNode inner, BTreeNode M, BTreeNode parent){
+        //TODO expand
+        return parent;
+    }
+
+    /**
+     *
+     * @param leaf
+     * @param M
+     * @param parent
+     * @return
+     */
+    BTreeNode mergeLeaf(BTreeNode leaf, BTreeNode M, BTreeNode parent){
+        // In this specific case, M, the node on the RHS of the leaf, is also the sibling
+        // We don't want to use the sibling pointer however, because the pointer isn't coming from the parent
+        // but from the leaf
+        //TODO expand
+        return parent;
+    }
+
 
     /**
      * Find the sibling of the current inner node using the parent
