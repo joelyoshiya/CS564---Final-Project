@@ -112,7 +112,7 @@ class BTree {
 
         //   First figure out if entry exists
         //   If value exists, execute, else return false (value doesn't exist or nothing in Btree)
-        if(search(studentId) != -1 || root != null){
+        if(search(studentId) != -1 ){
             parentPtr = null;
             nodePtr = root;
             //studentId already passed from arg
@@ -164,6 +164,10 @@ class BTree {
             delete(nodePtr, nodePtr.children[childIndex], studentId, oldChildEntry);
 
             //Check if oldChildEntry is null
+            if(oldChildEntry == null){
+                // TODO figure out wtf to put here
+                //return;
+            }
 
         }
         //////////////////////////////////////////////////////////////////////////////////////////
@@ -171,13 +175,23 @@ class BTree {
         // Check if there the current node will still be half full after deletion
         if( nodePtr.n > nodePtr.t){
             //deleting the entry will not infringe on minimum degree
-            //Now, delete!
-
+            deleteEntry(nodePtr, studentId);
             return true;
+        }else{
+
         }
 
 
         return false;
+    }
+
+    /**
+     * Helper method to actually do the work of removing the entry from the leaf node
+     * @param leafNode
+     * @param studentID
+     */
+    void deleteEntry(BTreeNode leafNode, long studentID){
+        //TODO flesh this out
     }
 
     /**
