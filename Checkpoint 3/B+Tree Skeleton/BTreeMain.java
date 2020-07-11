@@ -10,33 +10,29 @@ import java.util.Scanner;
  * You do not need to change this class.
  */
 public class BTreeMain {
-static int recordcount=0;
+
     public static void main(String[] args) {
 
         /** Read the input file -- input.txt */
         Scanner scan = null;
         try {
-            scan = new Scanner(new File("Checkpoint 3/B+Tree Skeleton/input.txt"));
+            scan = new Scanner(new File("src/input.txt"));
         } catch (FileNotFoundException e) {
             System.out.println("File not found.");
         }
-        getStudents();
+
         /** Read the minimum degree of B+Tree first */
 
-        int degree = 0;
-        if (scan != null) {
-            degree = scan.nextInt();
-        }
-
+        int degree = scan.nextInt();
         BTree bTree = new BTree(degree);
 
         /** Reading the database student.csv into B+Tree Node*/
         List<Student> studentsDB = getStudents();
 
-       for (Student s : studentsDB) {
+        for (Student s : studentsDB) {
             bTree.insert(s);
         }
-
+        
         /** Start reading the operations now from input file*/
         try {
             while (scan.hasNextLine()) {
@@ -45,7 +41,7 @@ static int recordcount=0;
                 while (s2.hasNext()) {
 
                     String operation = s2.next();
-               
+             
                     switch (operation) {
                         case "insert": {
 
@@ -55,8 +51,8 @@ static int recordcount=0;
                             String level = s2.next();
                             int age = Integer.parseInt(s2.next());
                             /** TODO: Write a logic to generate recordID*/
-                            long recordID = recordcount;
-                            recordcount++;
+                            long recordID = Long.parseLong(s2.next());
+
                             Student s = new Student(studentId, age, studentName, major, level, recordID);
                             bTree.insert(s);
 
@@ -64,11 +60,11 @@ static int recordcount=0;
                         }
                         case "delete": {
                             long studentId = Long.parseLong(s2.next());
-                            boolean result = bTree.delete(studentId);
-                            if (result)
-                                System.out.println("Student deleted successfully.");
-                            else
-                                System.out.println("Student deletion failed.");
+                            //boolean result = bTree.delete(studentId);
+//                            if (result)
+//                                System.out.println("Student deleted successfully.");
+//                            else
+//                                System.out.println("Student deletion failed.");
 
                             break;
                         }
@@ -93,43 +89,32 @@ static int recordcount=0;
                 }
             }
         } catch (Exception e) {
-            System.out.println("File not found.");
+            e.printStackTrace();
         }
     }
-    /**
-     * Extracts the students information from "Students.csv"
-     * return the list<Students>
-     */
+
     private static List<Student> getStudents() {
+
     	Scanner scan = null;
     	try {
-            scan = new Scanner(new File("Checkpoint 3/B+Tree Skeleton/Student.csv"));
+            scan = new Scanner(new File("src/Student.csv"));
         } catch (FileNotFoundException e) {
             System.out.println("File not found.");
         }
     	
     	List<Student> studentList = new ArrayList<>();
-        if (scan != null) {
-            while(scan.hasNext()) {
-            String Studentline = scan.nextLine();
-            String[] studentarray = Studentline.split(",");
-            //now time to stick in the parsing and the creation of the student
-                long studentId = Long.parseLong(studentarray[0]);
-                String studentName = studentarray[1];
-                String major = studentarray[2];
-                String level = studentarray[3];
-                int age = Integer.parseInt(studentarray[4]);
-                long recordID = Long.parseLong(studentarray[5]);
-            studentList.add(new Student(studentId,age,studentName,major,level,recordID));
-            recordcount++;
-            }
-        }
-        for(int i=0; i<studentList.size();i++) {
-    		System.out.println(studentList.get(i));
+    	while(scan.hasNext()) {
+    	String Studentline = scan.nextLine();
+    	String[] studentarray = Studentline.split(",");
+    	//now time to stick in the parsing and the creation of the student
+    		long studentId = Long.parseLong(studentarray[0]);
+    		String studentName = studentarray[1];
+    		String major = studentarray[2];
+    		String level = studentarray[3];
+    		int age = Integer.parseInt(studentarray[4]);
+    		long recordID = Long.parseLong(studentarray[5]);
+    	studentList.add(new Student(studentId,age,studentName,major,level,recordID));
     	}
-    	
-    	
         return studentList;
     }
-    
 }
