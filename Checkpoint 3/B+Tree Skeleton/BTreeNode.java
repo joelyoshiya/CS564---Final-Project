@@ -38,7 +38,7 @@ class BTreeNode {
         this.t = t;
         this.leaf = leaf;
         this.keys = new long[2 * t];
-        this.children = new BTreeNode[2 * t+1];
+        this.children = new BTreeNode[2 * t + 1];
         this.n = 0;
         this.next = null;
         this.values = new long[2 * t];

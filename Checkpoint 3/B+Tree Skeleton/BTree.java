@@ -27,6 +27,11 @@ class BTree {
         this.t = t;
     }
 
+    /**
+     *
+     * @param studentId
+     * @return
+     */
     long search(long studentId) {
         
         if(root==null) {
@@ -83,6 +88,11 @@ class BTree {
         return -1;
     }
 
+    /**
+     *
+     * @param student
+     * @return
+     */
     BTree insert(Student student) {
     	if(root==null) {
     		BTreeNode temproot = new BTreeNode(t,true);
@@ -93,7 +103,7 @@ class BTree {
     		
     		
     	}else {
-    		int recursivesearchresponse = recursivesearch(root, student);
+    		int recursivesearchresponse = recursiveSearch(root, student);
     		if(recursivesearchresponse ==-2) {
     			BTreeNode paparoot = new BTreeNode(t,false);
     			split(paparoot, root);
@@ -118,7 +128,7 @@ class BTree {
     // returns 1 on sucsses 
     // returns -1 on needing a node split
     // return -2 on needing a leaf split
-    int recursivesearch(BTreeNode input, Student student) {
+    int recursiveSearch(BTreeNode input, Student student) {
     	for(int i=0; i<input.keys.length;i++) {
     		System.out.print(input.keys[i]+ ", ");
     	}
@@ -137,7 +147,7 @@ class BTree {
     				// i am going to have a method that returns here so the for loop
     				// will break
     				notfound = false;
-    				int recursivesearchvalue =recursivesearch(input.children[i],  student);
+    				int recursivesearchvalue = recursiveSearch(input.children[i],  student);
     				if (recursivesearchvalue<0) {
     					return split(input, input.children[i]);
     				}
@@ -149,7 +159,7 @@ class BTree {
     		// run this method inside the for loop on n, becuase 
     		// it means it will be placed in that method
     		if(notfound) {
-    			int recursivesearchvalue =recursivesearch(input.children[input.n],  student);
+    			int recursivesearchvalue = recursiveSearch(input.children[input.n],  student);
 				if (recursivesearchvalue<0) {
 					return split(input, input.children[input.n]);
 				}
@@ -158,7 +168,7 @@ class BTree {
     	
     	return 1;
     }
-    int split(BTreeNode parrent, BTreeNode child) {
+    int split(BTreeNode parent, BTreeNode child) {
     	// we need a speacial case if the child is a root and he is a leaf
     	if(root.leaf) {
     		BTreeNode newrightchild = new BTreeNode(t,true);
@@ -166,23 +176,23 @@ class BTree {
     		newrightchild.values = root.subvalues;
     		newrightchild.n = t+1;// the right child always get the exstra one
     		root.next = newrightchild;
-    		parrent.keys[0] = newrightchild.keys[0];
-    		parrent.children[0]= root;
-    		parrent.children[1] = newrightchild;
-    		parrent.n=1;
+    		parent.keys[0] = newrightchild.keys[0];
+    		parent.children[0]= root;
+    		parent.children[1] = newrightchild;
+    		parent.n=1;
     		// set theses to null so it takes up less space
     		child.subkeys =null;
     		child.subvalues =null;
     		// this is the special case that the root node is split
     	}else if(child==root) {
-    		parrent.keys[0] = root.subkeys[0];
+    		parent.keys[0] = root.subkeys[0];
     		BTreeNode newrightchild = new BTreeNode(t,true);
     		newrightchild.keys= child.subkeys;
     		newrightchild.children = root.subchildren;
     		newrightchild.n = t+1;
     		
-    		parrent.children[0] = root;
-    		parrent.children[1] = newrightchild;
+    		parent.children[0] = root;
+    		parent.children[1] = newrightchild;
     	}
     	// the next case is if it is just a ragular leaf that needs splitting
     	else if (child.leaf) {
@@ -195,7 +205,7 @@ class BTree {
     		child.next = newrightchild;
     		newrightchild.next = temp;
     		
-    		return parrent.placeinchild(newrightchild);
+    		return parent.placeinchild(newrightchild);
     		// now i need to make is so it places the child into the correct place
     		// now we have to have the case were it splits a node
     	}else {
@@ -205,7 +215,7 @@ class BTree {
     		newrightchild.n = t+1;
 
     		
-    		int test = parrent.placeinchild(newrightchild);
+    		int test = parent.placeinchild(newrightchild);
     		return test;
     		
     	}
@@ -213,7 +223,12 @@ class BTree {
     	
     	return 1;
     }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     *
+     * @param studentId
+     * @return
+     */
     boolean delete(long studentId) {
         //   Deletes entry in the BTree structure given search-key, studentID
         //   Following psuedo-code in textbook, pg.353
@@ -300,9 +315,14 @@ class BTree {
             } else {//Removing entry will result in violation of minimum degree!
                 BTreeNode sibling = nodePtr.next;
                 if (sibling.n > sibling.t) {
-                    //if there is enough entries to ensure t entries are left (after redis.)
+                    long lowKey = sibling.keys[0];
+                    //if there is enough entries to ensure t entries are left (after deletion/redis.)
+                    // 1st, actually delete the value
+                    nodePtr = deleteEntry(nodePtr, studentId);//removed the entry, t - 1 entries
                     // TODO REDISTRIBUTE evenly between sibling and leaf node (nodePtr)
+                    redistributeLeafNodes(nodePtr,sibling,parentPtr);
                     // find entry in parent for node on right (NOT the sibling, but right of sibling)
+                    BTreeNode siblingEntry = findSiblingPtrFromParent(parentPtr,nodePtr);
                     // replace key value in parent entry by new low-key value in M
                     oldChildNode = null;
                     return true;
@@ -378,6 +398,9 @@ class BTree {
         leafNode.keys = newKeys;
         leafNode.keys = newValues;
 
+        //Update N
+        leafNode.n--;
+
         return leafNode;
 
     }
@@ -407,9 +430,24 @@ class BTree {
      * @param parent
      * @return
      */
-    BTreeNode redistributeLeafNodes(BTreeNode leaf, BTreeNode sibling, BTreeNode parent){
+    void redistributeLeafNodes(BTreeNode leaf, BTreeNode sibling, BTreeNode parent){
         //TODO expand
-        return parent;
+        //TODO UPDATE N FOR BOTH nodes
+        //redistribute evenly between the node and its sibling
+        int diffN = (sibling.n - leaf.n)/2;// Num keys moving to to left side (leaf) from sibling
+
+        long[] tempKeys = new long[diffN];
+        long[] tempVals = new long[diffN];
+        for(int i = 0; i < diffN; i++){
+            //Copy values to transfer
+            tempKeys[i] = sibling.keys[i];
+            tempVals[i] = sibling.values[i];
+
+            //Now delete entry from Sibling
+            sibling = deleteEntry(sibling,sibling.keys[i]);
+        }
+
+        return;
     }
 
     /**
