@@ -374,9 +374,10 @@ class BTree {
      * @param studentID
      */
     BTreeNode deleteEntry(BTreeNode leafNode, long studentID){
+        //TODO Remove and SHIFT BUT DON"T CHANGE SIZE
         int removeIndex = -1; //index to remove values from both BTreeNode's key[] and value[] arrays
-        long[] newKeys = new long[leafNode.n -1];
-        long[] newValues = new long[leafNode.n -1];
+        long[] newKeys = new long[leafNode.n];
+        long[] newValues = new long[leafNode.n];
 
         //Find a match between studentID to be removed, and nodes keys
         for(int i = 0; i < leafNode.n; i++){

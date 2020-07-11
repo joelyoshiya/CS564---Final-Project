@@ -68,6 +68,7 @@ class BTreeNode {
     	
     	
     }
+
     private long[] shifter(long value, int index, long[] array) {
     	long[] temp = array.clone();
     	for(int i=index; i<n-1;i++) {
@@ -76,6 +77,8 @@ class BTreeNode {
     	temp[index] = value;
     	return temp;
     }
+
+
     void leafsplitter(Student student){
     	// this are what is going to hold the right side after the split 
     	// and then when they are taken they will return to null
@@ -213,9 +216,22 @@ class BTreeNode {
     	children[t-1].next = subchildren[0];
     	subchildren[0].next = subchildren[1];
     	n=t;
-    	
-    	
-    	
-    	
+
     }
+
+    void deleteEntry(long studentID){
+    	long[] newKeys = keys.clone();
+    	long[] newVars = values.clone();
+    	int removeIndex = -1;
+
+    	for(int i = 0; i < this.n; i++){
+    		if(keys[i] == studentID){
+				removeIndex = i;
+			}
+		}
+
+
+	}
+
+
 }
