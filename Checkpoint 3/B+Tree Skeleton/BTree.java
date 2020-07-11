@@ -84,22 +84,136 @@ class BTree {
     }
 
     BTree insert(Student student) {
-        /**
-         * TODO:
-         * Implement this function to insert in the B+Tree.
-         * Also, implement in student.csv after inserting in B+Tree.
-         */
+    	if(root==null) {
+    		BTreeNode temproot = new BTreeNode(t,true);
+    		temproot.keys[0] = student.studentId;
+    		temproot.values[0] = student.recordId;
+    		temproot.n=1;
+    		root = temproot;	
+    		
+    		
+    	}else {
+    		int recursivesearchresponse = recursivesearch(root, student);
+    		if(recursivesearchresponse ==-2) {
+    			BTreeNode paparoot = new BTreeNode(t,false);
+    			split(paparoot, root);
+    			root = paparoot;
+    		}else if(recursivesearchresponse==-1) {
+    			
+    			BTreeNode paparoot = new BTreeNode(t,false);
+    			split(paparoot, root);
+    			root = paparoot;
+    		}
+    		
+
+    		
+    	}
+    	
+    	
+    	
+    	
+        
         return this;
     }
+    // returns 1 on sucsses 
+    // returns -1 on needing a node split
+    // return -2 on needing a leaf split
+    int recursivesearch(BTreeNode input, Student student) {
+    	for(int i=0; i<input.keys.length;i++) {
+    		System.out.print(input.keys[i]+ ", ");
+    	}
+    	System.out.println();
+    	if(input.leaf) {
+    		// this is the base case and it is a leaf
+    		int leafplacementreturn = input.placeinleaf(student);
+    		return leafplacementreturn;
+    		
+    	}else {
+    		// this means that it has to go deeper
+    		boolean notfound =true;
+    		for(int i=0; i< input.n;i++) {
+    			if(student.studentId<input.keys[i]) {
+    				// this means that it wants to place the value in that location
+    				// i am going to have a method that returns here so the for loop
+    				// will break
+    				notfound = false;
+    				int recursivesearchvalue =recursivesearch(input.children[i],  student);
+    				if (recursivesearchvalue<0) {
+    					return split(input, input.children[i]);
+    				}
+    				i=input.n;
+    				
+    				
+    			}
+    		}
+    		// run this method inside the for loop on n, becuase 
+    		// it means it will be placed in that method
+    		if(notfound) {
+    			int recursivesearchvalue =recursivesearch(input.children[input.n],  student);
+				if (recursivesearchvalue<0) {
+					return split(input, input.children[input.n]);
+				}
+    		}
+    	}
+    	
+    	return 1;
+    }
+    int split(BTreeNode parrent, BTreeNode child) {
+    	// we need a speacial case if the child is a root and he is a leaf
+    	if(root.leaf) {
+    		BTreeNode newrightchild = new BTreeNode(t,true);
+    		newrightchild.keys= root.subkeys;
+    		newrightchild.values = root.subvalues;
+    		newrightchild.n = t+1;// the right child always get the exstra one
+    		root.next = newrightchild;
+    		parrent.keys[0] = newrightchild.keys[0];
+    		parrent.children[0]= root;
+    		parrent.children[1] = newrightchild;
+    		parrent.n=1;
+    		// set theses to null so it takes up less space
+    		child.subkeys =null;
+    		child.subvalues =null;
+    		// this is the special case that the root node is split
+    	}else if(child==root) {
+    		parrent.keys[0] = root.subkeys[0];
+    		BTreeNode newrightchild = new BTreeNode(t,true);
+    		newrightchild.keys= child.subkeys;
+    		newrightchild.children = root.subchildren;
+    		newrightchild.n = t+1;
+    		
+    		parrent.children[0] = root;
+    		parrent.children[1] = newrightchild;
+    	}
+    	// the next case is if it is just a ragular leaf that needs splitting
+    	else if (child.leaf) {
+    		BTreeNode newrightchild = new BTreeNode(t,true);
+    		newrightchild.keys= child.subkeys;
+    		newrightchild.values = child.subvalues;
+    		newrightchild.n = t+1;// the right child always get the exstra one
+    		// now time for to insert the right in the line of nexts
+    		BTreeNode temp = child.next;
+    		child.next = newrightchild;
+    		newrightchild.next = temp;
+    		
+    		return parrent.placeinchild(newrightchild);
+    		// now i need to make is so it places the child into the correct place
+    		// now we have to have the case were it splits a node
+    	}else {
+    		BTreeNode newrightchild = new BTreeNode(t,false);
+    		newrightchild.keys= child.subkeys;
+    		newrightchild.children = child.subchildren;
+    		newrightchild.n = t+1;
 
-    /**
-     * TODO:
-     * @jyfoster - implement this function
-     * Implement this function to delete in the B+Tree and student table.
-     * Return true if the student is deleted successfully otherwise, return false.
-     * @param studentId - the student entry we'd like to delete
-     * @return - true or false, depending on a successful delete or not
-     */
+    		
+    		int test = parrent.placeinchild(newrightchild);
+    		return test;
+    		
+    	}
+    	
+    	
+    	return 1;
+    }
+
     boolean delete(long studentId) {
         //   Deletes entry in the BTree structure given search-key, studentID
         //   Following psuedo-code in textbook, pg.353
