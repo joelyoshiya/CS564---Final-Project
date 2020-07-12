@@ -265,11 +265,8 @@ class BTree {
             nodePtr = root;
             //studentId already passed from arg
             oldChildEntry = null;
-            if(delete(parentPtr,nodePtr, studentId, oldChildEntry) == true){
-                // Essentially, if the actual recursive method returns true, return true
-                return true;
-            }//else, return false
-            return false;
+            //return recursive method result
+            return delete(parentPtr,nodePtr, studentId, oldChildEntry);
         }
         //entry does not exist, or root is empty -> return false
         return false;
