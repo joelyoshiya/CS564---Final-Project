@@ -261,6 +261,7 @@ class BTree {
         //   First figure out if entry exists
         //   If value exists, execute, else return false (value doesn't exist or nothing in Btree)
         if(search(studentId) != -1){
+            System.out.println("Starting delete");
             parentPtr = null;
             nodePtr = root;
             //studentId already passed from arg
@@ -284,13 +285,25 @@ class BTree {
     boolean delete(BTreeNode parentPtr, BTreeNode nodePtr, long studentId, BTreeNode oldChildNode){
 
         //Check if the current node we are at is an inner, non-leaf node:
-        if(nodePtr.leaf == false){
+        if(!nodePtr.leaf){
             // Find the correct subtree (index to use), by comparing key values to studentId
-            BTreeNode subTreeNode = findSubTree(nodePtr, studentId);
-
+            //BTreeNode subTreeNode = findSubTree(nodePtr, studentId);
+            int index=0;
+            for(int i = 0;i<nodePtr.n;i++) {
+                //Find the first key that is bigger than studentId
+                if(nodePtr.keys[i]>studentId) {    
+                    index = i;                
+                }
+                //If studentId is larger than all keys, go to the last pointer
+                else if(i==nodePtr.n-1) {         
+                    index=i+1;   
+                }
+            }
+            System.out.println("Nodeptr not leaf, go to index:"+index);
             //Now, child index is found, so we can recursively call delete again:
-            delete(nodePtr, subTreeNode, studentId, oldChildNode);
-
+            return delete(nodePtr, nodePtr.children[index], studentId, oldChildNode);
+            
+            /** 
             //Check if oldChildNode is null
             if(oldChildNode == null){//usual case: child not deleted
                 return true; // done, there was no child that needed to be deleted
@@ -317,18 +330,22 @@ class BTree {
                     }
                 }
             }
+            */
 
         }
         //////////////////////////////////////////////////////////////////////////////////////////
-        if(nodePtr.leaf = true) {
+        if(nodePtr.leaf) {
+            System.out.println("Arrived at leaf");
             //nodePtr IS pointing to a LEAF, in which case:
             // Check if there the current node will still be half full after deletion
-            if (nodePtr.n > nodePtr.t) {
+            if (nodePtr.n > nodePtr.t || nodePtr.equals(root)) {
+                System.out.println("Basic case");
                 //deleting the entry will not infringe on minimum degree
                 nodePtr.deleteEntry(studentId);
                 oldChildNode = null;
                 return true;// we're done!
             } else {//Removing entry will result in violation of minimum degree!
+                System.out.println("Else case");
                 BTreeNode sibling = nodePtr.next;
                 if (sibling.n > sibling.t) {
                     long lowKey = sibling.keys[0];
@@ -512,7 +529,7 @@ class BTree {
         //print key and value in order, also add values to array list
         while(current!=null) {
             for(int i = 0; i<current.n; i++) {
-                System.out.println("Key: "+current.keys[i]+" Value:"+current.values[i]);
+                System.out.println("Key: "+current.keys[i]+" Value:"+current.values[i]+" Num Keys:"+current.n);
                 listOfRecordID.add(current.values[i]);
             }
             //use pointer to next leaf node

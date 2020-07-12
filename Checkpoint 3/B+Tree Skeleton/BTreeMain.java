@@ -18,7 +18,7 @@ public class BTreeMain {
         /** Read the input file -- input.txt */
         Scanner scan = null;
         try {
-            scan = new Scanner(new File("src/input.txt"));
+            scan = new Scanner(new File("src/input2.txt"));
         } catch (FileNotFoundException e) {
             System.out.println("File not found.");
         }
