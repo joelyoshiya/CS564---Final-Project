@@ -277,12 +277,10 @@ class BTreeNode {
 	}
 
 	void insertRedistribution(long newKey, long newValue) {
-		//inserting a key-value pair exactly once, so increment n
-		n++;
 
 		// Find position where values will be inserted in leaf array
 		int position=0;
-		for(int i=0; i<n;i++) {
+		for(int i=0; i< n ; i++) {
 			if(newKey < keys[i]) {
 				position =i;
 				i=n;
@@ -291,7 +289,8 @@ class BTreeNode {
 		//Shift array at appropriate index (position) to accommodate new values as part of redistribution
 		keys = shifter(newKey,position,keys);
 		values = shifter(newValue,position,values);
-		//Done!
+		//inserting a key-value pair exactly once, so increment n
+		n++;
 		return;
 
 	}

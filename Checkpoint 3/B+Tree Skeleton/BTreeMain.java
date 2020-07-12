@@ -18,7 +18,7 @@ public class BTreeMain {
         /** Read the input file -- input.txt */
         Scanner scan = null;
         try {
-            scan = new Scanner(new File("src/input2.txt"));
+            scan = new Scanner(new File("Checkpoint 3/B+Tree Skeleton/input3.txt"));
         } catch (FileNotFoundException e) {
             System.out.println("File not found.");
         }
@@ -94,7 +94,7 @@ public class BTreeMain {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        csvwriter(studentsDB);
+        //csvwriter(studentsDB);
     }
 // this is a method to read in a csv file and create student objects
 // return - List<students> - this is all the student objects created from the csv file
@@ -102,7 +102,7 @@ public class BTreeMain {
 
     	Scanner scan = null;
     	try {
-            scan = new Scanner(new File("src/Student.csv"));
+            scan = new Scanner(new File("Checkpoint 3/B+Tree Skeleton/Student3.csv"));
         } catch (FileNotFoundException e) {
             System.out.println("File not found.");
         }

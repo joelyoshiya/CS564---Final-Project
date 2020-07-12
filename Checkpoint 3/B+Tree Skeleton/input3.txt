@@ -1,0 +1,5 @@
+3
+delete 19
+delete 20
+delete 21
+delete 22
