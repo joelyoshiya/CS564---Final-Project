@@ -34,7 +34,7 @@ public class BTreeMain {
         for (Student s : studentsDB) {
             bTree.insert(s);
         }
-        
+        bTree.print();
         /** Start reading the operations now from input file*/
         try {
             while (scan.hasNextLine()) {
@@ -63,12 +63,12 @@ public class BTreeMain {
                         }
                         case "delete": {
                             long studentId = Long.parseLong(s2.next());
-                            //boolean result = bTree.delete(studentId);
-//                            if (result)
-//                                System.out.println("Student deleted successfully.");
-//                            else
-//                                System.out.println("Student deletion failed.");
-
+                            boolean result = bTree.delete(studentId);
+                              if (result)
+                                  System.out.println("Student deleted successfully.");
+                              else
+                                  System.out.println("Student deletion failed.");
+                            bTree.print();
                             break;
                         }
                         case "search": {
