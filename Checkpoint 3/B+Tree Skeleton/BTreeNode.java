@@ -30,6 +30,9 @@ class BTreeNode {
      * point to other next node when it is a leaf node. Otherwise null
      */
     BTreeNode next;
+    // this three vars are going to be null for the majority of there lives
+    // they will be filled with the right side of the keys/children/values
+    // for one step and then returned to null
     long[] subkeys;
     long[] subvalues;
     BTreeNode[] subchildren;
@@ -38,12 +41,18 @@ class BTreeNode {
         this.t = t;
         this.leaf = leaf;
         this.keys = new long[2 * t];
-        this.children = new BTreeNode[2 * t + 1];
+        this.children = new BTreeNode[2 * t+1];
         this.n = 0;
         this.next = null;
         this.values = new long[2 * t];
         
     }
+    //this is when the node is a leaf and a student needs to be placed in
+    // if the leaf is full then it calls anouther method but if itsn not then it shifts the keys
+    // and values to a proper location and inserts the new keys and values
+    // @ parm - Student student- this is the student that needs to be placed into the tree 
+    // return -2 if the leaf is full
+    // return 1 if the student was palced in the leaf
     int placeinleaf(Student student) {
     	n++;
     	if(n>2*t) {
@@ -63,12 +72,14 @@ class BTreeNode {
     			keys = shifter(student.studentId,position,keys);
         		values = shifter(student.recordId,position,values);
     		return 1;
-    		
     	}
-    	
-    	
+    
     }
-
+    // very bassic shifter method used to movie the value after and index one over so a new value can be placed in
+    // @ parm long value- this is the value trying to be placed in 
+    // @ parm int index - this is the postion it needs to be placed in
+    // @ parm long[] array- this is the rest of the values that need to be orderd allready in order
+    // return long[]- this is the array with all values in the proper position
     private long[] shifter(long value, int index, long[] array) {
     	long[] temp = array.clone();
     	for(int i=index; i<n-1;i++) {
@@ -77,8 +88,11 @@ class BTreeNode {
     	temp[index] = value;
     	return temp;
     }
-
-
+    // this method is called when the node is a leaf and it is full
+    // it goes by creating a larger array to place the student in its proper location and then it is split
+    // with the right(larger) side takeing one more than the left side and then palces them in two 
+    // array for a breif moment where its parrent will grab them
+    // @ parm Student student- this is the object attempting to be palce inside the leaf node
     void leafsplitter(Student student){
     	// this are what is going to hold the right side after the split 
     	// and then when they are taken they will return to null
@@ -113,16 +127,21 @@ class BTreeNode {
 			subkeys [i] = tempsubkeys[(n)/2+i];
 			subvalues[i] = tempsubvalues[(n)/2+i];
     	}
-
-    	n=t;
+    	n=t;// the node is now smaller so remeber to change n
     }
-    
+    // this is the method for when the node not a leaf and needs to have a hild placed into it
+    // it attempts to place the child in the correct location but if it is full of children then it need to 
+    // split
+    // @ parm BTreeNode child- this is the child that is trying to be placed into the children array
+    // return -1 when it is full
+    // return 1 when the child was placed in
     int placeinchild(BTreeNode child){
     	n++;
     	if(n>2*t) {
     		splitnode(child);
     		return -1;
     	}else {
+    		// searchers for proper location
     		int position =0;
     		long[] tempkeys = new long[2*t];
     		BTreeNode[] tempchildren = new BTreeNode[2 * t+1];
@@ -133,26 +152,27 @@ class BTreeNode {
     			}
     		}
 //I can use the shifter to make the key change place but i need do one for the children
+    		// also the children i guess do not technilly need to be in order bbecuase all the leaves have pointers to each 
+    		// other. However, i knew how to do it and it will help joel with delete
     		keys = shifter(child.keys[0],position,keys);
-    		for(int i=0; i<n;i++) {
-    			if(i<position+1) {
+    		for(int i=0; i<=n;i++) {
+    			if(i<=position+1) {
     				tempchildren[i] = children[i];
     			}else {
     				tempchildren[i+1] = children[i];
     			}
     		}
-    		// this seemes strange,so look at it some more
     		tempchildren[position+1]=child;
     		
     		children = tempchildren;
-    		
-    		
     		return 1;
     	}
     	
     }
-    // this is going to run the same process as splitting the leafs
-    
+    // this is going to run the same process as splitting the leafs except it when a nodes needs to be split 
+    // it creates a larger array of keys and children to place the cild in its proper location
+    // then it splits into two with the right being one larger than the left for a short time before its parrent can retreve it
+    // @ parm BTreeNode child- this is the child that is trying to be place in the tree
     private void splitnode(BTreeNode child) {
     	
     	subchildren = new BTreeNode[2 * t+1];
@@ -191,11 +211,9 @@ class BTreeNode {
     	tempsubkeys[position+1] = child.keys[0];
     	
     	
-   	
-    	BTreeNode tempnode  = tempsubchildren[position].next;
-    	tempsubchildren[position].next= child;
-    	tempsubchildren[position+1]=child;
-    	child.next = tempnode;
+    	for(int i=0; i<tempsubchildren.length-1;i++) {
+    		tempsubchildren[i].next= tempsubchildren[i+1];
+    	}
 		// clear the keys and the children
     	keys = new long[2 * t];
     	children = new BTreeNode[2 * t+1];
@@ -213,12 +231,14 @@ class BTreeNode {
     	}
     	subchildren[0] = new BTreeNode(t, true);
     	// fixing the next pointers
-    	children[t-1].next = subchildren[0];
+    	children[t].next = subchildren[0];
     	subchildren[0].next = subchildren[1];
     	n=t;
-
+    	
+    	
+    	
+    	
     }
-
     void deleteEntry(long studentID){
     	long[] newKeys = keys.clone();
     	long[] newVars = values.clone();
@@ -232,6 +252,4 @@ class BTreeNode {
 
 
 	}
-
-
 }
