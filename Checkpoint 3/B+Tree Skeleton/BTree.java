@@ -40,37 +40,51 @@ class BTree {
 
         BTreeNode current = root;
         boolean searching = true;
-        while(searching) {
+        //System.out.println("\n BEGIN SEARCHING FOR "+studentId);
+        
+            
             for(int i = 0;i<current.n;i++) {
                 //Find the first key that is bigger than studentId
                 if(current.keys[i]>studentId) {
+                    //System.out.println("FOUND BIGGER KEY"+current.keys[i]);
                     //Check if we are at a leaf node
                     if(i>0) {
                         //If we are at leaf, check for key that matches studentId and return record
                         if(current.keys[i-1]==studentId && current.leaf) {
-                            return current.values[i];
+                            //System.out.println("Normal case");
+                            //System.out.println("SEARCH: "+current.keys[i-1]+" "+current.values[i-1]);
+                            return current.values[i-1];
                         }
                         //No match, return -1
                         else if(current.keys[i-1]<studentId && current.leaf) {
+                            //System.out.println("SMALLER KEY"+current.keys[i-1]);
                             return -1;
                         }
                     }
                     //If we are at leaf and studentId is less than first key, no match
                     if(current.leaf) {
+                        //System.out.println("FIRST INDEX");
+                        //System.out.print(current.keys[0]+" ");
+                        //System.out.print(current.keys[1]+" ");
+                        //System.out.println(current.keys[2]+" ");
                         return -1;
                     }
-
+                    System.out.println("Normal case internal");
                     //If we are not at a leaf, go to the appropriate child node
                     current = current.children[i];
+                    i = 0;
 
                     
                 }
                 //If studentId is larger than all keys, go to the last pointer
-                if(i==current.n-1) {
+                else if(i==current.n-1) {
+                    //System.out.println("LARGER than all keys");
                     if(current.keys[i]<=studentId) {
                         //If key is match with studentId and we are at a leaf, return the record
                         if(current.keys[i]==studentId && current.leaf) {
-                            return current.values[i+1];
+                           // System.out.println("Case last key");
+                            //System.out.println("SEARCH: "+current.keys[i]+" "+current.values[i]);
+                            return current.values[i];
                         }
                         //If key does not match and we are at a leaf, return no result 
                         else if(current.keys[i]<studentId && current.leaf) {
@@ -78,12 +92,14 @@ class BTree {
                         }
                         //If we are not at a leaf, go to the correct child node
                         else {
+                           // System.out.println("Last case internal");
                             current = current.children[i+1];
+                            i=0;
                         }
                     }
                 }
             }
-        }
+        
         
         return -1;
     }
