@@ -39,7 +39,6 @@ class BTree {
         }   
 
         BTreeNode current = root;
-        boolean searching = true;
         //System.out.println("\n BEGIN SEARCHING FOR "+studentId);
         
             
