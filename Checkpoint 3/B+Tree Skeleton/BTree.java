@@ -93,6 +93,10 @@ class BTree {
      * @param student
      * @return
      */
+//the start of the insert algrithm 
+// has two cases either it is creating the root or in need to search further in the tree
+// @ param Student student- this is the student object that is attempting to be inserted into the tree
+// return - void
     BTree insert(Student student) {
     	if(root==null) {
     		BTreeNode temproot = new BTreeNode(t,true);
@@ -103,7 +107,7 @@ class BTree {
     		
     		
     	}else {
-    		int recursivesearchresponse = recursiveSearch(root, student);
+    		int recursivesearchresponse = recursivesearch(root, student);
     		if(recursivesearchresponse ==-2) {
     			BTreeNode paparoot = new BTreeNode(t,false);
     			split(paparoot, root);
@@ -113,26 +117,19 @@ class BTree {
     			BTreeNode paparoot = new BTreeNode(t,false);
     			split(paparoot, root);
     			root = paparoot;
-    		}
-    		
-
-    		
+    		}	
     	}
-    	
-    	
-    	
-    	
-        
         return this;
     }
+    // this method searches through out the tree recursivly calling down 
+    // until it reaches the leaf where the student needs to be placed in
+    // then attempts to place it in the leaf
+    //@ parm BTreeNode input- this is the current node that the method is traversing
+    // @ parm- Student student- this is the student object attempting to be placed in the tree
     // returns 1 on sucsses 
     // returns -1 on needing a node split
     // return -2 on needing a leaf split
-    int recursiveSearch(BTreeNode input, Student student) {
-    	for(int i=0; i<input.keys.length;i++) {
-    		System.out.print(input.keys[i]+ ", ");
-    	}
-    	System.out.println();
+    int recursivesearch(BTreeNode input, Student student) {
     	if(input.leaf) {
     		// this is the base case and it is a leaf
     		int leafplacementreturn = input.placeinleaf(student);
@@ -147,19 +144,17 @@ class BTree {
     				// i am going to have a method that returns here so the for loop
     				// will break
     				notfound = false;
-    				int recursivesearchvalue = recursiveSearch(input.children[i],  student);
+    				int recursivesearchvalue =recursivesearch(input.children[i],  student);
     				if (recursivesearchvalue<0) {
     					return split(input, input.children[i]);
     				}
     				i=input.n;
-    				
-    				
     			}
     		}
-    		// run this method inside the for loop on n, becuase 
-    		// it means it will be placed in that method
+    		// run this method outside the for loop on n, becuase 
+    		// it means it will be placed in that method aka its is larger than every key
     		if(notfound) {
-    			int recursivesearchvalue = recursiveSearch(input.children[input.n],  student);
+    			int recursivesearchvalue =recursivesearch(input.children[input.n],  student);
 				if (recursivesearchvalue<0) {
 					return split(input, input.children[input.n]);
 				}
@@ -168,7 +163,17 @@ class BTree {
     	
     	return 1;
     }
-    int split(BTreeNode parent, BTreeNode child) {
+    // this is the method that actully does te splitting the nodes
+    // it has four cases:
+    // the root is a leaf and it is splitting
+    // the root is a node and it is spliting
+    // a nonroot leaf is splitting
+    // a nonroot node is spltting
+    // @ parm BTreeNode parrent- this is the node that will be gaining more children
+    // 2 parm BTreeNode child this is the child that has been split but now needs to return the children
+    // return 1 is no other things need to be split
+    // return -1 if the level above also needs to be split
+    int split(BTreeNode parrent, BTreeNode child) {
     	// we need a speacial case if the child is a root and he is a leaf
     	if(root.leaf) {
     		BTreeNode newrightchild = new BTreeNode(t,true);
@@ -176,23 +181,26 @@ class BTree {
     		newrightchild.values = root.subvalues;
     		newrightchild.n = t+1;// the right child always get the exstra one
     		root.next = newrightchild;
-    		parent.keys[0] = newrightchild.keys[0];
-    		parent.children[0]= root;
-    		parent.children[1] = newrightchild;
-    		parent.n=1;
+    		parrent.keys[0] = newrightchild.keys[0];
+    		parrent.children[0]= root;
+    		parrent.children[1] = newrightchild;
+    		parrent.n=1;
     		// set theses to null so it takes up less space
     		child.subkeys =null;
     		child.subvalues =null;
     		// this is the special case that the root node is split
     	}else if(child==root) {
-    		parent.keys[0] = root.subkeys[0];
+    		parrent.keys[0] = root.subkeys[0];
     		BTreeNode newrightchild = new BTreeNode(t,true);
     		newrightchild.keys= child.subkeys;
     		newrightchild.children = root.subchildren;
     		newrightchild.n = t+1;
     		
-    		parent.children[0] = root;
-    		parent.children[1] = newrightchild;
+    		parrent.children[0] = root;
+    		parrent.children[1] = newrightchild;
+    		child.subkeys =null;
+    		child.subvalues =null;
+    		child.subchildren =null;
     	}
     	// the next case is if it is just a ragular leaf that needs splitting
     	else if (child.leaf) {
@@ -204,8 +212,10 @@ class BTree {
     		BTreeNode temp = child.next;
     		child.next = newrightchild;
     		newrightchild.next = temp;
-    		
-    		return parent.placeinchild(newrightchild);
+    		child.subkeys =null;
+    		child.subvalues =null;
+    		child.subchildren =null;
+    		return parrent.placeinchild(newrightchild);
     		// now i need to make is so it places the child into the correct place
     		// now we have to have the case were it splits a node
     	}else {
@@ -213,22 +223,16 @@ class BTree {
     		newrightchild.keys= child.subkeys;
     		newrightchild.children = child.subchildren;
     		newrightchild.n = t+1;
-
-    		
-    		int test = parent.placeinchild(newrightchild);
-    		return test;
+    		child.subkeys =null;
+    		child.subvalues =null;
+    		child.subchildren =null;
+    		return parrent.placeinchild(newrightchild);
     		
     	}
     	
-    	
     	return 1;
     }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     *
-     * @param studentId
-     * @return
-     */
+
     boolean delete(long studentId) {
         //   Deletes entry in the BTree structure given search-key, studentID
         //   Following psuedo-code in textbook, pg.353
