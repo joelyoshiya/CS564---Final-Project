@@ -288,21 +288,19 @@ class BTree {
         if(!nodePtr.leaf){
             // Find the correct subtree (index to use), by comparing key values to studentId
             //BTreeNode subTreeNode = findSubTree(nodePtr, studentId);
-//            int index=0;
-//            for(int i = 0;i<nodePtr.n;i++) {
-//                //Find the first key that is bigger than studentId
-//                if(nodePtr.keys[i]>studentId) {
-//                    index = i;
-//                }
-//                //If studentId is larger than all keys, go to the last pointer
-//                else if(i==nodePtr.n-1) {
-//                    index=i+1;
-//                }
-//            }
-//            System.out.println("Nodeptr not leaf, go to index:"+index);
+            int childIndex=0;
+            for(int i = 0;i<nodePtr.n;i++) {
+                //Find the first key that is bigger than studentId
+                if(nodePtr.keys[i]>studentId) {
+                    childIndex = i;
+                }
+                //If studentId is larger than all keys, go to the last pointer
+                else if(i==nodePtr.n-1) {
+                    childIndex=i+1;
+                }
+            }
+            System.out.println("Nodeptr not leaf, go to index: "+childIndex);
             //Now, child index is found, so we can recursively call delete again:
-            // I fixed the findSubTreeIndex so it should work now
-            int childIndex = findSubTreeIndex(nodePtr,studentId);
             return delete(nodePtr, nodePtr.children[childIndex], studentId, oldChildNode);
             
             /** 
@@ -375,23 +373,6 @@ class BTree {
         return false;
     }
 
-    /**
-     * Given a key, studentId, use the given node to find the correct sub-tree node that
-     * expands the path towards the key
-     * @param nodePtr
-     * @param studentId
-     * @return
-     */
-    int findSubTreeIndex(BTreeNode nodePtr, long studentId) {
-        int childIndex = -1;// index we will use to get to correct subtree by accessing pointer in BTreeNodeChildren[]
-        // Find the correct subtree (index to use), by comparing key values to studentId
-        for (int i = 0; i < nodePtr.n; i++) {
-                    if (nodePtr.keys[i] > studentId || nodePtr.keys[i] == 0) {
-                        childIndex = i;
-                    }
-        }
-        return childIndex;
-    }
 
     void removeChildNodeFromParent(BTreeNode oldChildNode, BTreeNode parent){
         for(int i = 0; i < parent.children.length; i++){

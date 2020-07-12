@@ -283,7 +283,7 @@ class BTreeNode {
 		// Find position where values will be inserted in leaf array
 		int position=0;
 		for(int i=0; i<n;i++) {
-			if(newKey < keys[i]|| keys[i]==0) {
+			if(newKey < keys[i]) {
 				position =i;
 				i=n;
 			}
