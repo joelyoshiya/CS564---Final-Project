@@ -325,7 +325,7 @@ class BTree {
             // Check if there the current node will still be half full after deletion
             if (nodePtr.n > nodePtr.t) {
                 //deleting the entry will not infringe on minimum degree
-                nodePtr = deleteEntry(nodePtr, studentId);
+                nodePtr.deleteEntry(studentId);
                 oldChildNode = null;
                 return true;// we're done!
             } else {//Removing entry will result in violation of minimum degree!
@@ -334,7 +334,7 @@ class BTree {
                     long lowKey = sibling.keys[0];
                     //if there is enough entries to ensure t entries are left (after deletion/redis.)
                     // 1st, actually delete the value
-                    nodePtr = deleteEntry(nodePtr, studentId);//removed the entry, t - 1 entries
+                    nodePtr.deleteEntry(studentId);//removed the entry, t - 1 entries now
                     // TODO REDISTRIBUTE evenly between sibling and leaf node (nodePtr)
                     redistributeLeafNodes(nodePtr,sibling,parentPtr);
                     // find entry in parent for node on right (NOT the sibling, but right of sibling)
@@ -343,6 +343,7 @@ class BTree {
                     oldChildNode = null;
                     return true;
                 } else {
+                    // 1st, actually removed entry
                     // TODO MERGE Sibling and selected leaf node together, (call node on rhs M)
                     // Assign OldChildEntry
                     oldChildNode = findParentPtrToSibling(sibling, parentPtr);
@@ -384,43 +385,6 @@ class BTree {
         }
         return nodePtr.children[childIndex];
     }
-    /**
-     * Helper method to actually do the work of removing the entry from the leaf node
-     * @param leafNode
-     * @param studentID
-     */
-    BTreeNode deleteEntry(BTreeNode leafNode, long studentID){
-        //TODO Remove and SHIFT BUT DON"T CHANGE SIZE
-        int removeIndex = -1; //index to remove values from both BTreeNode's key[] and value[] arrays
-        long[] newKeys = new long[leafNode.n];
-        long[] newValues = new long[leafNode.n];
-
-        //Find a match between studentID to be removed, and nodes keys
-        for(int i = 0; i < leafNode.n; i++){
-            if(leafNode.keys[i] == studentID){
-                removeIndex = i;
-            }
-        }
-        int j = 0;// the index for the new arrays
-        // Copies into arrays all except those to be removed, in same order
-        for (int i = 0; i < leafNode.n; i++){
-            if (i == removeIndex) {
-                continue;// i still increments, but nothing is done (skips the removed index)
-            }
-            newKeys[j] = leafNode.keys[i];
-            newValues[j] = leafNode.values[i];
-            j++;
-        }
-        // Update arrays in the original node
-        leafNode.keys = newKeys;
-        leafNode.keys = newValues;
-
-        //Update N
-        leafNode.n--;
-
-        return leafNode;
-
-    }
 
     void removeChildNodeFromParent(BTreeNode oldChildNode, BTreeNode parent){
         for(int i = 0; i < parent.children.length; i++){
@@ -461,7 +425,7 @@ class BTree {
             tempVals[i] = sibling.values[i];
 
             //Now delete entry from Sibling
-            sibling = deleteEntry(sibling,sibling.keys[i]);
+            sibling.deleteEntry(sibling.keys[i]);
         }
 
         return;

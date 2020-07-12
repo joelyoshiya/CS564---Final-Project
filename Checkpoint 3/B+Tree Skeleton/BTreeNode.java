@@ -75,7 +75,7 @@ class BTreeNode {
     	}
     
     }
-    // very bassic shifter method used to movie the value after and index one over so a new value can be placed in
+    // very basic shifter method used to move the value after and index one over so a new value can be placed in
     // @ parm long value- this is the value trying to be placed in 
     // @ parm int index - this is the postion it needs to be placed in
     // @ parm long[] array- this is the rest of the values that need to be orderd allready in order
@@ -88,6 +88,15 @@ class BTreeNode {
     	temp[index] = value;
     	return temp;
     }
+
+	private long[] downShifter(long value, int index, long[] array) {
+		long[] temp = array.clone();
+		for(int i=index; i<n-1;i++) {
+			temp[i]  = array[i + 1];
+		}
+		temp[n - 1] = 0;//Set the left-over index value from deleting one entry to the default long value
+		return temp;
+	}
     // this method is called when the node is a leaf and it is full
     // it goes by creating a larger array to place the student in its proper location and then it is split
     // with the right(larger) side takeing one more than the left side and then palces them in two 
@@ -239,16 +248,26 @@ class BTreeNode {
     	
     	
     }
-    void deleteEntry(long studentID){
+
+	/**
+	 * Deletes the matching studentID/Key from both the keys and values
+	 * @param key
+	 */
+	void deleteEntry(long key){
     	long[] newKeys = keys.clone();
     	long[] newVars = values.clone();
     	int removeIndex = -1;
 
     	for(int i = 0; i < this.n; i++){
-    		if(keys[i] == studentID){
+    		if(keys[i] == key){
 				removeIndex = i;
 			}
 		}
+
+    	//effectively removes value at found index by shifting down in place at the removeIndex
+    	keys = downShifter(key, removeIndex,this.keys);
+    	values = downShifter(key, removeIndex, this.values);
+    	n--;
 
 
 	}
