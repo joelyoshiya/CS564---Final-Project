@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -54,6 +56,7 @@ public class BTreeMain {
                             long recordID = Long.parseLong(s2.next());
 
                             Student s = new Student(studentId, age, studentName, major, level, recordID);
+                            studentsDB.add(s);
                             bTree.insert(s);
 
                             break;
@@ -91,8 +94,10 @@ public class BTreeMain {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        csvwriter(studentsDB);
     }
-
+// this is a method to read in a csv file and create student objects
+// return - List<students> - this is all the student objects created from the csv file
     private static List<Student> getStudents() {
 
     	Scanner scan = null;
@@ -116,5 +121,34 @@ public class BTreeMain {
     	studentList.add(new Student(studentId,age,studentName,major,level,recordID));
     	}
         return studentList;
+    }
+    
+    // this is just a basic printing to a csv
+    // this is what i think she ment by creating a student table after things where added
+    // how ever I am not 100% on that so it might change
+    // @ parm List<Student> studentsDB- this is just the list that holds all the students
+    // return - void
+    private static void  csvwriter(List<Student> studentsDB) {	
+    	PrintWriter pw = null;
+        try {
+            pw = new PrintWriter(new File("src/Studentreplacment.csv"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        StringBuilder builder = new StringBuilder();
+        
+        for(int i=0; i<studentsDB.size(); i++) {
+        	Student tempstudent = studentsDB.get(i);
+        String input = tempstudent.studentId+","+tempstudent.studentName+","+tempstudent.major+","+tempstudent.level+","+tempstudent.age+","+tempstudent.recordId;
+        builder.append(input +"\n");
+        
+        }
+        pw.write(builder.toString());
+        String columnNamesList = "Id,Name";
+        // No need give the headers Like: id, Name on builder.append
+        pw.close();
+       
+      
+    	
     }
 }
