@@ -73,7 +73,6 @@ class BTreeNode {
         		values = shifter(student.recordId,position,values);
     		return 1;
     	}
-    
     }
     // very basic shifter method used to move the value after and index one over so a new value can be placed in
     // @ parm long value- this is the value trying to be placed in 
@@ -89,6 +88,14 @@ class BTreeNode {
     	return temp;
     }
 
+	/**
+	 * Does similar action of shifter, but in this case removes an entry and shifts values downwards
+	 * Leaves a default 0 (long value) in place at the end of the array, given that a value has been deleted
+	 * @param value
+	 * @param index
+	 * @param array
+	 * @return
+	 */
 	private long[] downShifter(long value, int index, long[] array) {
 		long[] temp = array.clone();
 		for(int i=index; i<n-1;i++) {
@@ -254,8 +261,6 @@ class BTreeNode {
 	 * @param key
 	 */
 	void deleteEntry(long key){
-    	long[] newKeys = keys.clone();
-    	long[] newVars = values.clone();
     	int removeIndex = -1;
 
     	for(int i = 0; i < this.n; i++){
@@ -269,6 +274,25 @@ class BTreeNode {
     	values = downShifter(key, removeIndex, this.values);
     	n--;
 
+	}
+
+	void insertRedistribution(long newKey, long newValue) {
+		//inserting a key-value pair exactly once, so increment n
+		n++;
+
+		// Find position where values will be inserted in leaf array
+		int position=0;
+		for(int i=0; i<n;i++) {
+			if(newKey < keys[i]|| keys[i]==0) {
+				position =i;
+				i=n;
+			}
+		}
+		//Shift array at appropriate index (position) to accommodate new values as part of redistribution
+		keys = shifter(newKey,position,keys);
+		values = shifter(newValue,position,values);
+		//Done!
+		return;
 
 	}
 }

@@ -108,7 +108,7 @@ class BTree {
      * @param student
      * @return
      */
-//the start of the insert algrithm 
+//the start of the insert algorithm
 // has two cases either it is creating the root or in need to search further in the tree
 // @ param Student student- this is the student object that is attempting to be inserted into the tree
 // return - void
@@ -184,11 +184,11 @@ class BTree {
     // the root is a node and it is spliting
     // a nonroot leaf is splitting
     // a nonroot node is spltting
-    // @ parm BTreeNode parrent- this is the node that will be gaining more children
+    // @ parm BTreeNode parent- this is the node that will be gaining more children
     // 2 parm BTreeNode child this is the child that has been split but now needs to return the children
     // return 1 is no other things need to be split
     // return -1 if the level above also needs to be split
-    int split(BTreeNode parrent, BTreeNode child) {
+    int split(BTreeNode parent, BTreeNode child) {
     	// we need a speacial case if the child is a root and he is a leaf
     	if(root.leaf) {
     		BTreeNode newrightchild = new BTreeNode(t,true);
@@ -196,23 +196,23 @@ class BTree {
     		newrightchild.values = root.subvalues;
     		newrightchild.n = t+1;// the right child always get the exstra one
     		root.next = newrightchild;
-    		parrent.keys[0] = newrightchild.keys[0];
-    		parrent.children[0]= root;
-    		parrent.children[1] = newrightchild;
-    		parrent.n=1;
+    		parent.keys[0] = newrightchild.keys[0];
+    		parent.children[0]= root;
+    		parent.children[1] = newrightchild;
+    		parent.n=1;
     		// set theses to null so it takes up less space
     		child.subkeys =null;
     		child.subvalues =null;
     		// this is the special case that the root node is split
     	}else if(child==root) {
-    		parrent.keys[0] = root.subkeys[0];
+    		parent.keys[0] = root.subkeys[0];
     		BTreeNode newrightchild = new BTreeNode(t,true);
     		newrightchild.keys= child.subkeys;
     		newrightchild.children = root.subchildren;
     		newrightchild.n = t+1;
     		
-    		parrent.children[0] = root;
-    		parrent.children[1] = newrightchild;
+    		parent.children[0] = root;
+    		parent.children[1] = newrightchild;
     		child.subkeys =null;
     		child.subvalues =null;
     		child.subchildren =null;
@@ -230,7 +230,7 @@ class BTree {
     		child.subkeys =null;
     		child.subvalues =null;
     		child.subchildren =null;
-    		return parrent.placeinchild(newrightchild);
+    		return parent.placeinchild(newrightchild);
     		// now i need to make is so it places the child into the correct place
     		// now we have to have the case were it splits a node
     	}else {
@@ -241,7 +241,7 @@ class BTree {
     		child.subkeys =null;
     		child.subvalues =null;
     		child.subchildren =null;
-    		return parrent.placeinchild(newrightchild);
+    		return parent.placeinchild(newrightchild);
     		
     	}
     	
@@ -288,20 +288,22 @@ class BTree {
         if(!nodePtr.leaf){
             // Find the correct subtree (index to use), by comparing key values to studentId
             //BTreeNode subTreeNode = findSubTree(nodePtr, studentId);
-            int index=0;
-            for(int i = 0;i<nodePtr.n;i++) {
-                //Find the first key that is bigger than studentId
-                if(nodePtr.keys[i]>studentId) {    
-                    index = i;                
-                }
-                //If studentId is larger than all keys, go to the last pointer
-                else if(i==nodePtr.n-1) {         
-                    index=i+1;   
-                }
-            }
-            System.out.println("Nodeptr not leaf, go to index:"+index);
+//            int index=0;
+//            for(int i = 0;i<nodePtr.n;i++) {
+//                //Find the first key that is bigger than studentId
+//                if(nodePtr.keys[i]>studentId) {
+//                    index = i;
+//                }
+//                //If studentId is larger than all keys, go to the last pointer
+//                else if(i==nodePtr.n-1) {
+//                    index=i+1;
+//                }
+//            }
+//            System.out.println("Nodeptr not leaf, go to index:"+index);
             //Now, child index is found, so we can recursively call delete again:
-            return delete(nodePtr, nodePtr.children[index], studentId, oldChildNode);
+            // I fixed the findSubTreeIndex so it should work now
+            int childIndex = findSubTreeIndex(nodePtr,studentId);
+            return delete(nodePtr, nodePtr.children[childIndex], studentId, oldChildNode);
             
             /** 
             //Check if oldChildNode is null
@@ -355,7 +357,7 @@ class BTree {
                     // TODO REDISTRIBUTE evenly between sibling and leaf node (nodePtr)
                     redistributeLeafNodes(nodePtr,sibling,parentPtr);
                     // find entry in parent for node on right (NOT the sibling, but right of sibling)
-                    BTreeNode siblingEntry = findSiblingPtrFromParent(parentPtr,nodePtr);
+                    BTreeNode siblingEntry = findSiblingPtrFromParent(parentPtr,nodePtr);// TODO figure our if you need this
                     // replace key value in parent entry by new low-key value in M
                     oldChildNode = null;
                     return true;
@@ -380,27 +382,15 @@ class BTree {
      * @param studentId
      * @return
      */
-    BTreeNode findSubTree(BTreeNode nodePtr, long studentId) {
+    int findSubTreeIndex(BTreeNode nodePtr, long studentId) {
         int childIndex = -1;// index we will use to get to correct subtree by accessing pointer in BTreeNodeChildren[]
         // Find the correct subtree (index to use), by comparing key values to studentId
         for (int i = 0; i < nodePtr.n; i++) {
-            //Check if studentId is less than all keys in current node
-            if (studentId < nodePtr.keys[0]) {
-                childIndex = 0;
-            } else {//entry key is greater than or equal to current node's key indices
-                if (i < nodePtr.n - 1) {//As long as i is not at the last key in the keys field
-                    if ((nodePtr.keys[i] <= studentId) && (nodePtr.keys[i + 1] > studentId)) {
-                        childIndex = i + 1; //this is because the correct
-                        //childIndex will always be the index of the correct key index plus one
-                        //(except the case where the studenId is greater than or less than all index key values)
+                    if (nodePtr.keys[i] > studentId || nodePtr.keys[i] == 0) {
+                        childIndex = i;
                     }
-                }
-                //   at this point, we can say that the studentId is greater than all keys
-                //   So, we will go the largest index for child
-                childIndex = nodePtr.children.length - 1;
-            }
         }
-        return nodePtr.children[childIndex];
+        return childIndex;
     }
 
     void removeChildNodeFromParent(BTreeNode oldChildNode, BTreeNode parent){
@@ -429,10 +419,9 @@ class BTree {
      * @return
      */
     void redistributeLeafNodes(BTreeNode leaf, BTreeNode sibling, BTreeNode parent){
-        //TODO expand
-        //TODO UPDATE N FOR BOTH nodes
         //redistribute evenly between the node and its sibling
         int diffN = (sibling.n - leaf.n)/2;// Num keys moving to to left side (leaf) from sibling
+        //will get the leaf node to t nodes at very minimum, or higher based on # in sibling
 
         long[] tempKeys = new long[diffN];
         long[] tempVals = new long[diffN];
@@ -440,6 +429,9 @@ class BTree {
             //Copy values to transfer
             tempKeys[i] = sibling.keys[i];
             tempVals[i] = sibling.values[i];
+
+            //Insert value
+            leaf.placeinleaf();
 
             //Now delete entry from Sibling
             sibling.deleteEntry(sibling.keys[i]);
