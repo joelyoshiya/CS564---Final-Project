@@ -77,11 +77,11 @@ class BTreeNode {
     // very basic shifter method used to move the value after and index one over so a new value can be placed in
     // @ parm long value- this is the value trying to be placed in 
     // @ parm int index - this is the postion it needs to be placed in
-    // @ parm long[] array- this is the rest of the values that need to be orderd allready in order
+    // @ parm long[] array- this is the rest of the values that need to be ordered already in order
     // return long[]- this is the array with all values in the proper position
     private long[] shifter(long value, int index, long[] array) {
     	long[] temp = array.clone();
-    	for(int i=index; i<n-1;i++) {
+    	for(int i=index; i < n-1;i++) {
     		temp[i+1] = array[i];
     	}
     	temp[index] = value;
@@ -91,17 +91,18 @@ class BTreeNode {
 	/**
 	 * Does similar action of shifter, but in this case removes an entry and shifts values downwards
 	 * Leaves a default 0 (long value) in place at the end of the array, given that a value has been deleted
-	 * @param value
-	 * @param index
+		 * @param index
 	 * @param array
 	 * @return
 	 */
-	private long[] downShifter(long value, int index, long[] array) {
+	private long[] downShifter(int index, long[] array) {
 		long[] temp = array.clone();
+
 		for(int i=index; i<n-1;i++) {
 			temp[i]  = array[i + 1];
 		}
 		temp[n - 1] = 0;//Set the left-over index value from deleting one entry to the default long value
+
 		return temp;
 	}
     // this method is called when the node is a leaf and it is full
@@ -167,7 +168,7 @@ class BTreeNode {
     					
     			}
     		}
-//I can use the shifter to make the key change place but i need do one for the children
+			//I can use the shifter to make the key change place but i need do one for the children
     		// also the children i guess do not technilly need to be in order bbecuase all the leaves have pointers to each 
     		// other. However, i knew how to do it and it will help joel with delete
     		keys = shifter(child.keys[0],position,keys);
@@ -270,8 +271,8 @@ class BTreeNode {
 		}
 
     	//effectively removes value at found index by shifting down in place at the removeIndex
-    	keys = downShifter(key, removeIndex,this.keys);
-    	values = downShifter(key, removeIndex, this.values);
+    	keys = downShifter(removeIndex,this.keys);
+    	values = downShifter(removeIndex, this.values);
     	n--;
 
 	}
@@ -280,18 +281,33 @@ class BTreeNode {
 
 		// Find position where values will be inserted in leaf array
 		int position=0;
-		for(int i=0; i< n ; i++) {
+		for(int i=0; i < n ; i++) {
 			if(newKey < keys[i]) {
-				position =i;
-				i=n;
+				position = i;
+				break;
+			}
+			if( i == n - 1){
+				if(newKey > keys[i]){
+					position = i + 1;
+					break;
+				}
 			}
 		}
+		System.out.println("In insertRedistribution:  \nposition is: " + position + "\nKey is " +newKey);
+
 		//Shift array at appropriate index (position) to accommodate new values as part of redistribution
-		keys = shifter(newKey,position,keys);
-		values = shifter(newValue,position,values);
+		keys = insertKey(newKey,position,keys);
+		values = insertKey(newValue,position,values);
 		//inserting a key-value pair exactly once, so increment n
 		n++;
 		return;
-
+	}
+	long[] insertKey(long newKey, int position, long[] array){
+		long[] temp = array.clone();
+		for(int i=position; i < n;i++) {
+			temp[i+1] = array[i];
+		}
+		temp[position] = newKey;
+		return temp;
 	}
 }
