@@ -109,7 +109,7 @@ class BTree {
      * @param student
      * @return
      */
-//the start of the insert algorithm
+//the start of the insert algorithm 
 // has two cases either it is creating the root or in need to search further in the tree
 // @ param Student student- this is the student object that is attempting to be inserted into the tree
 // return - void
@@ -185,7 +185,7 @@ class BTree {
     // the root is a node and it is spliting
     // a nonroot leaf is splitting
     // a nonroot node is spltting
-    // @ parm BTreeNode parent- this is the node that will be gaining more children
+    // @ parm BTreeNode parrent- this is the node that will be gaining more children
     // 2 parm BTreeNode child this is the child that has been split but now needs to return the children
     // return 1 is no other things need to be split
     // return -1 if the level above also needs to be split
@@ -207,9 +207,9 @@ class BTree {
     		// this is the special case that the root node is split
     	}else if(child==root) {
     		parent.keys[0] = root.subkeys[0];
-    		BTreeNode newrightchild = new BTreeNode(t,true);
+    		BTreeNode newrightchild = new BTreeNode(t,false);
     		newrightchild.keys= child.subkeys;
-    		newrightchild.children = root.subchildren;
+    		newrightchild.children =root.subchildren;
     		newrightchild.n = t+1;
     		
     		parent.children[0] = root;
@@ -217,6 +217,7 @@ class BTree {
     		child.subkeys =null;
     		child.subvalues =null;
     		child.subchildren =null;
+    		parent.n=parent.n+1;
     	}
     	// the next case is if it is just a ragular leaf that needs splitting
     	else if (child.leaf) {
@@ -316,7 +317,6 @@ class BTree {
             }else{//there exists an oldChildNode -> have to remove
                   //remove oldChildNode from nodePtr
                 removeChildNodeFromParent(oldChildNode, nodePtr);
-
                 if(nodePtr.n > nodePtr.t){//if we can remove without violating minimum degree prop
                     oldChildNode = null; //delete doesn't go further
                     return true;//done we, don't have to modify any more
