@@ -109,7 +109,7 @@ class BTree {
      * @param student
      * @return
      */
-//the start of the insert algorithm 
+//the start of the insert algrithm 
 // has two cases either it is creating the root or in need to search further in the tree
 // @ param Student student- this is the student object that is attempting to be inserted into the tree
 // return - void
@@ -206,18 +206,20 @@ class BTree {
     		child.subvalues =null;
     		// this is the special case that the root node is split
     	}else if(child==root) {
-    		parent.keys[0] = root.subkeys[0];
+    		parent.keys[0] = root.splitvalue;
     		BTreeNode newrightchild = new BTreeNode(t,false);
     		newrightchild.keys= child.subkeys;
     		newrightchild.children =root.subchildren;
-    		newrightchild.n = t+1;
-    		
+    		newrightchild.n = t;
     		parent.children[0] = root;
     		parent.children[1] = newrightchild;
+    		root.children[root.n].next = newrightchild.children[0];
     		child.subkeys =null;
     		child.subvalues =null;
     		child.subchildren =null;
     		parent.n=parent.n+1;
+
+
     	}
     	// the next case is if it is just a ragular leaf that needs splitting
     	else if (child.leaf) {
@@ -232,18 +234,20 @@ class BTree {
     		child.subkeys =null;
     		child.subvalues =null;
     		child.subchildren =null;
-    		return parent.placeinchild(newrightchild);
+    		return parent.placeinchild(newrightchild, child.splitvalue);
     		// now i need to make is so it places the child into the correct place
     		// now we have to have the case were it splits a node
     	}else {
     		BTreeNode newrightchild = new BTreeNode(t,false);
     		newrightchild.keys= child.subkeys;
     		newrightchild.children = child.subchildren;
-    		newrightchild.n = t+1;
+    		newrightchild.n = t;
+    		child.children[child.n].next = 
+    				newrightchild.children[0];
     		child.subkeys =null;
     		child.subvalues =null;
     		child.subchildren =null;
-    		return parent.placeinchild(newrightchild);
+    		return parent.placeinchild(newrightchild,child.splitvalue);
     		
     	}
     	
@@ -251,7 +255,7 @@ class BTree {
     }
 
     boolean delete(long studentId) {
-        System.out.println("Starting delete: " + studentId);
+	      System.out.println("Starting delete: " + studentId);
         //   Deletes entry in the BTree structure given search-key, studentID
         //   Following psuedo-code in textbook, pg.353
 
