@@ -36,6 +36,7 @@ class BTreeNode {
     long[] subkeys;
     long[] subvalues;
     BTreeNode[] subchildren;
+    long splitvalue;
     // Constructor
     BTreeNode(int t, boolean leaf) {
         this.t = t;
@@ -120,7 +121,7 @@ class BTreeNode {
     	long[] tempsubvalues = new long[2 * t+1];
     	int position=-1;
     	for(int i=0; i<keys.length;i++) {
-    		if(keys[i]<student.studentId) {
+		    if(keys[i]<student.studentId) {
     			position =i;
     			tempsubkeys[i]=keys[i];
     			tempsubvalues[i]=values[i];
@@ -149,7 +150,7 @@ class BTreeNode {
 			subvalues[i] = tempsubvalues[(n)/2+i];
 			
     	}
-    	
+    	splitvalue = subkeys[0];
     	n=t;// the node is now smaller so remeber to change n
     }
     // this is the method for when the node not a leaf and needs to have a hild placed into it
@@ -158,11 +159,11 @@ class BTreeNode {
     // @ parm BTreeNode child- this is the child that is trying to be placed into the children array
     // return -1 when it is full
     // return 1 when the child was placed in
-    int placeinchild(BTreeNode child){
+    int placeinchild(BTreeNode child, long key){
     	n++;
     	
     	if(n>2*t) {
-    		splitnode(child);
+    		splitnode(child, key);
     		return -1;
     	}else {
     		// searchers for proper location
@@ -170,7 +171,7 @@ class BTreeNode {
     		long[] tempkeys = new long[2*t];
     		BTreeNode[] tempchildren = new BTreeNode[2 * t+1];
     		for(int i=0; i<n;i++) {
-    			if(keys[i]<child.keys[0] && keys[i]!=0) {
+    			if(keys[i]<key && keys[i]!=0) {
     				position =i+1;
     					
     			}
@@ -178,7 +179,7 @@ class BTreeNode {
 //I can use the shifter to make the key change place but i need do one for the children
     		// also the children i guess do not technilly need to be in order bbecuase all the leaves have pointers to each 
     		// other. However, i knew how to do it and it will help joel with delete
-    		keys = shifter(child.keys[0],position,keys);
+    		keys = shifter(key,position,keys);
     		for(int i=0; i<n;i++) {
     			if(i<=position) {
     				tempchildren[i] = children[i];
@@ -191,6 +192,9 @@ class BTreeNode {
     		if(position == n) {
     			tempchildren[position] = children[position];
     		}
+    		for(int i=0; i<n;i++) {
+    			tempchildren[i].next= tempchildren[i+1];
+        	}
     		children = tempchildren;
     		
     		return 1;
@@ -201,7 +205,7 @@ class BTreeNode {
     // it creates a larger array of keys and children to place the cild in its proper location
     // then it splits into two with the right being one larger than the left for a short time before its parrent can retreve it
     // @ parm BTreeNode child- this is the child that is trying to be place in the tree
-    private void splitnode(BTreeNode child) {
+    private void splitnode(BTreeNode child, long key) {
     	subchildren = new BTreeNode[2 * t+1];
     	subkeys = new long[2 * t];
     	
@@ -212,7 +216,7 @@ class BTreeNode {
     	// now time to place it in the list
     	int position =-1;
     	for(int i=0; i<n-1;i++) {
-			if(keys[i]<child.keys[0]) {
+			if(keys[i]<key) {
 				position =i;
 					
 			}
@@ -229,6 +233,7 @@ class BTreeNode {
     	
     	// this is going to shift the children
     	for(int i=0; i<n; i++) {
+    		
     		if(i<=position+1) {
     			tempsubchildren[i] = children[i];
     		}else {
@@ -238,6 +243,7 @@ class BTreeNode {
     	}
     	// this is not nesscary but it is just to cover the baises 
     	for(int i=0; i<tempsubchildren.length-1;i++) {
+    		
     		tempsubchildren[i].next= tempsubchildren[i+1];
     	
     	}
@@ -250,21 +256,16 @@ class BTreeNode {
     	for(int i=0; i<=t; i++) {
     		if(i<t) {
     			keys[i] = tempsubkeys[i];
-    			
+    			subkeys[i] = tempsubkeys[t+i+1];
     		}
     		children[i] = tempsubchildren[i];
-    		subkeys[i] = tempsubkeys[t+i];
-    		subchildren[i+1] = tempsubchildren[i+t+1];
+    		
+    		subchildren[i] = tempsubchildren[i+t+1];
+    		
     	}
-    	subchildren[0] = new BTreeNode(t, true);
-    	// fixing the next pointers
-    	children[t].next = subchildren[0];
-    	subchildren[0].next = subchildren[1];
+    	splitvalue = tempsubkeys[t];
     	n=t;
-    	
-    	
-    	
-    	
+	
     }
     /**
 	 * Deletes the matching studentID/Key from both the keys and values
