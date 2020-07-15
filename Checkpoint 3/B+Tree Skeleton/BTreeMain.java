@@ -35,6 +35,7 @@ public class BTreeMain {
             bTree.insert(s);
 
         }
+        bTree.print();
         
         /** Start reading the operations now from input file*/
         try {
@@ -53,7 +54,7 @@ public class BTreeMain {
                             String major = s2.next();
                             String level = s2.next();
                             int age = Integer.parseInt(s2.next());
-                            /** TODO: Write a logic to generate recordID*/
+                           
                             long recordID = Long.parseLong(s2.next());
 
                             Student s = new Student(studentId, age, studentName, major, level, recordID);
@@ -69,7 +70,7 @@ public class BTreeMain {
                                   System.out.println("Student deleted successfully.");
                               else
                                   System.out.println("Student deletion failed.");
-                            bTree.print();
+                            //bTree.print();
                             break;
                         }
                         case "search": {

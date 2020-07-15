@@ -229,7 +229,7 @@ class BTreeNode {
     			tempsubkeys[i+1] = keys[i];
     		}
     	}
-    	tempsubkeys[position+1] = child.keys[0];
+    	tempsubkeys[position+1] = key;
     	
     	// this is going to shift the children
     	for(int i=0; i<n; i++) {
