@@ -1,7 +1,7 @@
 3
 delete 16
 delete 17
-delete 18
+delete 18:
 search 18
 search 15
 search 20

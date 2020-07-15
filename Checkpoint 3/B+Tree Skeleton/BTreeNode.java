@@ -287,7 +287,20 @@ class BTreeNode {
 
 	}
 
-	void insertRedistribution(long newKey, long newValue) {
+	/**
+	 * Deletes ONLY from the keys array, and the node must be a non-leaf node
+	 * @param index
+	 */
+	void deleteInnerKey(int index){
+		//check if non-leaf (inner)
+		if(!leaf){
+			keys = downShifter(index,this.keys);
+		}else{
+			System.out.println("Calling deleteInnerKey on a leaf node!");
+		}
+	}
+
+	void insertEntry(long newKey, long newValue) {
 
 		// Find position where values will be inserted in leaf array
 		int position=0;
@@ -303,7 +316,7 @@ class BTreeNode {
 				}
 			}
 		}
-		System.out.println("In insertRedistribution:  \nposition is: " + position + "\nKey is " +newKey);
+		System.out.println("In insertEntry:  \nposition is: " + position + "\nKey is " +newKey);
 
 		//Shift array at appropriate index (position) to accommodate new values as part of redistribution
 		keys = insertKey(newKey,position,keys);
@@ -312,6 +325,14 @@ class BTreeNode {
 		n++;
 		return;
 	}
+
+	/**
+	 * Actually insert the new value into the array
+	 * @param newKey
+	 * @param position
+	 * @param array
+	 * @return
+	 */
 	long[] insertKey(long newKey, int position, long[] array){
 		long[] temp = array.clone();
 		for(int i=position; i < n;i++) {
@@ -319,6 +340,20 @@ class BTreeNode {
 		}
 		temp[position] = newKey;
 		return temp;
+	}
+
+	/**
+	 *
+	 * @param deleteIndex
+	 */
+	void deleteChild(int deleteIndex){
+		if(0 <= deleteIndex && deleteIndex < children.length){
+			children[deleteIndex] = null;
+			for(int i = deleteIndex; i < children.length - 1; i++){
+				children[i] = children[i + 1];
+			}
+			children[children.length - 1] = null;//effectively keeps an empty
+		}
 	}
 }
 
