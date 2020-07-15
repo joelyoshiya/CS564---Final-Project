@@ -28,9 +28,9 @@ class BTree {
     }
 
     /**
-     *
+     *This method searches for a studentId key within the B+Tree
      * @param studentId
-     * @return
+     * @return the recordID that corresponds to studentID key if it exists, else -1
      */
     long search(long studentId) {
         
@@ -72,7 +72,7 @@ class BTree {
                     //System.out.println("Normal case internal");
                     //If we are not at a leaf, go to the appropriate child node
                     current = current.children[i];
-                    i = 0;
+                    i = -1;
 
                     
                 }
@@ -82,8 +82,8 @@ class BTree {
                     if(current.keys[i]<=studentId) {
                         //If key is match with studentId and we are at a leaf, return the record
                         if(current.keys[i]==studentId && current.leaf) {
-                            //System.out.println("Case last key");
-                            //System.out.println("SEARCH: "+current.keys[i]+" "+current.values[i]);
+                          //  System.out.println("Case last key");
+                          //  System.out.println("SEARCH: "+current.keys[i]+" "+current.values[i]);
                             return current.values[i];
                         }
                         //If key does not match and we are at a leaf, return no result 
@@ -94,7 +94,7 @@ class BTree {
                         else {
                             //System.out.println("Last case internal");
                             current = current.children[i+1];
-                            i=0;
+                            i=-1;
                         }
                     }
                 }
@@ -613,8 +613,6 @@ class BTree {
     }
 
     /**
-     * TODO:
-     * Implement this function to print the B+Tree.
      * Return a list of recordIDs from left to right of leaf nodes.
      *
      */
@@ -628,13 +626,53 @@ class BTree {
             return listOfRecordID;
         }
 
+        int height = 1;
+        for(int i = 0; i<this.root.n;i++) {
+            System.out.println("Key: "+this.root.keys[i]+" Value: "+this.root.values[i]);
+        }
+        /** 
         //find the leftmost leaf node
+             System.out.println("----------NEW LEVEL----------");
+        
+            for(int k = 0; k<=current.n;k++) {
+                BTreeNode current2= current.children[k];      
+                System.out.println("New node size: "+current2.n);
+                for(int j = 0; j<current2.n;j++) {
+                    System.out.println("Key: "+current2.keys[j]+" Value: "+current2.values[j]);
+                }
+            }
+
+        BTreeNode oldCurrent = current;
+
+        
+        if(!current.children[0].children[0].leaf) {
+            System.out.println("------------NEW LEVEL------------");
+            for(int z=0;z<=oldCurrent.n;z++) {
+                current = oldCurrent.children[z];
+                for(int k = 0; k<=current.n;k++) {
+                    BTreeNode current2= current.children[k];      
+                    System.out.println("New node size: "+current2.n);
+                    for(int j = 0; j<current2.n;j++) {
+                        System.out.println("Key: "+current2.keys[j]+" Value: "+current2.values[j]);
+                    }
+                }
+            }
+        }
+    
+        */
+            
+        
+        current = this.root;
+
         while(!current.leaf) {
             current=current.children[0];
+            height++;
         }
-
+        System.out.println("Tree height:"+height);
+        System.out.println("-------NEW LEVEL------");
         //print key and value in order, also add values to array list
         while(current!=null) {
+            System.out.println("New node");
             for(int i = 0; i<current.n; i++) {
                 System.out.println("Key: "+current.keys[i]+" Value:"+current.values[i]+" Num Keys:"+current.n);
                 listOfRecordID.add(current.values[i]);
