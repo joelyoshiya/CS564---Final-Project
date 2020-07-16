@@ -479,6 +479,7 @@ class BTree {
                 //Case where you are farthest right
                 if(rightIndex == -1){
                     bestIndex = leftIndex;
+                    System.out.println("Recognized we are merging from the furthest right node");
                     right = false;
                 }else if(leftIndex == -1){
                     bestIndex = rightIndex;
@@ -491,6 +492,8 @@ class BTree {
                         bestIndex = rightIndex;
                         right = true;
                     }else{
+//                        System.out.println("Chose left index by default. N of left and right index: \n" +
+//                                parentPtr.children[rightIndex].n + " " + parentPtr.children[leftIndex].n);
                         bestIndex = leftIndex;
                         right = false;
                     }
@@ -524,6 +527,7 @@ class BTree {
                     oldChildNode = null;
                     return true;
                 } else {//REDISTRIBUTION NOT POSSIBLE -> MERGE
+                    System.out.println("Starting Leaf node merge:");
                     int deleteKeyIndex = -1;
                     int oldChildIndex = -1;
 

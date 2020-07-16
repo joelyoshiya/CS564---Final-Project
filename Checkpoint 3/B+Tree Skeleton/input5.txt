@@ -1,0 +1,6 @@
+3
+delete 68
+delete 70
+delete 72
+delete 65
+delete 67

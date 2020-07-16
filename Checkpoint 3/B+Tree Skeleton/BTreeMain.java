@@ -19,7 +19,7 @@ public class BTreeMain {
         /** Read the input file -- input.txt */
         Scanner scan = null;
         try {
-            scan = new Scanner(new File("C:\\Users\\Home\\Documents\\Github\\CS564---Final-Project\\Checkpoint 3\\B+Tree Skeleton\\input2.txt"));
+            scan = new Scanner(new File("input.txt"));
         } catch (FileNotFoundException e) {
             System.out.println("File not found.");
         }
@@ -112,7 +112,7 @@ public class BTreeMain {
 
     	Scanner scan = null;
     	try {
-            scan = new Scanner(new File("C:\\Users\\Home\\Documents\\Github\\CS564---Final-Project\\Checkpoint 3\\B+Tree Skeleton\\Student3.csv"));
+            scan = new Scanner(new File("Student.csv"));
         } catch (FileNotFoundException e) {
             System.out.println("File not found.");
         }
@@ -142,7 +142,7 @@ public class BTreeMain {
     private static void  csvwriter(List<Student> studentsDB) {	
     	PrintWriter pw = null;
         try {
-            pw = new PrintWriter(new File("src/Student.csv"));
+            pw = new PrintWriter(new File("Student.csv"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
