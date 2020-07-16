@@ -193,66 +193,56 @@ class BTree {
     	// we need a speacial case if the child is a root and he is a leaf
     	if(root.leaf) {
     		BTreeNode newrightchild = new BTreeNode(t,true);
-    		newrightchild.keys= root.subkeys;
-    		newrightchild.values = root.subvalues;
+    		newrightchild.keys= root.getsubkeys();
+    		newrightchild.values = root.getsubvalues();
     		newrightchild.n = t+1;// the right child always get the exstra one
     		root.next = newrightchild;
     		parent.keys[0] = newrightchild.keys[0];
     		parent.children[0]= root;
     		parent.children[1] = newrightchild;
     		parent.n=1;
-    		// set theses to null so it takes up less space
-    		child.subkeys =null;
-    		child.subvalues =null;
-    		// this is the special case that the root node is split
+    		child.clear();
     	}else if(child==root) {
-    		parent.keys[0] = root.splitvalue;
+    		parent.keys[0] = root.getsplitvalue();
     		BTreeNode newrightchild = new BTreeNode(t,false);
-    		newrightchild.keys= child.subkeys;
-    		newrightchild.children =root.subchildren;
+    		newrightchild.keys= child.getsubkeys();
+    		newrightchild.children =root.getsubchildren();
     		newrightchild.n = t;
     		parent.children[0] = root;
     		parent.children[1] = newrightchild;
     		root.children[root.n].next = newrightchild.children[0];
-    		child.subkeys =null;
-    		child.subvalues =null;
-    		child.subchildren =null;
     		parent.n=parent.n+1;
-
+    		child.clear();
 
     	}
     	// the next case is if it is just a ragular leaf that needs splitting
     	else if (child.leaf) {
     		BTreeNode newrightchild = new BTreeNode(t,true);
-    		newrightchild.keys= child.subkeys;
-    		newrightchild.values = child.subvalues;
+    		newrightchild.keys= child.getsubkeys();
+    		newrightchild.values = child.getsubvalues();
     		newrightchild.n = t+1;// the right child always get the exstra one
     		// now time for to insert the right in the line of nexts
     		BTreeNode temp = child.next;
     		child.next = newrightchild;
     		newrightchild.next = temp;
-    		child.subkeys =null;
-    		child.subvalues =null;
-    		child.subchildren =null;
-    		return parent.placeinchild(newrightchild, child.splitvalue);
+    		child.clear();
+    		return parent.placeinchild(newrightchild, child.getsplitvalue());
     		// now i need to make is so it places the child into the correct place
     		// now we have to have the case were it splits a node
     	}else {
     		BTreeNode newrightchild = new BTreeNode(t,false);
-    		newrightchild.keys= child.subkeys;
-    		newrightchild.children = child.subchildren;
+    		newrightchild.keys= child.getsubkeys();
+    		newrightchild.children = child.getsubchildren();
     		newrightchild.n = t;
-    		child.children[child.n].next = 
-    				newrightchild.children[0];
-    		child.subkeys =null;
-    		child.subvalues =null;
-    		child.subchildren =null;
-    		return parent.placeinchild(newrightchild,child.splitvalue);
+    		child.children[child.n].next = newrightchild.children[0];
+    		child.clear();
+    		return parent.placeinchild(newrightchild,child.getsplitvalue());
     		
     	}
     	
     	return 1;
     }
+    
 
     boolean delete(long studentId) {
 	      System.out.println("Starting delete: " + studentId);
