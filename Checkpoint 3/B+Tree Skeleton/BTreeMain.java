@@ -66,8 +66,16 @@ public class BTreeMain {
                         case "delete": {
                             long studentId = Long.parseLong(s2.next());
                             boolean result = bTree.delete(studentId);
-                              if (result)
+                              if (result){
                                   System.out.println("Student deleted successfully.");
+                                  // THIS IS TO REMOVE IT FROM THE STUDENT CSV
+                                  for(int i=0; i<studentsDB.size(); i++) {
+                              			if(studentsDB.get(i).studentId ==studentId) {
+                              				studentsDB.remove(i);
+                              				i = studentsDB.size();
+                              			}
+                              		}
+                              }
                               else
                                   System.out.println("Student deletion failed.");
                             bTree.print();
@@ -133,7 +141,7 @@ public class BTreeMain {
     private static void  csvwriter(List<Student> studentsDB) {	
     	PrintWriter pw = null;
         try {
-            pw = new PrintWriter(new File("src/Studentreplacment.csv"));
+            pw = new PrintWriter(new File("src/Student.csv"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
