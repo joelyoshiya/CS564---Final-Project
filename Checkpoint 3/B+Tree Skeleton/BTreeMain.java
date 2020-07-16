@@ -18,7 +18,7 @@ public class BTreeMain {
         /** Read the input file -- input.txt */
         Scanner scan = null;
         try {
-            scan = new Scanner(new File("src/input.txt"));
+            scan = new Scanner(new File("C:\\Users\\Home\\Documents\\Github\\CS564---Final-Project\\Checkpoint 3\\B+Tree Skeleton\\input2.txt"));
         } catch (FileNotFoundException e) {
             System.out.println("File not found.");
         }
@@ -70,7 +70,7 @@ public class BTreeMain {
                                   System.out.println("Student deleted successfully.");
                               else
                                   System.out.println("Student deletion failed.");
-                            //bTree.print();
+                            bTree.print();
                             break;
                         }
                         case "search": {
@@ -96,7 +96,7 @@ public class BTreeMain {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        csvwriter(studentsDB);
+        //csvwriter(studentsDB);
     }
 // this is a method to read in a csv file and create student objects
 // return - List<students> - this is all the student objects created from the csv file
@@ -104,7 +104,7 @@ public class BTreeMain {
 
     	Scanner scan = null;
     	try {
-            scan = new Scanner(new File("src/Student.csv"));
+            scan = new Scanner(new File("C:\\Users\\Home\\Documents\\Github\\CS564---Final-Project\\Checkpoint 3\\B+Tree Skeleton\\Student3.csv"));
         } catch (FileNotFoundException e) {
             System.out.println("File not found.");
         }

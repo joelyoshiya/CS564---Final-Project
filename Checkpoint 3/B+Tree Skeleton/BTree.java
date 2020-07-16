@@ -302,8 +302,121 @@ class BTree {
             System.out.println("Nodeptr.n: " + nodePtr.n);
             System.out.println("Nodeptr not leaf, go to index: "+childIndex);
             //Now, child index is found, so we can recursively call delete again:
-            return delete(nodePtr, nodePtr.children[childIndex], studentId, oldChildNode, childIndex);
+            delete(nodePtr, nodePtr.children[childIndex], studentId, oldChildNode, childIndex);
             
+            if(nodePtr.n<nodePtr.t) {
+                System.out.println("Fixing required");
+
+                int leftIndex = findSiblingPtrFromParent(parentPtr,nodePtr, false);
+                System.out.println("leftIndex: " + leftIndex);
+                int rightIndex = findSiblingPtrFromParent(parentPtr, nodePtr, true);
+                System.out.println("rightIndex: " + rightIndex);
+
+
+                boolean right;
+                //COMPARE WHICH SIBLING HAS HIGHER N
+                int bestIndex = 0;
+                //Case where you are farthest right
+                if(rightIndex == -1){
+                    bestIndex = leftIndex;
+                    right = false;
+                }else if(leftIndex == -1){
+                    bestIndex = rightIndex;
+                    right = true;
+                }else{
+                    //CAN ACCESS BOTH SIBLINGS AT THS POINT
+                    System.out.println("N value choosing leftIndex: " + parentPtr.children[leftIndex].n);
+                    System.out.println("N value choosing rightIndex: " + parentPtr.children[rightIndex].n);
+                    //CHOOSE SIBlING WITH HIGHEST N
+                    if(parentPtr.children[rightIndex].n > parentPtr.children[leftIndex].n){
+                        bestIndex = rightIndex;
+                        right = true;
+                    }else{
+                        bestIndex = leftIndex;
+                        right = false;
+                    }
+                }
+                System.out.println("bestIndex: " + bestIndex);
+
+                //USE THAT SIBLING TO SEE IF REDISTRIBUTION IS POSSIBLE
+                if (parentPtr.children[bestIndex].n > parentPtr.children[bestIndex].t) {
+                    System.out.println("Redistribution possible");
+                    //long lowKey = parentPtr.children[bestIndex].keys[0];
+                    //if there is enough entries to ensure t entries are left (after deletion/redis.)
+                    // 1st, actually delete the value
+                    //nodePtr.deleteLeafEntry(studentId);//removed the entry, t - 1 entries now
+                    //REDISTRIBUTE evenly between sibling and leaf node (nodePtr)
+                    
+                    // find entry to replace original index in parent
+                    // replace key value in parent entry by new low-key value in M
+                    long keyToParent = -1;
+                    int keyIndex = -1;
+                    if(right){
+                        //Key to parent is found in the right child
+                        keyToParent = parentPtr.children[rightIndex].keys[0];
+                        keyIndex = rightIndex - 1;
+                    }else {
+                        //Key to parent is found in the current child
+                        keyToParent = parentPtr.children[currIndex].keys[0];
+                        keyIndex = leftIndex;
+                    }
+                    System.out.print("Key to parent: " + keyToParent +  ".\nKey index: "+ keyIndex + ".\n");
+                    redistributeInternalNodes(nodePtr,parentPtr.children[bestIndex],parentPtr, right,keyIndex);
+                    //parentPtr.keys[keyIndex] = keyToParent;
+                    //Set oldChildNode to null and return (according to algorithm)
+                    oldChildNode = null;
+                    
+                } 
+                /**
+                    else {//REDISTRIBUTION NOT POSSIBLE -> MERGE
+                    int deleteKeyIndex = -1;
+                    int oldChildIndex = -1;
+
+                    // 1st, actually remove entry
+                    nodePtr.deleteLeafEntry(studentId);//removed the entry, t - 1 entries now
+                    // Assign OldChildEntry, oldChildEntry = &(current entry in parent for M, M is node on RHS)
+                    // IF THERE EXISTS A RIGHT SIBLING
+                    if(right){
+                        //Choose the right sibling to MERGE/BE REMOVED
+                        oldChildIndex = currIndex + 1;
+                    }else{
+                        //Choose the leaf to MERGE/BE REMOVED
+                        oldChildIndex = currIndex;
+                    }
+                    //Assign the node
+                    oldChildNode = parentPtr.children[oldChildIndex];//always assigned to RHS, M
+
+                    //move all entries from M (whichever node is on right hand side) to sibling node (could be
+                    //either the original leaf or the sibling)
+                    if(right){//Merge into the right side-child, which is the leaf
+                        mergeLeaf(nodePtr,parentPtr.children[oldChildIndex]);
+                    }else{//Merge into the left-side child, which is not the original leaf
+                        mergeLeaf(parentPtr.children[currIndex - 1],nodePtr);
+                    }
+
+                    //Find index to delete
+                    if(right){//matching up the Key index that sits between the two pointers to children
+                        deleteKeyIndex = currIndex;
+                    }else{//Left side, delete at keyIndex that is the current index - 1
+                        deleteKeyIndex = currIndex - 1;//Key is to the left of the current index
+                    }
+
+                    //Delete from parent keys the key index
+                    parentPtr.deleteInnerKey(deleteKeyIndex);
+
+                    //UPDATE CHILDREN POINTERS (SHIFT DOWN)
+                    //delete In child array @ oldChildIndex and shift down from there
+                    parentPtr.deleteChild(oldChildIndex);
+
+                    //Update sibling pointers
+                    if(right){
+                        nodePtr.next = oldChildNode.next;
+                    }else{
+                        parentPtr.children[currIndex - 1].next = oldChildNode.next;
+                    }
+                    return true;
+                    */
+            }
             /** 
             //Check if oldChildNode is null
             if(oldChildNode == null){//usual case: child not deleted
@@ -331,6 +444,7 @@ class BTree {
                 }
             }
             */
+            return true;
 
         }
         //////////////////////////////////////////////////////////////////////////////////////////
@@ -426,9 +540,9 @@ class BTree {
                     //move all entries from M (whichever node is on right hand side) to sibling node (could be
                     //either the original leaf or the sibling)
                     if(right){//Merge into the right side-child, which is the leaf
-                        mergeLeaf(nodePtr,nodePtr.children[oldChildIndex]);
+                        mergeLeaf(nodePtr,parentPtr.children[oldChildIndex]);
                     }else{//Merge into the left-side child, which is not the original leaf
-                        mergeLeaf(nodePtr.children[currIndex - 1],nodePtr);
+                        mergeLeaf(parentPtr.children[currIndex - 1],nodePtr);
                     }
 
                     //Find index to delete
@@ -526,6 +640,65 @@ class BTree {
 
     /**
      *
+     * @param leaf
+     * @param sibling
+     * @param parent
+     * @return
+     */
+    void redistributeInternalNodes(BTreeNode leaf, BTreeNode sibling, BTreeNode parent, boolean right, int keyIndex){
+        //redistribute evenly between the node and its sibling
+        int numTransferred = 1;// Num keys moving to to left side (leaf) from sibling
+        //will get the leaf node to t nodes at very minimum, or higher based on # in sibling
+
+        long[] tempKeys = new long[numTransferred];
+        long[] tempVals = new long[numTransferred];
+
+
+        if(right){
+            for(int i = 0; i < numTransferred; i++){
+                tempKeys[i] = sibling.keys[i];
+                System.out.println("Key: " + tempKeys[i]);
+                tempVals[i] = sibling.values[i];
+                System.out.println("Key: " + tempKeys[i]);
+            }
+        }else{
+            int j = 0;
+            for(int i = sibling.n - 1; i > sibling.n - 1 - numTransferred; i--){
+                tempKeys[j] = sibling.keys[i];
+                System.out.println("Key: " + tempKeys[j]);
+                tempVals[j] = sibling.values[i];
+                System.out.println("Value: " + tempVals[j]);
+                j++;
+            }
+        }
+
+
+        if(right) {
+            leaf.children[leaf.n+1] = sibling.children[0];
+            for(int i = 0; i < sibling.n;i++) {
+                sibling.children[i]= sibling.children[i+1];
+            }
+        } else {
+            for(int i = 1; i<=leaf.n+1;i++) {
+                leaf.children[i] = leaf.children[i-1];
+            }
+            leaf.children[0] = sibling.children[sibling.n];
+            sibling.children[sibling.n] = null;
+        }
+
+        for(int i = 0; i < tempKeys.length; i++){
+            //Insert key-value pair from sibling side to leaf
+            leaf.insertEntry(parent.keys[keyIndex],0);
+            parent.keys[keyIndex] = tempKeys[i];
+            //Now delete entry from Sibling
+            sibling.deleteLeafEntry(tempKeys[i]);
+        }
+
+        return;
+    }
+
+    /**
+     *
      * @param inner
      * @param sibling
      * @param parent
@@ -558,7 +731,8 @@ class BTree {
         // In this specific case, M, the node on the RHS of the leaf, is also the sibling
         // We don't want to use the sibling pointer however, because the pointer isn't coming from the parent
         // but from the leaf
-
+        System.out.println(leaf.n);
+        System.out.println(M.n);
         long[] transKeys = new long[M.n];
         long[] transVals = new long[M.n];
         //Store M values
@@ -618,7 +792,7 @@ class BTree {
         for(int i = 0; i<this.root.n;i++) {
             System.out.println("Key: "+this.root.keys[i]+" Value: "+this.root.values[i]);
         }
-        /** 
+        
         //find the leftmost leaf node
              System.out.println("----------NEW LEVEL----------");
         
@@ -647,7 +821,7 @@ class BTree {
             }
         }
     
-        */
+        
             
         
         current = this.root;
