@@ -392,7 +392,7 @@ class BTree {
                     long keyToParent = -1;
                     int keyIndex = -1;
                     if(right){
-                        //Ket to parent is found in the right child
+                        //Key to parent is found in the right child
                         keyToParent = parentPtr.children[rightIndex].keys[0];
                         keyIndex = rightIndex - 1;
                     }else {
@@ -418,15 +418,19 @@ class BTree {
                         //Choose the right sibling to MERGE/BE REMOVED
                         oldChildIndex = currIndex + 1;
                     }else{
-                        //Choose the left sibling to MERGE/BE REMOVED
-                        oldChildIndex = currIndex - 1;
+                        //Choose the leaf to MERGE/BE REMOVED
+                        oldChildIndex = currIndex;
                     }
                     //Assign the node
-                    oldChildNode = parentPtr.children[oldChildIndex];
+                    oldChildNode = parentPtr.children[oldChildIndex];//always assigned to RHS, M
 
-                    //move all entries from M (entry in parent for sibling node) to leaf
-                    mergeLeaf(nodePtr,nodePtr.children[oldChildIndex]);
-
+                    //move all entries from M (whichever node is on right hand side) to sibling node (could be
+                    //either the original leaf or the sibling)
+                    if(right){//Merge into the right side-child, which is the leaf
+                        mergeLeaf(nodePtr,nodePtr.children[oldChildIndex]);
+                    }else{//Merge into the left-side child, which is not the original leaf
+                        mergeLeaf(nodePtr.children[currIndex - 1],nodePtr);
+                    }
 
                     //Find index to delete
                     if(right){//matching up the Key index that sits between the two pointers to children
@@ -438,18 +442,12 @@ class BTree {
                     //Delete from parent keys the key index
                     parentPtr.deleteInnerKey(deleteKeyIndex);
 
-                    //TODO UPDATE CHILDREN POINTERS (SHIFT DOWN)
 
-                    //Update parent key pointers, discard empty M if needed
-                    if(!right){//if we have the oldChildSibling on the left
-                        parentPtr.children[oldChildIndex] = nodePtr;
-                        parentPtr.children[currIndex] = null;
-                    }else{//Standard case, with oldChildPointer on the right
-                        //Leaf currently set at correct index in children array
-                        parentPtr.children[oldChildIndex] = nodePtr;
-                    }
+                    //UPDATE CHILDREN POINTERS (SHIFT DOWN)
+                    //delete In child array @ oldChildIndex and shift down from there
+                    parentPtr.deleteChild(oldChildIndex);
 
-                    //Update sibling pointers
+                    //TODO Update sibling pointers
 
 
                     //TODO discard empty node M, adjust sibling pointers, return;
@@ -588,12 +586,12 @@ class BTree {
     int findSiblingPtrFromParent(BTreeNode parentPtr, BTreeNode nodePtr, boolean right){
         int indexNode = 0;
         //Sibling should be one to the right in the children array
-        for(int i = 0; i < parentPtr.children.length; i++){
+        for(int i = 0; i < parentPtr.n + 1; i++){
             if(parentPtr.children[i].equals(nodePtr)){
                 indexNode = i;//returns the right-hand-side sibling of the current node
             }
         }
-        if((indexNode == 0 && !right) || (indexNode == parentPtr.children.length - 1 && right)){
+        if((indexNode == 0 && !right) || (indexNode == parentPtr.n && right)){
             return -1;
         }
         if(right){

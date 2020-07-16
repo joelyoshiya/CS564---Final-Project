@@ -371,10 +371,11 @@ class BTreeNode {
 	}
 
 	/**
-	 *
+	 * Delete just a child form the children array
 	 * @param deleteIndex
 	 */
 	void deleteChild(int deleteIndex){
+
 		if(0 <= deleteIndex && deleteIndex < children.length){
 			children[deleteIndex] = null;
 			for(int i = deleteIndex; i < children.length - 1; i++){
