@@ -341,7 +341,7 @@ class BTree {
             if (nodePtr.n > nodePtr.t || nodePtr.equals(root)) {//BASE CASE
                 System.out.println("Basic case");
                 //deleting the entry will not infringe on minimum degree
-                nodePtr.deleteEntry(studentId);
+                nodePtr.deleteLeafEntry(studentId);
                 oldChildNode = null;
                 return true;// we're done!
             } else {//Removing entry will result in violation of minimum degree!
@@ -384,7 +384,7 @@ class BTree {
                     //long lowKey = parentPtr.children[bestIndex].keys[0];
                     //if there is enough entries to ensure t entries are left (after deletion/redis.)
                     // 1st, actually delete the value
-                    nodePtr.deleteEntry(studentId);//removed the entry, t - 1 entries now
+                    nodePtr.deleteLeafEntry(studentId);//removed the entry, t - 1 entries now
                     //REDISTRIBUTE evenly between sibling and leaf node (nodePtr)
                     redistributeLeafNodes(nodePtr,parentPtr.children[bestIndex],parentPtr, right);
                     // find entry to replace original index in parent
@@ -410,11 +410,10 @@ class BTree {
                     int oldChildIndex = -1;
 
                     // 1st, actually remove entry
-                    nodePtr.deleteEntry(studentId);//removed the entry, t - 1 entries now
+                    nodePtr.deleteLeafEntry(studentId);//removed the entry, t - 1 entries now
                     // Assign OldChildEntry, oldChildEntry = &(current entry in parent for M, M is node on RHS)
                     // IF THERE EXISTS A RIGHT SIBLING
                     if(right){
-                        //TODO MAKE SURE THIS OLDCHILDNODE REFERENCE IS USED TO ACTUALLY DELETE FROM BTREE
                         //Choose the right sibling to MERGE/BE REMOVED
                         oldChildIndex = currIndex + 1;
                     }else{
@@ -435,22 +434,23 @@ class BTree {
                     //Find index to delete
                     if(right){//matching up the Key index that sits between the two pointers to children
                         deleteKeyIndex = currIndex;
-                    }else{
-                        deleteKeyIndex = oldChildIndex;
+                    }else{//Left side, delete at keyIndex that is the current index - 1
+                        deleteKeyIndex = currIndex - 1;//Key is to the left of the current index
                     }
 
                     //Delete from parent keys the key index
                     parentPtr.deleteInnerKey(deleteKeyIndex);
 
-
                     //UPDATE CHILDREN POINTERS (SHIFT DOWN)
                     //delete In child array @ oldChildIndex and shift down from there
                     parentPtr.deleteChild(oldChildIndex);
 
-                    //TODO Update sibling pointers
-
-
-                    //TODO discard empty node M, adjust sibling pointers, return;
+                    //Update sibling pointers
+                    if(right){
+                        nodePtr.next = oldChildNode.next;
+                    }else{
+                        parentPtr.children[currIndex - 1].next = oldChildNode.next;
+                    }
                     return true;
                 }
 
@@ -462,7 +462,7 @@ class BTree {
 
 
     void removeChildNodeFromParent(BTreeNode oldChildNode, BTreeNode parent){
-        for(int i = 0; i < parent.children.length; i++){
+        for(int i = 0; i < parent.n + 1; i++){
             if(parent.children[i].equals(oldChildNode)){
                 parent.children[i] = null;
                 //if
@@ -471,7 +471,7 @@ class BTree {
     }
     //HAVING THE CURRINDEX MOSTLY TAKES CARE OF THIS (we can just do parentNode.children[currentIndex] to get this reference
     BTreeNode findParentPtrToChild(BTreeNode child, BTreeNode parentNode){
-        for(int i = 0; i < parentNode.children.length; i++){
+        for(int i = 0; i < parentNode.n + 1; i++){
             if(parentNode.children[i].equals(child)){
                 return parentNode.children[i];
             }
@@ -519,7 +519,7 @@ class BTree {
             leaf.insertEntry(tempKeys[i],tempVals[i]);
 
             //Now delete entry from Sibling
-            sibling.deleteEntry(tempKeys[i]);
+            sibling.deleteLeafEntry(tempKeys[i]);
         }
         return;
     }

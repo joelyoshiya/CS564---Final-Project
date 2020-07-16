@@ -299,7 +299,7 @@ class BTreeNode {
 	 * Deletes the matching studentID/Key from both the keys and values
 	 * @param key
 	 */
-	void deleteEntry(long key){
+	void deleteLeafEntry(long key){
     	int removeIndex = -1;
 
     	for(int i = 0; i < this.n; i++){
@@ -323,6 +323,7 @@ class BTreeNode {
 		//check if non-leaf (inner)
 		if(!leaf){
 			keys = downShifter(index,this.keys);
+			n--;
 		}else{
 			System.out.println("Calling deleteInnerKey on a leaf node!");
 		}
