@@ -39,20 +39,17 @@ class BTree {
         }   
 
         BTreeNode current = root;
-        //System.out.println("\n BEGIN SEARCHING FOR "+studentId);
-        
-            //System.out.println("current.n is: " + current.n);
+    
             for(int i = 0;i<current.n;i++) {
-                //System.out.println("Currently at: " + i);
+              
                 //Find the first key that is bigger than studentId
                 if(current.keys[i]>studentId) {
-                    //System.out.println("FOUND BIGGER KEY"+current.keys[i]);
+                    
                     //Check if we are at a leaf node
                     if(i>0) {
                         //If we are at leaf, check for key that matches studentId and return record
                         if(current.keys[i-1]==studentId && current.leaf) {
-                            //System.out.println("Normal case");
-                            //System.out.println("SEARCH: "+current.keys[i-1]+" "+current.values[i-1]);
+                           
                             return current.values[i-1];
                         }
                         //No match, return -1
@@ -63,13 +60,10 @@ class BTree {
                     }
                     //If we are at leaf and studentId is less than first key, no match
                     if(current.leaf) {
-                        //System.out.println("FIRST INDEX");
-                        //System.out.print(current.keys[0]+" ");
-                        //System.out.print(current.keys[1]+" ");
-                        //System.out.println(current.keys[2]+" ");
+              
                         return -1;
                     }
-                    //System.out.println("Normal case internal");
+                   
                     //If we are not at a leaf, go to the appropriate child node
                     current = current.children[i];
                     i = -1;
@@ -78,12 +72,11 @@ class BTree {
                 }
                 //If studentId is larger than all keys, go to the last pointer
                 else if(i==current.n-1) {
-                    //System.out.println("LARGER than all keys");
+                   
                     if(current.keys[i]<=studentId) {
                         //If key is match with studentId and we are at a leaf, return the record
                         if(current.keys[i]==studentId && current.leaf) {
-                          //  System.out.println("Case last key");
-                          //  System.out.println("SEARCH: "+current.keys[i]+" "+current.values[i]);
+                          
                             return current.values[i];
                         }
                         //If key does not match and we are at a leaf, return no result 
@@ -92,7 +85,7 @@ class BTree {
                         }
                         //If we are not at a leaf, go to the correct child node
                         else {
-                            //System.out.println("Last case internal");
+                           
                             current = current.children[i+1];
                             i=-1;
                         }
@@ -100,7 +93,6 @@ class BTree {
                 }
             }
         
-        //System.out.println("Outside of FOR loop");
         return -1;
     }
 
@@ -245,7 +237,7 @@ class BTree {
     
 
     boolean delete(long studentId) {
-	      System.out.println("Starting delete: " + studentId);
+
         //   Deletes entry in the BTree structure given search-key, studentID
         //   Following psuedo-code in textbook, pg.353
 
@@ -299,18 +291,17 @@ class BTree {
                     break;
                 }
             }
-            System.out.println("Nodeptr.n: " + nodePtr.n);
-            System.out.println("Nodeptr not leaf, go to index: "+childIndex);
+        
             //Now, child index is found, so we can recursively call delete again:
             delete(nodePtr, nodePtr.children[childIndex], studentId, oldChildNode, childIndex);
             
             if(nodePtr.n<nodePtr.t) {
-                System.out.println("Fixing required");
+             
 
                 int leftIndex = findSiblingPtrFromParent(parentPtr,nodePtr, false);
-                System.out.println("leftIndex: " + leftIndex);
+          
                 int rightIndex = findSiblingPtrFromParent(parentPtr, nodePtr, true);
-                System.out.println("rightIndex: " + rightIndex);
+           
 
 
                 boolean right;
@@ -325,8 +316,7 @@ class BTree {
                     right = true;
                 }else{
                     //CAN ACCESS BOTH SIBLINGS AT THS POINT
-                    System.out.println("N value choosing leftIndex: " + parentPtr.children[leftIndex].n);
-                    System.out.println("N value choosing rightIndex: " + parentPtr.children[rightIndex].n);
+                   
                     //CHOOSE SIBlING WITH HIGHEST N
                     if(parentPtr.children[rightIndex].n > parentPtr.children[leftIndex].n){
                         bestIndex = rightIndex;
@@ -336,11 +326,10 @@ class BTree {
                         right = false;
                     }
                 }
-                System.out.println("bestIndex: " + bestIndex);
-
+                
                 //USE THAT SIBLING TO SEE IF REDISTRIBUTION IS POSSIBLE
                 if (parentPtr.children[bestIndex].n > parentPtr.children[bestIndex].t) {
-                    System.out.println("Redistribution possible");
+                
                     //long lowKey = parentPtr.children[bestIndex].keys[0];
                     //if there is enough entries to ensure t entries are left (after deletion/redis.)
                     // 1st, actually delete the value
@@ -360,7 +349,7 @@ class BTree {
                         keyToParent = parentPtr.children[currIndex].keys[0];
                         keyIndex = leftIndex;
                     }
-                    System.out.print("Key to parent: " + keyToParent +  ".\nKey index: "+ keyIndex + ".\n");
+                   
                     redistributeInternalNodes(nodePtr,parentPtr.children[bestIndex],parentPtr, right,keyIndex);
                     //parentPtr.keys[keyIndex] = keyToParent;
                     //Set oldChildNode to null and return (according to algorithm)
@@ -466,23 +455,22 @@ class BTree {
         }
         //////////////////////////////////////////////////////////////////////////////////////////
         if(nodePtr.leaf) {
-            System.out.println("Arrived at leaf");
+           
             //nodePtr IS pointing to a LEAF, in which case:
             // Check if there the current node will still be half full after deletion
             if (nodePtr.n > nodePtr.t || nodePtr.equals(root)) {//BASE CASE
-                System.out.println("Basic case");
+               
                 //deleting the entry will not infringe on minimum degree
                 nodePtr.deleteLeafEntry(studentId);
                 oldChildNode = null;
                 return true;// we're done!
             } else {//Removing entry will result in violation of minimum degree!
                 System.out.println("Else case");
-
                 //CASE WHERE THERE IS BOTH A LEFT AND RIGHT SIBLING
                 int leftIndex = findSiblingPtrFromParent(parentPtr,nodePtr, false);
-                System.out.println("leftIndex: " + leftIndex);
+               
                 int rightIndex = findSiblingPtrFromParent(parentPtr, nodePtr, true);
-                System.out.println("rightIndex: " + rightIndex);
+            
 
 
                 boolean right;
@@ -497,8 +485,7 @@ class BTree {
                     right = true;
                 }else{
                     //CAN ACCESS BOTH SIBLINGS AT THS POINT
-                    System.out.println("N value choosing leftIndex: " + parentPtr.children[leftIndex].n);
-                    System.out.println("N value choosing rightIndex: " + parentPtr.children[rightIndex].n);
+                
                     //CHOOSE SIBlING WITH HIGHEST N
                     if(parentPtr.children[rightIndex].n > parentPtr.children[leftIndex].n){
                         bestIndex = rightIndex;
@@ -508,7 +495,7 @@ class BTree {
                         right = false;
                     }
                 }
-                System.out.println("bestIndex: " + bestIndex);
+               
 
                 //USE THAT SIBLING TO SEE IF REDISTRIBUTION IS POSSIBLE
                 if (parentPtr.children[bestIndex].n > parentPtr.children[bestIndex].t) {
@@ -638,17 +625,17 @@ class BTree {
         if(right){
             for(int i = 0; i < numTransferred; i++){
                 tempKeys[i] = sibling.keys[i];
-                System.out.println("Key: " + tempKeys[i]);
+              
                 tempVals[i] = sibling.values[i];
-                System.out.println("Key: " + tempKeys[i]);
+                
             }
         }else{
             int j = 0;
             for(int i = sibling.n - 1; i > sibling.n - 1 - numTransferred; i--){
                 tempKeys[j] = sibling.keys[i];
-                System.out.println("Key: " + tempKeys[j]);
+            
                 tempVals[j] = sibling.values[i];
-                System.out.println("Value: " + tempVals[j]);
+               
                 j++;
             }
         }
@@ -683,17 +670,17 @@ class BTree {
         if(right){
             for(int i = 0; i < numTransferred; i++){
                 tempKeys[i] = sibling.keys[i];
-                System.out.println("Key: " + tempKeys[i]);
+                
                 tempVals[i] = sibling.values[i];
-                System.out.println("Key: " + tempKeys[i]);
+                
             }
         }else{
             int j = 0;
             for(int i = sibling.n - 1; i > sibling.n - 1 - numTransferred; i--){
                 tempKeys[j] = sibling.keys[i];
-                System.out.println("Key: " + tempKeys[j]);
+              
                 tempVals[j] = sibling.values[i];
-                System.out.println("Value: " + tempVals[j]);
+                
                 j++;
             }
         }
@@ -731,7 +718,7 @@ class BTree {
      * @return
      */
     BTreeNode redistributeInnerNode(BTreeNode inner, BTreeNode sibling, BTreeNode parent){
-        //TODO expand
+    
         return parent;
     }
 
@@ -743,7 +730,7 @@ class BTree {
      * @return
      */
     BTreeNode mergeInnerNode(BTreeNode inner, BTreeNode M, BTreeNode parent){
-        //TODO expand
+    
         return parent;
     }
 
@@ -771,7 +758,7 @@ class BTree {
             leaf.insertEntry(M.keys[i], M.values[i]);
         }
 
-        //TODO Remove from M? Or is M just trash collected
+  
         return;
     }
 
@@ -814,38 +801,14 @@ class BTree {
             return listOfRecordID;
         }
 
-        int height = 1;
         for(int i = 0; i<this.root.n;i++) {
             System.out.println("Key: "+this.root.keys[i]+" Value: "+this.root.values[i]);
         }
-        
-        //find the leftmost leaf node
-             System.out.println("----------NEW LEVEL----------");
-        
-            for(int k = 0; k<=current.n;k++) {
-                BTreeNode current2= current.children[k];      
-                System.out.println("New node size: "+current2.n);
-                for(int j = 0; j<current2.n;j++) {
-                    System.out.println("Key: "+current2.keys[j]+" Value: "+current2.values[j]);
-                }
-            }
 
         BTreeNode oldCurrent = current;
 
         
-        if(!current.children[0].children[0].leaf) {
-            System.out.println("------------NEW LEVEL------------");
-            for(int z=0;z<=oldCurrent.n;z++) {
-                current = oldCurrent.children[z];
-                for(int k = 0; k<=current.n;k++) {
-                    BTreeNode current2= current.children[k];      
-                    System.out.println("New node size: "+current2.n);
-                    for(int j = 0; j<current2.n;j++) {
-                        System.out.println("Key: "+current2.keys[j]+" Value: "+current2.values[j]);
-                    }
-                }
-            }
-        }
+        
     
         
             
@@ -854,15 +817,13 @@ class BTree {
 
         while(!current.leaf) {
             current=current.children[0];
-            height++;
+            
         }
-        System.out.println("Tree height:"+height);
-        System.out.println("-------NEW LEVEL------");
-        //print key and value in order, also add values to array list
+
         while(current!=null) {
-            System.out.println("New node");
+            //System.out.println("New node");
             for(int i = 0; i<current.n; i++) {
-                System.out.println("Key: "+current.keys[i]+" Value:"+current.values[i]+" Num Keys:"+current.n);
+                //System.out.println("Key: "+current.keys[i]+" Value:"+current.values[i]+" Num Keys:"+current.n);
                 listOfRecordID.add(current.values[i]);
             }
             //use pointer to next leaf node
