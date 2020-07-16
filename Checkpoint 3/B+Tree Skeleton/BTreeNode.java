@@ -33,10 +33,11 @@ class BTreeNode {
     // this three vars are going to be null for the majority of there lives
     // they will be filled with the right side of the keys/children/values
     // for one step and then returned to null
-    long[] subkeys;
-    long[] subvalues;
-    BTreeNode[] subchildren;
-    long splitvalue;
+    // made them private to not change the IO of the BTREE NODE
+    private long[] subkeys;
+    private long[] subvalues;
+    private BTreeNode[] subchildren;
+    private long splitvalue;
     // Constructor
     BTreeNode(int t, boolean leaf) {
         this.t = t;
@@ -266,6 +267,33 @@ class BTreeNode {
     	splitvalue = tempsubkeys[t];
     	n=t;
 	
+    }
+    // basic getter function
+    // returns long[]- this is the right side of the keys
+    long[] getsubkeys() {
+    	return subkeys;
+    }
+    // basic getter function
+    // returns  BTreeNode[]- this is the right side of the children
+    BTreeNode[] getsubchildren() {
+    	return subchildren;
+    }
+    // basic getter function
+    // returns  long[]- this is the right side of the values
+    long[] getsubvalues() {
+    	return subvalues;
+    }
+    // basic getter function
+    // return long - this is the value that will be middle key 
+    long getsplitvalue() {
+    	return splitvalue;
+    }
+    // no reason to keep space allocated for a ling time so 
+    // clear them when not needed 
+    void clear() {
+    	subkeys=null;
+    	subvalues = null;
+    	subchildren = null;
     }
     /**
 	 * Deletes the matching studentID/Key from both the keys and values
