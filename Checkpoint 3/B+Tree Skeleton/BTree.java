@@ -367,13 +367,13 @@ class BTree {
                     oldChildNode = null;
                     
                 } 
-                /**
+                
                     else {//REDISTRIBUTION NOT POSSIBLE -> MERGE
                     int deleteKeyIndex = -1;
                     int oldChildIndex = -1;
 
                     // 1st, actually remove entry
-                    nodePtr.deleteLeafEntry(studentId);//removed the entry, t - 1 entries now
+                    //nodePtr.deleteLeafEntry(studentId);//removed the entry, t - 1 entries now
                     // Assign OldChildEntry, oldChildEntry = &(current entry in parent for M, M is node on RHS)
                     // IF THERE EXISTS A RIGHT SIBLING
                     if(right){
@@ -388,9 +388,18 @@ class BTree {
 
                     //move all entries from M (whichever node is on right hand side) to sibling node (could be
                     //either the original leaf or the sibling)
+                    BTreeNode[] newChildren = new BTreeNode[2*nodePtr.t+1];
                     if(right){//Merge into the right side-child, which is the leaf
+                        newChildren = nodePtr.children;
+                        for(int i = nodePtr.n+1;i<nodePtr.n+parentPtr.children[oldChildIndex].n+2;i++) {
+                            newChildren[i] = parentPtr.children[i-nodePtr.n+1];
+                        }
                         mergeLeaf(nodePtr,parentPtr.children[oldChildIndex]);
                     }else{//Merge into the left-side child, which is not the original leaf
+                        newChildren=parentPtr.children[currIndex-1].children;
+                        for(int i = parentPtr.children[currIndex-1].n+1;i<parentPtr.children[currIndex-1].n+nodePtr.n+2;i++) {
+                            newChildren[i] = parentPtr.children[i-parentPtr.children[currIndex-1].n+1];
+                        }
                         mergeLeaf(parentPtr.children[currIndex - 1],nodePtr);
                     }
 
@@ -401,12 +410,20 @@ class BTree {
                         deleteKeyIndex = currIndex - 1;//Key is to the left of the current index
                     }
 
+                    if(right) {
+                        nodePtr.insertEntry(parentPtr.keys[deleteKeyIndex], 0);
+                        nodePtr.children = newChildren;
+                    } else {
+                        parentPtr.children[currIndex-1].insertEntry(parentPtr.keys[deleteKeyIndex],0);
+                        parentPtr.children[currIndex-1].children = newChildren;
+                    }
                     //Delete from parent keys the key index
                     parentPtr.deleteInnerKey(deleteKeyIndex);
 
                     //UPDATE CHILDREN POINTERS (SHIFT DOWN)
                     //delete In child array @ oldChildIndex and shift down from there
                     parentPtr.deleteChild(oldChildIndex);
+                    
 
                     //Update sibling pointers
                     if(right){
@@ -415,7 +432,7 @@ class BTree {
                         parentPtr.children[currIndex - 1].next = oldChildNode.next;
                     }
                     return true;
-                    */
+                    
             }
             /** 
             //Check if oldChildNode is null
@@ -561,17 +578,26 @@ class BTree {
 
                     //Update sibling pointers
                     if(right){
-                        nodePtr.next = oldChildNode.next;
+                        if(parentPtr.equals(root) && root.n==0) {
+                            this.root = nodePtr;
+                        }
+                        
                     }else{
                         parentPtr.children[currIndex - 1].next = oldChildNode.next;
+                        if(parentPtr.equals(root) && root.n==0) {
+                            this.root = nodePtr;
+                        }
                     }
-                    return true;
+                    
                 }
 
             }
         }
+        
         //lies outside all if/else statements
-        return false;
+        return true;
+    }
+    return true;
     }
 
 
