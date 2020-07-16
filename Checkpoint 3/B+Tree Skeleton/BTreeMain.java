@@ -12,6 +12,7 @@ import java.util.Scanner;
  * You do not need to change this class.
  */
 public class BTreeMain {
+    static int count =1;
 
     public static void main(String[] args) {
 
@@ -54,9 +55,8 @@ public class BTreeMain {
                             String major = s2.next();
                             String level = s2.next();
                             int age = Integer.parseInt(s2.next());
-                           
-                            long recordID = Long.parseLong(s2.next());
-
+                            long recordID = count;
+                            count++;
                             Student s = new Student(studentId, age, studentName, major, level, recordID);
                             studentsDB.add(s);
                             bTree.insert(s);
@@ -119,6 +119,7 @@ public class BTreeMain {
     	
     	List<Student> studentList = new ArrayList<>();
     	while(scan.hasNext()) {
+        count++;
     	String Studentline = scan.nextLine();
     	String[] studentarray = Studentline.split(",");
     	//now time to stick in the parsing and the creation of the student
