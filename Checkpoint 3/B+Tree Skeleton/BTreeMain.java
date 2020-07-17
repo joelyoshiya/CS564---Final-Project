@@ -36,8 +36,7 @@ public class BTreeMain {
             bTree.insert(s);
 
         }
-        bTree.print();
-        
+
         /** Start reading the operations now from input file*/
         try {
             while (scan.hasNextLine()) {
@@ -78,7 +77,6 @@ public class BTreeMain {
                               }
                               else
                                   System.out.println("Student deletion failed.");
-                            bTree.print();
                             break;
                         }
                         case "search": {
@@ -142,7 +140,7 @@ public class BTreeMain {
     private static void  csvwriter(List<Student> studentsDB) {	
     	PrintWriter pw = null;
         try {
-            pw = new PrintWriter(new File("Student.csv"));
+            pw = new PrintWriter(new File("Students.csv"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

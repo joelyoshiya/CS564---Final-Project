@@ -345,7 +345,6 @@ class BTreeNode {
 				}
 			}
 		}
-		System.out.println("In insertEntry:  \nposition is: " + position + "\nKey is " +newKey);
 
 		//Shift array at appropriate index (position) to accommodate new values as part of redistribution
 		keys = insertKey(newKey,position,keys);
