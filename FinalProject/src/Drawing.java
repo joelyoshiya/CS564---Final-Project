@@ -23,6 +23,8 @@ import java.util.Vector;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+
+
 public class Drawing extends Canvas {
     /**
 	 * 
@@ -476,9 +478,11 @@ public class Drawing extends Canvas {
 	        	public void actionPerformed(ActionEvent e){
 	        		String username = UserNamefld.getText();
 	        		String password = Passwordfld.getText();
+	        		TestJDBC Database = new TestJDBC();
+	        		Database.Connection();
 	        		
-	        		
-	        		if(true) {
+	        		if(Database.verifyLogin(username,password)) {
+	        			
 	        			inputframe.remove(UserNamefld);
 		        		inputframe.remove(Passwordfld);
 		        		inputframe.remove(UserNameLb);

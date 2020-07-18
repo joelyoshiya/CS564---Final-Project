@@ -1,9 +1,10 @@
-use lab1;
+create database movieapp;
+use movieapp;
 create table person(ActorID varchar(9), CastName varchar(255), Height double, Birthday  varchar(10), PlaceOfBirth varchar(255), DateOfDeath  varchar(10), MainOccupation varchar(255), KnownForTitles varchar(255), primary key(ActorID));
 
-create table movie(ID varchar(9), Title varchar(255), dateOfRelease varchar(10), MovieGenre varchar(511), Duration int, country varchar(255), Writers varchar(511), worldgross BIGINT, Director varchar(255), Language varchar(255), listofacotrs varchar(32767), primary key(ID));
+create table movie(ID varchar(9), Title varchar(255), dateOfRelease varchar(10), MovieGenre varchar(511), Duration int, country varchar(255), Writers varchar(511), worldgross BIGINT, Director varchar(255), mLanguage varchar(255), listofactors varchar(16000), primary key(ID));
 
-create table Place(CityName varchar(255), Country varchar(255), Region varchar(2), Population bigint, Longituude double, Latitude double, primary key(CityName, Country, Region));
+create table Place(CityName varchar(255), Country varchar(255), Region varchar(2), Population bigint, Longitude double, Latitude double, primary key(CityName, Country, Region));
 -- we can not have 'user' as name of table because that is a key word same with password
 create table ProgramUser(UserPassword varchar(255), UserName varchar(255), RealName varchar(255), primary key(UserPassword, Username));
 -- even tho demo and movie are the same entity they belong to two diffrent csv files, so i am going to join them on here
