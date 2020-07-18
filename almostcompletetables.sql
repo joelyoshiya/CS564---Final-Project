@@ -4,9 +4,9 @@ create table person(ActorID varchar(9), CastName varchar(255), Height double, Bi
 create table movie(ID varchar(9), Title varchar(255), dateOfRelease varchar(10), MovieGenre varchar(511), Duration int, country varchar(255), Writers varchar(511), worldgross BIGINT, Director varchar(255), Language varchar(255), listofacotrs varchar(32767), primary key(ID));
 
 create table Place(CityName varchar(255), Country varchar(255), Region varchar(2), Population bigint, Longituude double, Latitude double, primary key(CityName, Country, Region));
--- we can not have 'user' as name of table becuase that is a key word same with password
+-- we can not have 'user' as name of table because that is a key word same with password
 create table ProgramUser(UserPassword varchar(255), UserName varchar(255), RealName varchar(255), primary key(UserPassword, Username));
--- even tho demo and movie are the same enity they belong to two diffrent csv files, so i am going to join them on here
+-- even tho demo and movie are the same entity they belong to two diffrent csv files, so i am going to join them on here
 -- this table still needs some work done to it
 create table demo(ID varchar(255), primary key(ID));
 

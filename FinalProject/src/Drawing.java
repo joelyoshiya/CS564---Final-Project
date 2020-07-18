@@ -12,6 +12,8 @@ import javax.swing.border.Border;
 import java.util.Random;
 import java.awt.Color;
 import java.awt.Font;
+
+
 public class Drawing extends Canvas {
     /**
 	 * 
@@ -32,14 +34,18 @@ public class Drawing extends Canvas {
 	static Color test = new Color(255,0,255);
 	static Color grey = new Color(100,100,100);
 	static int circlecount = width/6;
-	
+
+	// MAIN
 	public static void main(String[] args) {
 		JFrame frameOne = new JFrame();
 		loginscreen(frameOne);
-		
-        
+		//Next screen to navigate to
+		//New user screen?
     }
 	 @Override
+	 /**
+	  *
+	  */
     public void paint(Graphics g) {
        
        Random rand = new Random();
@@ -59,15 +65,17 @@ public class Drawing extends Canvas {
     	   g.setColor(new Color(rand.nextInt(255),rand.nextInt(255), rand.nextInt(255)));
     	   g.fillOval(1*width/5+ 10, 150, width/5, height-300);
     	   g.fillOval(3*width/5+ 10, 150, width/5, height-300);
-       }
-       
-       
+       }else if(framecount == 2){
+
+	   }
        //g.fillOval(, 100, 50, 50);
-      
-       
        
     }
-	 
+
+	/**
+	 *
+	 * @param inputframe
+	 */
 	 public static void newuser(JFrame inputframe) {
 		 Random rand = new Random();
 		 inputframe.getContentPane().setBackground(purple);
@@ -81,13 +89,7 @@ public class Drawing extends Canvas {
 		 JLabel favMovielb = new JLabel();
 		 JLabel likedactorslb = new JLabel();
 		 JLabel favactorslb = new JLabel();
-		 
-		 
-		 
-		 
-		 
-		 
-		 
+
 		 	framecount=1;
 	        Canvas canvas = new Drawing();
 	        canvas.setSize(width, height);
@@ -129,10 +131,7 @@ public class Drawing extends Canvas {
 	        favactorslb.setBounds(4*width/5+110, 200, 200, 50);
 	        favactorslb.setFont(new Font("Courier", Font.BOLD,15));
 	        
-	        
-	        
-	        
-	        
+
 	        //************* this is the
 	        UserNameLb.setForeground(white);
 	        UserNameLb.setOpaque(true);
@@ -163,7 +162,11 @@ public class Drawing extends Canvas {
 	        inputframe.pack();
 	        inputframe.setVisible(true);
 	 }
-	 
+
+	/**
+	 *
+	 * @param inputframe
+	 */
 	 public static void loginscreen(JFrame inputframe) {
 		 	framecount =0;
 		 	JLabel Labelone = new JLabel();
@@ -255,10 +258,62 @@ public class Drawing extends Canvas {
 	       
 	        inputframe.pack();
 	        inputframe.setVisible(true);
-	        
-	       
-	       
-		 
+
 	 }
+
+	/**
+	 * Method to plot geographical points on a map image given latitude/longitude values
+	 * Input should be a set of doubles for each person, then each person mapped
+	 * @param input - empty frame, get latitude/longitude info from MySQL and plot a point on a map image
+	 * @return -1 if back button pushed, else it doesn't really matter
+	 */
+	 int mapFrame(JFrame input, double[][] coordinates){
+		 //distinct frame count for the mapFrame
+	 	framecount = 2;
+
+	 	//Assuming the input double array, coordinates, has a 0 index containing latitude
+		//And corresponding longitude in the 1 index
+	 	double[] x_coord = new double[coordinates[0].length];
+	 	double[] y_coord = new double[coordinates[1].length];
+
+	 	double[][] x_yVals = convertDegreesToCartesian(coordinates);
+
+	 	for(int i = 0; i < x_yVals.length; i++){
+	 		for(int j = 0; j < x_yVals[i].length; j++){
+	 			if(i == 0){
+	 				x_coord[j] = x_yVals[i][j];
+				}else if(i == 1){
+	 				y_coord[j] = x_yVals[i][j];
+				}
+			}
+		}
+	 	//NOW have all x and y coordinates
+
+	 	return -1;
+	 }
+
+	/**
+	 * Converts the Latitude/Longitude coordinates into Cartesian X and Y values
+	 * That will be used to plot points on a Cartesian map of the world in mapFrame()
+	 * @param coordinates
+	 * @return
+	 */
+	 double[][] convertDegreesToCartesian(double[][] coordinates){
+	 	//TODO fully implement
+		 double[][] x_yVals = new double[coordinates.length][coordinates[0].length];
+		 //Now convert latitude/longitude into a corresponding X and Y value
+		 for(int i = 0; i < coordinates.length; i++){
+		 	for(int j = 0; j < coordinates[i].length; j++){
+		 		//Do something, write values
+				if(i == 0){//X Value
+					x_yVals[i][j] = 0;// TODO CALCULATE for the X value
+				}else if(i == 1){//Y value
+					x_yVals[i][j] = 0;// TODO CALCULATE for the Y value
+				}
+			}
+		 }
+		 return x_yVals;
+	 }
+
 	 
 }
