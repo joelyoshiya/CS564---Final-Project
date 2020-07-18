@@ -346,7 +346,7 @@ public class Drawing extends Canvas {
 	         });
 	        
 	        JScrollPane favoritmovies = new JScrollPane(listfavoritmovie);
-	        favoritmovies.setBounds(230+2*width/5,height/2-50,100,100);
+	        favoritmovies.setBounds(280+2*width/5,height/2-50,100,100);
 	        
 	        
 	        listfavoritmovie.addMouseListener(new MouseAdapter() {
@@ -473,8 +473,22 @@ public class Drawing extends Canvas {
 	        loginbtn.setBackground(test);
 	       // addWindowListener(this);
 	        loginbtn.addActionListener(new ActionListener(){  
-	        	public void actionPerformed(ActionEvent e){  
-	        		inputframe.setVisible(false);
+	        	public void actionPerformed(ActionEvent e){
+	        		String username = UserNamefld.getText();
+	        		String password = Passwordfld.getText();
+	        		
+	        		
+	        		if(true) {
+	        			inputframe.remove(UserNamefld);
+		        		inputframe.remove(Passwordfld);
+		        		inputframe.remove(UserNameLb);
+		        		inputframe.remove(PasswordLb);
+		        		inputframe.remove(loginbtn);
+		        		inputframe.remove(newuserbtn);
+		        		inputframe.remove(canvas);
+		        		loginhome(inputframe);
+	        		}
+	        		
 	            }  
 	        });  
 	        
@@ -494,6 +508,24 @@ public class Drawing extends Canvas {
 	       
 		 
 	 }
+	 public static void loginhome(JFrame inputframe) {
+		 framecount =3;
+		 inputframe.getContentPane().setBackground(purple);
+			inputframe.setDefaultCloseOperation(inputframe.EXIT_ON_CLOSE);
+			inputframe.setTitle("Log in start screen");
+			inputframe.setVisible(true);
+	        Canvas canvas = new Drawing();
+	        canvas.setSize(width, height);
+	        
+	        inputframe.add(canvas);
+		       
+	        inputframe.pack();
+	        inputframe.setVisible(true);
+		 
+		 
+	 }
+	 
+	 
 	 /**
 		 * Method to plot geographical points on a map image given latitude/longitude values
 		 * Input should be a set of doubles for each person, then each person mapped
