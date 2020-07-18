@@ -13,6 +13,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.border.Border;
@@ -67,15 +68,28 @@ public class Drawing extends Canvas {
        }
        else if(framecount == 1) {
     	   g.setColor(new Color(rand.nextInt(255),rand.nextInt(255), rand.nextInt(255)));
-    	   g.fillOval(10, 150, width/5, height-300);
-    	   g.fillOval(2*width/5+ 10, 150, width/5, height-300);
-    	   g.fillOval(4*width/5+ 10, 150, width/5, height-300);
+    	   g.fillOval(0, 150, width/5-20, height-300);
+    	   g.fillOval(2*width/5-32, 150, width/5-20, height-300);
+    	   g.fillOval(4*width/5-70, 150, width/5-20, height-300);
     	   g.setColor(new Color(rand.nextInt(255),rand.nextInt(255), rand.nextInt(255)));
-    	   g.fillOval(1*width/5+ 10, 150, width/5, height-300);
-    	   g.fillOval(3*width/5+ 10, 150, width/5, height-300);
+    	   g.fillOval(1*width/5-17, 150, width/5-20, height-300);
+    	   g.fillOval(3*width/5-50, 150, width/5-20, height-300);
        }
        else if(framecount==2) {
     	   
+       }else if(framecount==3) {
+    	   g.setColor(new Color(rand.nextInt(255),rand.nextInt(255), rand.nextInt(255)));
+    	   g.fillOval(0, 150, width/5-20, height-300);
+    	   g.fillOval(2*width/5-32, 150, width/5-20, height-300);
+    	   g.fillOval(4*width/5-70, 150, width/5-20, height-300);
+    	   g.setColor(new Color(rand.nextInt(255),rand.nextInt(255), rand.nextInt(255)));
+    	   g.fillOval(1*width/5-17, 150, width/5-20, height-300);
+    	   g.fillOval(3*width/5-50, 150, width/5-20, height-300);
+       }else if(framecount==4) {
+    	   g.setColor(new Color(rand.nextInt(255),rand.nextInt(255), rand.nextInt(255)));
+    	   g.fillOval(0, 150, width/5-20, height-300);
+    	   g.setColor(new Color(rand.nextInt(255),rand.nextInt(255), rand.nextInt(255)));
+    	   g.fillOval(1*width/5-17, 150, width/5-20, height-300);
        }
        
        //g.fillOval(, 100, 50, 50);
@@ -161,7 +175,7 @@ public class Drawing extends Canvas {
 	        
 	        
 	        submitbtn.setText("Submit");
-	        submitbtn.setBounds(width/2-150, height-150, 300, 100);
+	        submitbtn.setBounds(width/2-180, height-150, 300, 100);
 	        submitbtn.setBackground(yellow);
 	        submitbtn.setFont(new Font("Courier", Font.BOLD,45));
 	        
@@ -174,35 +188,35 @@ public class Drawing extends Canvas {
 	        Newuserinfor.setOpaque(true);
 	        Newuserinfor.setBackground(grey);
 	        Newuserinfor.setText("Enter In New User INFO");
-	        Newuserinfor.setBounds(110, 200, 200, 50);
+	        Newuserinfor.setBounds(90, 230, 200, 50);
 	        Newuserinfor.setFont(new Font("Courier", Font.BOLD,15));
 	        
 	        likedMovielb.setForeground(white);
 	        likedMovielb.setOpaque(true);
 	        likedMovielb.setBackground(grey);
 	        likedMovielb.setText("    Liked Movies");
-	        likedMovielb.setBounds(width/5+110, 200, 200, 50);
+	        likedMovielb.setBounds(width/5+75, 230, 200, 50);
 	        likedMovielb.setFont(new Font("Courier", Font.BOLD,15));
 	        
 	        favMovielb.setForeground(white);
 	        favMovielb.setOpaque(true);
 	        favMovielb.setBackground(grey);
-	        favMovielb.setText("     Favorite Movies");
-	        favMovielb.setBounds(2*width/5+110, 200, 200, 50);
+	        favMovielb.setText("   Favorite Movies");
+	        favMovielb.setBounds(2*width/5+60, 230, 200, 50);
 	        favMovielb.setFont(new Font("Courier", Font.BOLD,15));
 	        
 	        likedactorslb.setForeground(white);
 	        likedactorslb.setOpaque(true);
 	        likedactorslb.setBackground(grey);
 	        likedactorslb.setText("    Liked Actors");
-	        likedactorslb.setBounds(3*width/5+110, 200, 200, 50);
+	        likedactorslb.setBounds(3*width/5+40, 230, 200, 50);
 	        likedactorslb.setFont(new Font("Courier", Font.BOLD,15));
 	        
 	        favactorslb.setForeground(white);
 	        favactorslb.setOpaque(true);
 	        favactorslb.setBackground(grey);
 	        favactorslb.setText("     Favorite Actors");
-	        favactorslb.setBounds(4*width/5+110, 200, 200, 50);
+	        favactorslb.setBounds(4*width/5+20, 230, 200, 50);
 	        favactorslb.setFont(new Font("Courier", Font.BOLD,15));
 	        
 	        
@@ -214,48 +228,48 @@ public class Drawing extends Canvas {
 	        UserNameLb.setOpaque(true);
 	        UserNameLb.setBackground(grey);
 	        UserNameLb.setText("User Name: ");
-	        UserNameLb.setBounds(40, height/2-160, 150, 50);
+	        UserNameLb.setBounds(35, height/2-160, 150, 50);
 	        UserNameLb.setFont(new Font("Courier", Font.BOLD,15));
 	        
 	        PasswordLb.setForeground(white);
 	        PasswordLb.setOpaque(true);
 	        PasswordLb.setBackground(grey);
 	        PasswordLb.setText("User Password: ");
-	        PasswordLb.setBounds(40, height/2-60, 150, 50);
+	        PasswordLb.setBounds(35, height/2-60, 150, 50);
 	        PasswordLb.setFont(new Font("Courier", Font.BOLD,15));
 	        
 	        UserrealNameLb.setForeground(white);
 	        UserrealNameLb.setOpaque(true);
 	        UserrealNameLb.setBackground(grey);
 	        UserrealNameLb.setText("User Real Name: ");
-	        UserrealNameLb.setBounds(40, height/2+40, 150, 50);
+	        UserrealNameLb.setBounds(35, height/2+40, 150, 50);
 	        UserrealNameLb.setFont(new Font("Courier", Font.BOLD,15));
 	        
 	        UserAgeLb.setForeground(white);
 	        UserAgeLb.setOpaque(true);
 	        UserAgeLb.setBackground(grey);
 	        UserAgeLb.setText("User Age: ");
-	        UserAgeLb.setBounds(40, height/2+140, 150, 50);
+	        UserAgeLb.setBounds(35, height/2+140, 150, 50);
 	        UserAgeLb.setFont(new Font("Courier", Font.BOLD,15));
 	        
-	        UserNamefld.setBounds(190, height/2-160, 150,50 );
+	        UserNamefld.setBounds(185, height/2-160, 150,50 );
 	        UserNamefld.setBackground(teal);
 	        UserNamefld.setText("Enter User Name Here");
 	        Border border = BorderFactory.createLineBorder(Color.ORANGE);
 	        UserNamefld.setBorder(border);
 	        
-	        Passwordfld.setBounds(190, height/2-60, 150,50 );
+	        Passwordfld.setBounds(185, height/2-60, 150,50 );
 	        Passwordfld.setBackground(teal);
 	        Passwordfld.setText("Enter Password Here");
 	        Border border2 = BorderFactory.createLineBorder(Color.ORANGE);
 	        Passwordfld.setBorder(border2);
 	        
-	        UserRealNamefld.setBounds(190, height/2+40, 150,50 );
+	        UserRealNamefld.setBounds(185, height/2+40, 150,50 );
 	        UserRealNamefld.setBackground(teal);
 	        UserRealNamefld.setText("Enter Real Name Here");
 	        
 	        
-	        UserAgefld.setBounds(190, height/2+140, 150,50 );
+	        UserAgefld.setBounds(185, height/2+140, 150,50 );
 	        UserAgefld.setBackground(teal);
 	        UserAgefld.setText("Enter Age Here");
 	        
@@ -341,14 +355,14 @@ public class Drawing extends Canvas {
 	        searchedformovieslb.setOpaque(true);
 	        searchedformovieslb.setBackground(grey);
 	        searchedformovieslb.setText("Search results:");
-	        searchedformovieslb.setBounds(40+width/5, height/2-100, 120, 40);
+	        searchedformovieslb.setBounds(width/5, height/2-100, 120, 40);
 	        searchedformovieslb.setFont(new Font("Courier", Font.BOLD,12));
 	        
 	        likedmoviedlb.setForeground(white);
 	        likedmoviedlb.setOpaque(true);
 	        likedmoviedlb.setBackground(grey);
 	        likedmoviedlb.setText("Liked Movies:");
-	        likedmoviedlb.setBounds(280+width/5, height/2-100, 120, 40);
+	        likedmoviedlb.setBounds(220+width/5, height/2-100, 120, 40);
 	        likedmoviedlb.setFont(new Font("Courier", Font.BOLD,12));
 	        
 	        
@@ -379,7 +393,7 @@ public class Drawing extends Canvas {
 	         });
 	        
 	        
-	        serchedmovies.setBounds(40+width/5,height/2-50,100,200);
+	        serchedmovies.setBounds(width/5,height/2-50,120,200);
 
 	       
 	       
@@ -405,7 +419,7 @@ public class Drawing extends Canvas {
 	         });
 	        
 	       
-	        likedmovies.setBounds(280+width/5,height/2-50,100,200);
+	        likedmovies.setBounds(220+width/5,height/2-50,120,200);
 
 	        
 	        
@@ -413,7 +427,7 @@ public class Drawing extends Canvas {
 	        
 	        
 	        
-	        Searchmoviefld.setBounds(40+width/5, height/2-150, 150,50 );
+	        Searchmoviefld.setBounds(width/5, height/2-150, 150,50 );
 	        Searchmoviefld.setBackground(teal);
 	        Searchmoviefld.setText("Search Movie name here");
 	        
@@ -421,7 +435,7 @@ public class Drawing extends Canvas {
 	        
 	        
 	        searchmoviebtn.setText("Search Movie");
-	        searchmoviebtn.setBounds(230+width/5,height/2-150, 150, 50);
+	        searchmoviebtn.setBounds(190+width/5,height/2-150, 150, 50);
 	        searchmoviebtn.setBackground(yellow);
 	       // addWindowListener(this);
 	        searchmoviebtn.addActionListener(new ActionListener(){  
@@ -458,21 +472,21 @@ public class Drawing extends Canvas {
 	        likedmovielb2.setOpaque(true);
 	        likedmovielb2.setBackground(grey);
 	        likedmovielb2.setText("Liked Movies: ");
-	        likedmovielb2.setBounds(40+2*width/5, height/2-100, 120, 40);
+	        likedmovielb2.setBounds(2*width/5-20, height/2-100, 120, 40);
 	        likedmovielb2.setFont(new Font("Courier", Font.BOLD,12));
 	        
 	        favoritmovelb.setForeground(white);
 	        favoritmovelb.setOpaque(true);
 	        favoritmovelb.setBackground(grey);
 	        favoritmovelb.setText("Favorite Movie:");
-	        favoritmovelb.setBounds(280+2*width/5, height/2-100, 120, 40);
+	        favoritmovelb.setBounds(220+2*width/5, height/2-100, 120, 40);
 	        favoritmovelb.setFont(new Font("Courier", Font.BOLD,12));
 	        
 	        
 	        
 	       
 	        
-	        likedmovies2.setBounds(40+2*width/5,height/2-50,100,200);
+	        likedmovies2.setBounds(2*width/5-20,height/2-50,120,200);
 	       // list.setSelectedIndex(0);
 	        
 	        //this is to make sure the liked list match
@@ -501,7 +515,7 @@ public class Drawing extends Canvas {
 	         });
 	        
 	        
-	        favoritmovies.setBounds(280+2*width/5,height/2-50,100,100);
+	        favoritmovies.setBounds(220+2*width/5,height/2-50,120,100);
 	        
 	        
 	        listfavoritmovie.addMouseListener(new MouseAdapter() {
@@ -532,37 +546,37 @@ public class Drawing extends Canvas {
 	        searchedforactorslb.setOpaque(true);
 	        searchedforactorslb.setBackground(grey);
 	        searchedforactorslb.setText("Search results:");
-	        searchedforactorslb.setBounds(40+3*width/5, height/2-100, 120, 40);
+	        searchedforactorslb.setBounds(3*width/5-30, height/2-100, 120, 40);
 	        searchedforactorslb.setFont(new Font("Courier", Font.BOLD,12));
 	        
 	        likedactorslb1.setForeground(white);
 	        likedactorslb1.setOpaque(true);
 	        likedactorslb1.setBackground(grey);
 	        likedactorslb1.setText("Liked Actors:");
-	        likedactorslb1.setBounds(280+3*width/5, height/2-100, 120, 40);
+	        likedactorslb1.setBounds(197+3*width/5, height/2-100, 120, 40);
 	        likedactorslb1.setFont(new Font("Courier", Font.BOLD,12));
 	        
 	        
 	        searchactorbtn.setText("Search Actor");
-	        searchactorbtn.setBounds(230+3*width/5,height/2-150, 150, 50);
+	        searchactorbtn.setBounds(167+3*width/5,height/2-150, 150, 50);
 	        searchactorbtn.setBackground(yellow);
 	        
-	        Searchactorfld.setBounds(40+3*width/5, height/2-150, 150,50 );
+	        Searchactorfld.setBounds(3*width/5-30, height/2-150, 150,50 );
 	        Searchactorfld.setBackground(teal);
 	        Searchactorfld.setText("Search Movie name here");
 	        
 	        likedactorlbtwo.setForeground(white);
 	        likedactorlbtwo.setOpaque(true);
 	        likedactorlbtwo.setBackground(grey);
-	        likedactorlbtwo.setText("Liked Movies: ");
-	        likedactorlbtwo.setBounds(40+4*width/5, height/2-100, 120, 40);
+	        likedactorlbtwo.setText("Liked Actors: ");
+	        likedactorlbtwo.setBounds(4*width/5-60, height/2-100, 120, 40);
 	        likedactorlbtwo.setFont(new Font("Courier", Font.BOLD,12));
 	        
 	        favoreteactorlb.setForeground(white);
 	        favoreteactorlb.setOpaque(true);
 	        favoreteactorlb.setBackground(grey);
-	        favoreteactorlb.setText("Favorite Movie:");
-	        favoreteactorlb.setBounds(200+4*width/5, height/2-100, 120, 40);
+	        favoreteactorlb.setText("Favorite Actor:");
+	        favoreteactorlb.setBounds(5*width/5-220, height/2-100, 120, 40);
 	        favoreteactorlb.setFont(new Font("Courier", Font.BOLD,12));
 	        
 	        
@@ -587,7 +601,7 @@ public class Drawing extends Canvas {
 	               }
 	            }
 	         });
-	        searchedactors.setBounds(40+3*width/5,height/2-50,100,200);
+	        searchedactors.setBounds(3*width/5-30,height/2-50,120,200);
 	        listlikeactorsone.addMouseListener(new MouseAdapter() {
 	            public void mouseClicked(MouseEvent me) {
 	               if (me.getClickCount() == 1) {
@@ -610,7 +624,7 @@ public class Drawing extends Canvas {
 	         });
 	        
 	       
-	        likedactorsone.setBounds(280+3*width/5,height/2-50,100,200);
+	        likedactorsone.setBounds(197+3*width/5,height/2-50,120,200);
 		       
 	        listlikeactorstwo.addMouseListener(new MouseAdapter() {
 		            public void mouseClicked(MouseEvent me) {
@@ -634,7 +648,7 @@ public class Drawing extends Canvas {
 		               }
 		            }
 		         });
-	        likedactorstwo.setBounds(40+4*width/5,height/2-50,100,200);
+	        likedactorstwo.setBounds(4*width/5-60,height/2-50,120,200);
 	        
 
 	        
@@ -659,7 +673,7 @@ public class Drawing extends Canvas {
 	            }
 	         });
 	        
-	        favoritactors.setBounds(200+4*width/5,height/2-50,100,100);
+	        favoritactors.setBounds(5*width/5-220,height/2-50,120,100);
 	        
 	        searchactorbtn.addActionListener(new ActionListener(){  
 	        	public void actionPerformed(ActionEvent e){ 
@@ -807,15 +821,15 @@ public class Drawing extends Canvas {
 //	        		Database.Connection();
 //	        		
 //	        		if(Database.verifyLogin(username,password)) {
-//	        			
-//	        			inputframe.remove(UserNamefld);
-//		        		inputframe.remove(Passwordfld);
-//		        		inputframe.remove(UserNameLb);
-//		        		inputframe.remove(PasswordLb);
-//		        		inputframe.remove(loginbtn);
-//		        		inputframe.remove(newuserbtn);
-//		        		inputframe.remove(canvas);
-//		        		loginhome(inputframe);
+	        			
+	        			inputframe.remove(UserNamefld);
+		        		inputframe.remove(Passwordfld);
+		        		inputframe.remove(UserNameLb);
+		        		inputframe.remove(PasswordLb);
+		        		inputframe.remove(loginbtn);
+		        		inputframe.remove(newuserbtn);
+		        		inputframe.remove(canvas);
+		        		loginhome(inputframe);
 //	        		}
 	        		
 	            }  
@@ -846,6 +860,276 @@ public class Drawing extends Canvas {
 	        Canvas canvas = new Drawing();
 	        canvas.setSize(width, height);
 	        
+	        JTextArea SimActorlb = new JTextArea();
+	        JTextArea SimGenraLb = new JTextArea();
+	        JTextArea SimDirectorLb = new JTextArea();
+	        JTextArea ComboLb = new JTextArea();
+	        JTextArea instrucLb = new JTextArea();
+	        JTextArea instruclistLb = new JTextArea();
+	        
+			SimActorlb.setForeground(white);
+			SimActorlb.setOpaque(true);
+			SimActorlb.setBackground(grey);
+			SimActorlb.setText("Similar Movies \nWith liked actors");
+			SimActorlb.setBounds(width/5+70, 200, 200, 75);
+			SimActorlb.setFont(new Font("Courier", Font.BOLD,15));
+			
+			SimGenraLb.setForeground(white);
+			SimGenraLb.setOpaque(true);
+			SimGenraLb.setBackground(grey);
+			SimGenraLb.setText("Similar Movies \nWith liked Genres");
+			SimGenraLb.setBounds(2*width/5+60, 200, 200, 75);
+			SimGenraLb.setFont(new Font("Courier", Font.BOLD,15));
+			
+			SimDirectorLb.setForeground(white);
+			SimDirectorLb.setOpaque(true);
+			SimDirectorLb.setBackground(grey);
+			SimDirectorLb.setText("Similar Movies \nWith liked Directors\nor Writers");
+			SimDirectorLb.setBounds(3*width/5+42, 200, 200, 75);
+			SimDirectorLb.setFont(new Font("Courier", Font.BOLD,15));
+			
+			ComboLb.setForeground(white);
+			ComboLb.setOpaque(true);
+			ComboLb.setBackground(grey);
+			ComboLb.setText("Similar Movies \nWith All Three\nAttributes");
+			ComboLb.setBounds(4*width/5+22, 200, 200, 75);
+			ComboLb.setFont(new Font("Courier", Font.BOLD,15));
+			
+			instrucLb.setForeground(white);
+			instrucLb.setOpaque(true);
+			instrucLb.setBackground(grey);
+			instrucLb.setText("\n    Instructions");
+			instrucLb.setBounds(90, 200, 200, 75);
+			instrucLb.setFont(new Font("Courier", Font.BOLD,15));
+			
+			
+			instruclistLb.setForeground(white);
+			instruclistLb.setOpaque(true);
+			instruclistLb.setBackground(grey);
+			instruclistLb.setText("1) The left consistes of movie\nrecomendatons orginized by three \ncatigories and one combination\n"
+					+ "2) Click on the list box you wish \nto select more information about \na movie with in that box \n"
+					+"3) Select the movie inside \nthe list by clicking on it");
+			instruclistLb.setBounds(40, 300, 300, 400);
+			instruclistLb.setFont(new Font("Courier", Font.BOLD,15));
+			
+			JList listsimactor = new JList();
+			JList listsingen = new JList();
+			JList listsindirc = new JList();
+			JList listsinall = new JList();
+			 
+			Vector datasimactor = new Vector();
+			Vector datasimgen = new Vector();
+			Vector datasindirc = new Vector();
+			Vector datasimall = new Vector();
+			 
+			JScrollPane simactorpn = new JScrollPane(listsimactor);
+		    JScrollPane simgenon = new JScrollPane(listsingen);
+		    JScrollPane simdircon= new JScrollPane(listsindirc);
+		    JScrollPane simallpn = new JScrollPane(listsinall);
+		    
+		    JButton logoutbtn = new JButton();
+			JButton usersettingbtn = new JButton();
+			
+		    simactorpn.setBounds(width/5+20,height/2-200,300,400);
+		    simgenon.setBounds(2*width/5+8,height/2-200,300,400);
+		    simdircon.setBounds(3*width/5-10,height/2-200,300,400);
+		    simallpn.setBounds(4*width/5-27,height/2-200,300,400);
+		    
+		    logoutbtn.setText("Log out");
+		    logoutbtn.setBounds(20,50, 200, 50);
+		    logoutbtn.setBackground(yellow);
+	        
+		    usersettingbtn.setText("User Settings");
+		    usersettingbtn.setBounds(width-300,50, 200, 50);
+		    usersettingbtn.setBackground(yellow);
+		    
+		    
+		    // Allen this is how to add the information to the list above you will need to do this of each 
+		    // of the fours lists
+		    
+		    datasimactor.addElement("India");
+		    datasimactor.addElement("Australia");
+		    datasimactor.addElement("England");
+		    datasimactor.addElement("England");
+		    datasimactor.addElement("New Zealand");
+		    datasimactor.addElement("South Africa");
+		    listsimactor.setListData(datasimactor);
+		    
+		    
+		    listsimactor.addMouseListener(new MouseAdapter() {
+	            public void mouseClicked(MouseEvent me) {
+	               if (me.getClickCount() == 1) {
+	                  JList target = (JList)me.getSource();
+	                  int index = target.locationToIndex(me.getPoint());
+	                  if (index >= 0) {
+	                     Object item = target.getModel().getElementAt(index);
+	                     int res = JOptionPane.showConfirmDialog(null, "Would you like to look into the movie "+item.toString()+" more?");
+	                     if(res==0) {
+	                    	inputframe.remove(logoutbtn);
+	             			inputframe.remove(usersettingbtn);
+	             		    inputframe.remove(simactorpn);
+	             			inputframe.remove(simgenon);
+	             			inputframe.remove(simdircon);
+	             			inputframe.remove(simallpn);
+	             			inputframe.remove(instruclistLb);
+	             			inputframe.remove(instrucLb);
+	             			inputframe.remove(ComboLb);
+	             			inputframe.remove(SimDirectorLb);
+	             			inputframe.remove(SimActorlb);
+	             			inputframe.remove(SimGenraLb);
+	             	        inputframe.remove(canvas);
+	             	        selectedMovie(inputframe, item);
+	                    	
+	                     };
+	                  }
+	               }
+	            }
+	         });
+		    
+		    listsingen.addMouseListener(new MouseAdapter() {
+	            public void mouseClicked(MouseEvent me) {
+	               if (me.getClickCount() == 1) {
+	                  JList target = (JList)me.getSource();
+	                  int index = target.locationToIndex(me.getPoint());
+	                  if (index >= 0) {
+	                     Object item = target.getModel().getElementAt(index);
+	                     int res = JOptionPane.showConfirmDialog(null, "Would you like to look into the movie "+item.toString()+" more?");
+	                     if(res==0) {
+	                    	inputframe.remove(logoutbtn);
+	             			inputframe.remove(usersettingbtn);
+	             		    inputframe.remove(simactorpn);
+	             			inputframe.remove(simgenon);
+	             			inputframe.remove(simdircon);
+	             			inputframe.remove(simallpn);
+	             			inputframe.remove(instruclistLb);
+	             			inputframe.remove(instrucLb);
+	             			inputframe.remove(ComboLb);
+	             			inputframe.remove(SimDirectorLb);
+	             			inputframe.remove(SimActorlb);
+	             			inputframe.remove(SimGenraLb);
+	             	        inputframe.remove(canvas);
+	             	        selectedMovie(inputframe, item);
+	                    	
+	                     };
+	                  }
+	               }
+	            }
+	         });
+		    listsindirc.addMouseListener(new MouseAdapter() {
+	            public void mouseClicked(MouseEvent me) {
+	               if (me.getClickCount() == 1) {
+	                  JList target = (JList)me.getSource();
+	                  int index = target.locationToIndex(me.getPoint());
+	                  if (index >= 0) {
+	                     Object item = target.getModel().getElementAt(index);
+	                     int res = JOptionPane.showConfirmDialog(null, "Would you like to look into the movie "+item.toString()+" more?");
+	                     if(res==0) {
+	                    	inputframe.remove(logoutbtn);
+	             			inputframe.remove(usersettingbtn);
+	             		    inputframe.remove(simactorpn);
+	             			inputframe.remove(simgenon);
+	             			inputframe.remove(simdircon);
+	             			inputframe.remove(simallpn);
+	             			inputframe.remove(instruclistLb);
+	             			inputframe.remove(instrucLb);
+	             			inputframe.remove(ComboLb);
+	             			inputframe.remove(SimDirectorLb);
+	             			inputframe.remove(SimActorlb);
+	             			inputframe.remove(SimGenraLb);
+	             	        inputframe.remove(canvas);
+	             	        selectedMovie(inputframe, item);
+	                    	
+	                     };
+	                  }
+	               }
+	            }
+	         });
+		    listsinall.addMouseListener(new MouseAdapter() {
+	            public void mouseClicked(MouseEvent me) {
+	               if (me.getClickCount() == 1) {
+	                  JList target = (JList)me.getSource();
+	                  int index = target.locationToIndex(me.getPoint());
+	                  if (index >= 0) {
+	                     Object item = target.getModel().getElementAt(index);
+	                     int res = JOptionPane.showConfirmDialog(null, "Would you like to look into the movie "+item.toString()+" more?");
+	                     if(res==0) {
+	                    	inputframe.remove(logoutbtn);
+	             			inputframe.remove(usersettingbtn);
+	             		    inputframe.remove(simactorpn);
+	             			inputframe.remove(simgenon);
+	             			inputframe.remove(simdircon);
+	             			inputframe.remove(simallpn);
+	             			inputframe.remove(instruclistLb);
+	             			inputframe.remove(instrucLb);
+	             			inputframe.remove(ComboLb);
+	             			inputframe.remove(SimDirectorLb);
+	             			inputframe.remove(SimActorlb);
+	             			inputframe.remove(SimGenraLb);
+	             	        inputframe.remove(canvas);
+	             	        selectedMovie(inputframe, item);
+	                    	
+	                     };
+	                  }
+	               }
+	            }
+	         });
+		    
+		    logoutbtn.addActionListener(new ActionListener(){  
+	        	public void actionPerformed(ActionEvent e){ 
+	        		inputframe.remove(logoutbtn);
+         			inputframe.remove(usersettingbtn);
+         		    inputframe.remove(simactorpn);
+         			inputframe.remove(simgenon);
+         			inputframe.remove(simdircon);
+         			inputframe.remove(simallpn);
+         			inputframe.remove(instruclistLb);
+         			inputframe.remove(instrucLb);
+         			inputframe.remove(ComboLb);
+         			inputframe.remove(SimDirectorLb);
+         			inputframe.remove(SimActorlb);
+         			inputframe.remove(SimGenraLb);
+         	        inputframe.remove(canvas);
+	        		inputframe.remove(canvas);
+	        		loginscreen(inputframe);
+	        	
+	            }  
+	        });  
+		    
+		    usersettingbtn.addActionListener(new ActionListener(){  
+	        	public void actionPerformed(ActionEvent e){ 
+	        		inputframe.remove(logoutbtn);
+         			inputframe.remove(usersettingbtn);
+         		    inputframe.remove(simactorpn);
+         			inputframe.remove(simgenon);
+         			inputframe.remove(simdircon);
+         			inputframe.remove(simallpn);
+         			inputframe.remove(instruclistLb);
+         			inputframe.remove(instrucLb);
+         			inputframe.remove(ComboLb);
+         			inputframe.remove(SimDirectorLb);
+         			inputframe.remove(SimActorlb);
+         			inputframe.remove(SimGenraLb);
+         	        inputframe.remove(canvas);
+	        		inputframe.remove(canvas);
+	        		Userinfor(inputframe);
+	        	
+	            }  
+	        });  
+		    
+  
+		    
+		    inputframe.add(logoutbtn);
+			inputframe.add(usersettingbtn);
+		    inputframe.add(simactorpn);
+			inputframe.add(simgenon);
+			inputframe.add(simdircon);
+			inputframe.add(simallpn);
+			inputframe.add(instruclistLb);
+			inputframe.add(instrucLb);
+			inputframe.add(ComboLb);
+			inputframe.add(SimDirectorLb);
+			inputframe.add(SimActorlb);
+			inputframe.add(SimGenraLb);
 	        inputframe.add(canvas);
 		       
 	        inputframe.pack();
@@ -853,7 +1137,39 @@ public class Drawing extends Canvas {
 		 
 		 
 	 }
-	 
+	 public static void selectedMovie(JFrame inputframe, Object Movie) {
+		 framecount=4;
+		 inputframe.getContentPane().setBackground(purple);
+		 inputframe.setDefaultCloseOperation(inputframe.EXIT_ON_CLOSE);
+		 inputframe.setTitle("Log in start screen");
+		 inputframe.setVisible(true);
+	     Canvas canvas = new Drawing();
+	     canvas.setSize(width, height);
+	     
+	     
+	     
+	     
+	     
+	     
+	     
+	     inputframe.add(canvas);
+	       
+	     inputframe.pack();
+	     inputframe.setVisible(true);
+	 }
+	 public static void Userinfor(JFrame inputframe) {
+		 framecount=5;
+		 inputframe.getContentPane().setBackground(purple);
+		 inputframe.setDefaultCloseOperation(inputframe.EXIT_ON_CLOSE);
+		 inputframe.setTitle("Log in start screen");
+		 inputframe.setVisible(true);
+	     Canvas canvas = new Drawing();
+	     canvas.setSize(width, height);
+	     inputframe.add(canvas);
+	       
+	     inputframe.pack();
+	     inputframe.setVisible(true);
+	 }
 	 
 	 /**
 		 * Method to plot geographical points on a map image given latitude/longitude values
