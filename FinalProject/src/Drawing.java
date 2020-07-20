@@ -75,9 +75,9 @@ public class Drawing extends Canvas {
     	   g.fillOval(1*width/5-17, 150, width/5-20, height-300);
     	   g.fillOval(3*width/5-50, 150, width/5-20, height-300);
        }
-       else if(framecount==2) {
+       else if(framecount==2) {//For the mapFrame
     	   
-       }else if(framecount==3) {
+       }else if(framecount==3) {//login user frame
     	   g.setColor(new Color(rand.nextInt(255),rand.nextInt(255), rand.nextInt(255)));
     	   g.fillOval(0, 150, width/5-20, height-300);
     	   g.fillOval(2*width/5-32, 150, width/5-20, height-300);
@@ -85,7 +85,7 @@ public class Drawing extends Canvas {
     	   g.setColor(new Color(rand.nextInt(255),rand.nextInt(255), rand.nextInt(255)));
     	   g.fillOval(1*width/5-17, 150, width/5-20, height-300);
     	   g.fillOval(3*width/5-50, 150, width/5-20, height-300);
-       }else if(framecount==4) {
+       }else if(framecount==4) {//For the movie specifics (show all tuple info)
     	   g.setColor(new Color(rand.nextInt(255),rand.nextInt(255), rand.nextInt(255)));
     	   g.fillOval(0, 150, width/5-20, height-300);
     	   g.setColor(new Color(rand.nextInt(255),rand.nextInt(255), rand.nextInt(255)));
@@ -102,7 +102,7 @@ public class Drawing extends Canvas {
     	   g.fillOval(2*width/5-32+width/10, 110+width/5, width/10-20, width/10-20);
     	   g.setColor(new Color(rand.nextInt(255),rand.nextInt(255), rand.nextInt(255)));
     	   g.fillOval(2*width/5-32+width/10, 3*width/10+90, width/10-20, width/10-20);
-    	   
+
     	   g.setColor(new Color(rand.nextInt(255),rand.nextInt(255), rand.nextInt(255)));
     	   g.fillOval(23*width/40, 150, width/10-20, width/10-20);
     	   g.setColor(new Color(rand.nextInt(255),rand.nextInt(255), rand.nextInt(255)));
@@ -111,8 +111,10 @@ public class Drawing extends Canvas {
     	   g.fillOval(23*width/40, 110+width/5, width/10-20, width/10-20);
     	   g.setColor(new Color(rand.nextInt(255),rand.nextInt(255), rand.nextInt(255)));
     	   g.fillOval(23*width/40, 3*width/10+90, width/10-20, width/10-20);
-    	  
-       }
+
+       }else if(framecount == 5){//User Settings page
+
+	   }
        
        //g.fillOval(, 100, 50, 50);
       
@@ -758,7 +760,7 @@ public class Drawing extends Canvas {
 	        inputframe.setVisible(true);
 	        
 	      
-	 }
+	 }//END OF NEW USER
 	 
 	 public static void loginscreen(JFrame inputframe) {
 		 	framecount =0;
@@ -1159,6 +1161,13 @@ public class Drawing extends Canvas {
 		 
 		 
 	 }
+
+	/**
+	 * Set frame that will appear when a specific movie has been selected
+	 * Will display movie info
+	 * @param inputframe
+	 * @param Movie
+	 */
 	 public static void selectedMovie(JFrame inputframe, Object Movie) {
 		 framecount=4;
 		 Random rand = new Random();
@@ -1168,9 +1177,9 @@ public class Drawing extends Canvas {
 		 inputframe.setVisible(true);
 	     Canvas canvas = new Drawing();
 	     canvas.setSize(width, height);
-	     
-	     
-	     JLabel synopsislb = new JLabel();
+
+
+         JLabel synopsislb = new JLabel();
 		 JLabel Listofactorslb = new JLabel();
 		 JLabel Dirclb = new JLabel();
 		 JTextArea Listofwriterslb = new JTextArea();
@@ -1192,39 +1201,39 @@ public class Drawing extends Canvas {
 		 JTextArea Durationinfrolb = new JTextArea();
 		 JTextArea MovieGenreinfolb = new JTextArea();
 		 JTextArea IDinfolb = new JTextArea();
-		 
+
 		 JButton likedbtn = new JButton();
 		 JButton notlikedbtn = new JButton();
 		 JButton mapbtn = new JButton();
 		 JButton backbtn = new JButton();
 		 JTextArea synopsistxtlb = new JTextArea();
-		 
+
 		 JList listactor = new JList();
 		 JList listwriters = new JList();
 		 Vector dataactor = new Vector();
 		 Vector datawrtiers = new Vector();
-		 
+
 		 JScrollPane actopn = new JScrollPane(listactor);
 		 JScrollPane wrtierspn = new JScrollPane(listwriters);
-		 
-		 
-		 
-	     
-	     
+
+
+
+
+
 		 synopsislb.setForeground(white);
 		 synopsislb.setOpaque(true);
 		 synopsislb.setBackground(grey);
 		 synopsislb.setText("    Synopsis");
 		 synopsislb.setBounds(100, 180, 170, 50);
 		 synopsislb.setFont(new Font("Courier", Font.BOLD,15));
-		 
+
 		 synopsistxtlb.setForeground(black);
 		 synopsistxtlb.setOpaque(true);
 		 synopsistxtlb.setBackground(white);
 		 synopsistxtlb.setText("this is where allen is going \nto put in a text");
 		 synopsistxtlb.setBounds(70, 250, 230, 500);
 		 synopsistxtlb.setFont(new Font("Courier", Font.BOLD,15));
-		 
+
 		 Listofactorslb.setForeground(white);
 		 Listofactorslb.setOpaque(true);
 		 Listofactorslb.setBackground(grey);
@@ -1232,21 +1241,21 @@ public class Drawing extends Canvas {
 		 Listofactorslb.setBounds(width/5+85, 180, 170, 50);
 		 Listofactorslb.setFont(new Font("Courier", Font.BOLD,15));
 		 actopn.setBounds(width/5+60,250,230,500);
-		 
+
 		 Dirclb.setForeground(white);
 		 Dirclb.setOpaque(true);
 		 Dirclb.setBackground(grey);
 		 Dirclb.setText("Director");
 		 Dirclb.setBounds(2*width/5+10, 180, 100, 50);
 		 Dirclb.setFont(new Font("Courier", Font.BOLD,15));
-		 
+
 		 Directorinfolb.setForeground(black);
 		 Directorinfolb.setOpaque(true);
 		 Directorinfolb.setBackground(white);
 		 Directorinfolb.setText("THIS IS THE \nNAME OF THE DIRICTOR");
 		 Directorinfolb.setBounds(2*width/5+10, 250, 100, 50);
-		 
-		 
+
+
 		 Listofwriterslb.setForeground(white);
 		 Listofwriterslb.setOpaque(true);
 		 Listofwriterslb.setBackground(grey);
@@ -1254,127 +1263,165 @@ public class Drawing extends Canvas {
 		 Listofwriterslb.setBounds(2*width/5+10, 400, 100, 50);
 		 Listofwriterslb.setFont(new Font("Courier", Font.BOLD,15));
 		 wrtierspn.setBounds(2*width/5+10,460,100,300);
-		 
+
 		 Ratinglb.setForeground(white);
 		 Ratinglb.setOpaque(true);
 		 Ratinglb.setBackground(grey);
 		 Ratinglb.setText("Ratings");
 		 Ratinglb.setBounds(2*width/5+210, 180, 100, 50);
 		 Ratinglb.setFont(new Font("Courier", Font.BOLD,15));
-		 
+
 		 ratingsinfolb.setForeground(black);
 		 ratingsinfolb.setOpaque(true);
 		 ratingsinfolb.setBackground(white);
 		 ratingsinfolb.setText("THIS IS \n Ratings");
 		 ratingsinfolb.setBounds(2*width/5+210, 250, 100, 50);
-		 
+
 		 grossincomelb.setForeground(white);
 		 grossincomelb.setOpaque(true);
 		 grossincomelb.setBackground(grey);
 		 grossincomelb.setText("Gross Income");
 		 grossincomelb.setBounds(2*width/5+190, 350, 150, 50);
 		 grossincomelb.setFont(new Font("Courier", Font.BOLD,15));
-		 
+
 		 grossinfolb.setForeground(black);
 		 grossinfolb.setOpaque(true);
 		 grossinfolb.setBackground(white);
 		 grossinfolb.setText("THIS IS \n Ratings");
 		 grossinfolb.setBounds(2*width/5+190, 410, 150, 50);
-		 
+
 		 contreylb.setForeground(white);
 		 contreylb.setOpaque(true);
 		 contreylb.setBackground(grey);
 		 contreylb.setText("Countrey Orgin");
 		 contreylb.setBounds(2*width/5+190, 520, 150, 50);
 		 contreylb.setFont(new Font("Courier", Font.BOLD,15));
-		 
+
 		 contreyinfolb.setForeground(black);
 		 contreyinfolb.setOpaque(true);
 		 contreyinfolb.setBackground(white);
 		 contreyinfolb.setText("THIS IS \n Ratings");
 		 contreyinfolb.setBounds(2*width/5+190, 580, 150, 50);
-		 
+
 		 langlb.setForeground(white);
 		 langlb.setOpaque(true);
 		 langlb.setBackground(grey);
 		 langlb.setText("Languge");
 		 langlb.setBounds(2*width/5+190, 700, 150, 50);
 		 langlb.setFont(new Font("Courier", Font.BOLD,15));
-		 
+
 		 langinfolb.setForeground(black);
 		 langinfolb.setOpaque(true);
 		 langinfolb.setBackground(white);
 		 langinfolb.setText("THIS IS \n Ratings");
 		 langinfolb.setBounds(2*width/5+190, 760, 150, 50);
-		 
+
 		 realsedatelb.setForeground(white);
 		 realsedatelb.setOpaque(true);
 		 realsedatelb.setBackground(grey);
 		 realsedatelb.setText("Release Date");
 		 realsedatelb.setBounds(93*width/160, 180, 150, 50);
 		 realsedatelb.setFont(new Font("Courier", Font.BOLD,15));
-		 
+
 		 realsedateinfolb.setForeground(black);
 		 realsedateinfolb.setOpaque(true);
 		 realsedateinfolb.setBackground(white);
 		 realsedateinfolb.setText("THIS IS THE \nNAME OF THE DIRICTOR");
 		 realsedateinfolb.setBounds(93*width/160, 250, 150, 50);
-		 
+
 		 Durationlb.setForeground(white);
 		 Durationlb.setOpaque(true);
 		 Durationlb.setBackground(grey);
 		 Durationlb.setText("Duration");
 		 Durationlb.setBounds(93*width/160, 350, 150, 50);
 		 Durationlb.setFont(new Font("Courier", Font.BOLD,15));
-		 
+
 		 Durationinfrolb.setForeground(black);
 		 Durationinfrolb.setOpaque(true);
 		 Durationinfrolb.setBackground(white);
 		 Durationinfrolb.setText("THIS IS THE \nNAME OF THE DIRICTOR");
 		 Durationinfrolb.setBounds(93*width/160, 410, 150, 50);
-		 
+
 		 MovieGenrelb.setForeground(white);
 		 MovieGenrelb.setOpaque(true);
 		 MovieGenrelb.setBackground(grey);
 		 MovieGenrelb.setText("Genre");
 		 MovieGenrelb.setBounds(93*width/160, 520, 150, 50);
 		 MovieGenrelb.setFont(new Font("Courier", Font.BOLD,15));
-		 
+
 		 MovieGenreinfolb.setForeground(black);
 		 MovieGenreinfolb.setOpaque(true);
 		 MovieGenreinfolb.setBackground(white);
 		 MovieGenreinfolb.setText("THIS IS THE \nNAME OF THE DIRICTOR");
 		 MovieGenreinfolb.setBounds(93*width/160, 580, 150, 50);
-		 
+
 		 IDlb.setForeground(white);
 		 IDlb.setOpaque(true);
 		 IDlb.setBackground(grey);
 		 IDlb.setText("Movie ID");
 		 IDlb.setBounds(93*width/160, 700, 150, 50);
 		 IDlb.setFont(new Font("Courier", Font.BOLD,15));
-		 
+
 		 IDinfolb.setForeground(black);
 		 IDinfolb.setOpaque(true);
 		 IDinfolb.setBackground(white);
 		 IDinfolb.setText("THIS IS THE \nNAME OF THE DIRICTOR");
 		 IDinfolb.setBounds(93*width/160, 760, 150, 50);
-		 
+
 		 likedbtn.setText("Did you like this Movie?");
 		 likedbtn.setBounds(3*width/4, height/4, 200, 100);
 		 likedbtn.setBackground(yellow);
-		 
+
 		 notlikedbtn.setText("Did you not like this Movie?");
 		 notlikedbtn.setBounds(3*width/4, 2*height/4-100, 200, 100);
 		 notlikedbtn.setBackground(yellow);
-		 
+
 		 mapbtn.setText("You Wanna See A Cool Map?");
 		 mapbtn.setBounds(3*width/4, 3*height/4-200, 200, 100);
 		 mapbtn.setBackground(yellow);
-		 
+
 		 backbtn.setText("Back");
 		 backbtn.setBounds(3*width/4, 4*height/4-300, 200, 100);
 		 backbtn.setBackground(yellow);
-		 
+
+		 mapbtn.addActionListener(new ActionListener(){
+			 public void actionPerformed(ActionEvent e){
+				 //Find Stuff to delete
+				 inputframe.remove(realsedateinfolb);
+				 inputframe.remove(Durationinfrolb);
+				 inputframe.remove(MovieGenreinfolb);
+				 inputframe.remove(IDinfolb);
+				 inputframe.remove(grossinfolb);
+				 inputframe.remove(contreyinfolb);
+				 inputframe.remove(langinfolb);
+				 inputframe.remove(ratingsinfolb);
+				 inputframe.remove(Directorinfolb);
+				 inputframe.remove(wrtierspn);
+				 inputframe.remove(actopn);
+				 inputframe.remove(synopsistxtlb);
+				 inputframe.remove(likedbtn);
+				 inputframe.remove(notlikedbtn);
+				 inputframe.remove(mapbtn);
+				 inputframe.remove(backbtn);
+				 inputframe.remove(IDlb);
+				 inputframe.remove(MovieGenrelb);
+				 inputframe.remove(Durationlb);
+				 inputframe.remove(realsedatelb);
+				 inputframe.remove(langlb);
+				 inputframe.remove(contreylb);
+				 inputframe.remove(grossincomelb);
+				 inputframe.remove(Ratinglb);
+				 inputframe.remove(Listofwriterslb);
+				 inputframe.remove(Dirclb);
+				 inputframe.remove(Listofactorslb);
+				 inputframe.remove(synopsislb);
+				 inputframe.remove(canvas);
+				 // TODO GET COORDINATES TO PASS IN
+				 // mapFrame(inputframe, coordinates);
+
+			 }
+		 });
+
 		 inputframe.add(realsedateinfolb);
 		 inputframe.add(Durationinfrolb);
 		 inputframe.add(MovieGenreinfolb);
@@ -1408,6 +1455,13 @@ public class Drawing extends Canvas {
 	     inputframe.pack();
 	     inputframe.setVisible(true);
 	 }
+
+	/**
+	 * User info frame that will provide
+	 * User setting options and configured settings
+	 * as well as saved favorites (actors/movies,genres).
+	 * @param inputframe
+	 */
 	 public static void Userinfor(JFrame inputframe) {
 		 framecount=5;
 		 inputframe.getContentPane().setBackground(purple);
@@ -1473,6 +1527,10 @@ public class Drawing extends Canvas {
 					}
 				}
 			 }
+
+
+
+
 			 return x_yVals;
 		 }
 

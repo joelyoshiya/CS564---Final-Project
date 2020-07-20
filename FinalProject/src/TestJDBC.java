@@ -2,13 +2,12 @@ import java.util.ArrayList;
 import java.sql.*;
 
 public class TestJDBC {
-
+	//jdbc:mysql://localhost:3306/movieapp
     static final String databasePrefix ="movieapp";//enter database
     static final String SQLlogin ="root"; // enter username
-    static final String hostName ="localhost"; //washington.uww.edu
+    static final String hostName ="localhost:3306"; //TODO CHANGE if you've just pulled
     static final String databaseURL ="jdbc:mysql://"+hostName+"/"+databasePrefix+"?autoReconnect=true&useSSL=false";
-    static final String SQLpassword="@Appletoes984"; // enter password
-    
+    static final String SQLpassword="Your Passsword here"; // enter password TODO CHANGE if you've just pulled
     private Connection connection = null;
     private Statement statement = null;
     private ResultSet resultSet = null;
@@ -28,7 +27,7 @@ public class TestJDBC {
         catch (SQLException e) {
             e.printStackTrace();
         }
-    } // end of Connection
+    }
     
     public void simpleQuery(String sqlQuery) {
     
@@ -56,7 +55,7 @@ public class TestJDBC {
     	catch (SQLException e) {
     		e.printStackTrace();
     	}
-    } // end of simpleQuery method
+    }
     
     public boolean verifyLogin(String username, String password) {
     	try {
