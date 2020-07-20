@@ -35,6 +35,10 @@ public class Drawing extends Canvas {
 	static boolean favoritmoviefound = false;
 	static boolean favoritactorfound = false;
 	static boolean backbtnpushed = false;
+	static boolean usercreated = false;
+	private static TestJDBC Database = new TestJDBC();
+	private static ArrayList<Pair> searchMovies = new ArrayList<Pair>();
+	private static ArrayList<Pair> searchPeople = new ArrayList<Pair>();
 	
 	
 	// now for the things on the list
@@ -50,6 +54,7 @@ public class Drawing extends Canvas {
 	
 	public static void main(String[] args) {
 		JFrame frameOne = new JFrame();
+		Database.Connection();
 		loginscreen(frameOne);
 		
         
@@ -308,7 +313,48 @@ public class Drawing extends Canvas {
 	        		String username = UserNamefld.getText();
 	        		String Userpassword = Passwordfld.getText();
 	        		String UserRealName = UserRealNamefld.getText();
-	        		String Userage = UserAgefld.getText();
+					String Userage = UserAgefld.getText();
+					
+					if(!Database.verifyNewUser(username)) {
+	        			usercreated = false;
+	        			return;
+	        		}
+	        		
+	        		try {
+	        			int age = Integer.parseInt(Userage);
+	        			System.out.println(username+" "+Userpassword+" "+UserRealName+" "+age);
+	        			Database.addNewUser(username, Userpassword,UserRealName,age);
+	        			Thread.sleep(2000);
+	        			
+	        			System.out.println("LIKED MOVIES "+((Pair)dataliked.get(1)).getKey());
+	        			
+	        			for(int i = 0; i < datalikedactorsone.size();i++) {
+	        				Database.addLikedPerson(Userpassword, username, ((Pair)datalikedactorsone.get(i)).getKey());
+	        			}
+	        			
+	        			for(int i = 0; i < dataliked.size();i++) {
+	        				Database.addLikedMovie(Userpassword, username, ((Pair)dataliked.get(i)).getKey());
+	        			}
+	        			
+	        			for(int i = 0; i < datafavoritactors.size();i++) {
+	        				Database.addFavPerson(Userpassword, username, ((Pair)datafavoritactors.get(i)).getKey());
+	        			}
+	        			
+	        			for(int i = 0; i < datafavoritMovie.size();i++) {
+	        				Database.addFavMovie(Userpassword, username, ((Pair)datafavoritMovie.get(i)).getKey());
+	        			}
+	        			
+	        		
+	        			
+	        			
+	        			usercreated = true;
+	        		} catch (NumberFormatException ne) {
+	        			usercreated = false;
+	        			return;
+	        		} catch (Exception e1) {
+	        			usercreated = false;
+	        			return;
+	        		}
 	        	// this is the lists you need to work with
 	        	// if you can not tell what they are by the name just asked me
 	        	// note: I only have the print out so the list dont through an error
@@ -473,16 +519,25 @@ public class Drawing extends Canvas {
 	        		// is looking for
 	        		// then could you add what is returned to the list ellements bellow
 	        		// 
-	        		String MovieSearchKey = Searchmoviefld.getText();
+					String MovieSearchKey = Searchmoviefld.getText();
+					searchMovies = Database.searchMovie(MovieSearchKey);
+
+					data.clear();
 	        		
+	        		for(int i=0;i<searchMovies.size();i++) {
+	        			data.addElement(searchMovies.get(i));
+	        		}
+	    	        list.setListData(data);
 	        		
+	        		/** 
 	        		data.addElement("India");
 	    	        data.addElement("Australia");
 	    	        data.addElement("England");
 	    	        data.addElement("England");
 	    	        data.addElement("New Zealand");
 	    	        data.addElement("South Africa");
-	    	        list.setListData(data);
+					list.setListData(data);
+					*/
 	            }  
 	        });  
 	        
@@ -710,14 +765,24 @@ public class Drawing extends Canvas {
 	        		// is looking for
 	        		// then could you add what is returned to the list ellements bellow
 	        		// 
-	        		String ActorSearchKey = Searchactorfld.getText();
+					String ActorSearchKey = Searchactorfld.getText();
+
+					searchPeople = Database.searchPeople(ActorSearchKey);
+	        		dataserchedactors.clear();
+	        		
+	        		for(int i = 0;i<searchPeople.size();i++) {
+	        			dataserchedactors.addElement(searchPeople.get(i));
+	        		}
+	        		listsearchedactors.setListData(dataserchedactors);
+					/**
 	        		dataserchedactors.addElement("India");
 	        		dataserchedactors.addElement("Australia");
 	        		dataserchedactors.addElement("England");
 	        		dataserchedactors.addElement("England");
 	        		dataserchedactors.addElement("New Zealand");
 	        		dataserchedactors.addElement("South Africa");
-	        		listsearchedactors.setListData(dataserchedactors);
+					listsearchedactors.setListData(dataserchedactors);
+					*/
 	            }  
 	        });  
 		  //************************8 this is going to be for the liked actor tabe ************************************//  
@@ -849,7 +914,7 @@ public class Drawing extends Canvas {
 //	        		TestJDBC Database = new TestJDBC();
 //	        		Database.Connection();
 //	        		
-//	        		if(Database.verifyLogin(username,password)) {
+	        		if(Database.verifyLogin(username,password)) {
 	        			
 	        			inputframe.remove(UserNamefld);
 		        		inputframe.remove(Passwordfld);
@@ -859,7 +924,7 @@ public class Drawing extends Canvas {
 		        		inputframe.remove(newuserbtn);
 		        		inputframe.remove(canvas);
 		        		loginhome(inputframe);
-//	        		}
+	        		}
 	        		
 	            }  
 	        });  

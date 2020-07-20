@@ -4,10 +4,10 @@ import java.sql.*;
 public class TestJDBC {
 	//jdbc:mysql://localhost:3306/movieapp
     static final String databasePrefix ="movieapp";//enter database
-    static final String SQLlogin ="root"; // enter username
+    static final String SQLlogin =""; // TODO change if pulled
     static final String hostName ="localhost:3306"; //TODO CHANGE if you've just pulled
     static final String databaseURL ="jdbc:mysql://"+hostName+"/"+databasePrefix+"?autoReconnect=true&useSSL=false";
-    static final String SQLpassword="Your Passsword here"; // enter password TODO CHANGE if you've just pulled
+    static final String SQLpassword=""; // enter password TODO CHANGE if you've just pulled
     private Connection connection = null;
     private Statement statement = null;
     private ResultSet resultSet = null;
@@ -223,8 +223,8 @@ public class TestJDBC {
     	demoObj.Connection();
     	//String sqlQuery ="select * from student where level = 'JR';";
     	//demoObj.simpleQuery(sqlQuery);
-    	System.out.println(demoObj.verifyLogin("12345", "test1"));
-    	demoObj.addNewUser("user", "password", "name",20);
+    	//System.out.println(demoObj.verifyLogin("12345", "test1"));
+    	//demoObj.addNewUser("user", "password", "name",20);
     	//476 login
     }
     
