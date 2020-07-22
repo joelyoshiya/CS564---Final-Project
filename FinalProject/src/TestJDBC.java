@@ -446,6 +446,61 @@ public class TestJDBC {
     		e.printStackTrace();
     	}
 	}
+
+	public void removeLikedMovie(String movieID, String user, String password) {
+		try {
+    		statement = connection.createStatement();
+    		statement.executeUpdate("delete from LikedMovie where ID='"+movieID+"' and UserName='"+user+"' and UserPassword='"+password+"';");
+    		//System.out.println("insert into ProgramUser(UserPassword,UserName,RealName,Age) values('"+password+"','"+username+"','"+name+"',"+age+");");
+    	}
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+	}
+
+	public void removeLikedPerson(String actorID, String user, String password) {
+		try {
+    		statement = connection.createStatement();
+    		statement.executeUpdate("delete from LikedPeople where actorID='"+actorID+"' and UserName='"+user+"' and UserPassword='"+password+"';");
+    		//System.out.println("insert into ProgramUser(UserPassword,UserName,RealName,Age) values('"+password+"','"+username+"','"+name+"',"+age+");");
+    	}
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+	}
+
+	public void removeFavMovie(String movieID, String user, String password) {
+		try {
+    		statement = connection.createStatement();
+    		statement.executeUpdate("delete from FavoriteMovie where ID='"+movieID+"' and UserName='"+user+"' and UserPassword='"+password+"';");
+    		//System.out.println("insert into ProgramUser(UserPassword,UserName,RealName,Age) values('"+password+"','"+username+"','"+name+"',"+age+");");
+    	}
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+	}
+
+	public void removeFavPerson(String actorID, String user, String password) {
+		try {
+    		statement = connection.createStatement();
+    		statement.executeUpdate("delete from FavoritePerson where actorID='"+actorID+"' and UserName='"+user+"' and UserPassword='"+password+"';");
+    		//System.out.println("insert into ProgramUser(UserPassword,UserName,RealName,Age) values('"+password+"','"+username+"','"+name+"',"+age+");");
+    	}
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+	}
+
+	public void deleteUser(String user, String password) {
+		try {
+    		statement = connection.createStatement();
+    		statement.executeUpdate("delete from ProgramUser where UserName='"+user+"' and UserPassword='"+password+"';");
+    		//System.out.println("insert into ProgramUser(UserPassword,UserName,RealName,Age) values('"+password+"','"+username+"','"+name+"',"+age+");");
+    	}
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+	}
     
     public static void main(String args[]) {
 
