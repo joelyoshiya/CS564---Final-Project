@@ -315,6 +315,18 @@ public class TestJDBC {
 		return likedMovie(password,user);
 	}
 
+	public ArrayList<Pair> simGenreMovie(String password,String user) {
+		return likedMovie(password,user);
+	}
+
+	public ArrayList<Pair> simDirMovie(String password,String user) {
+		return likedMovie(password,user);
+	}
+
+	public ArrayList<Pair> simAllMovie(String password,String user) {
+		return likedMovie(password,user);
+	}
+
     public ArrayList<Pair> searchPeople(String person) {
     	ArrayList<Pair> people = new ArrayList<Pair>();
     	

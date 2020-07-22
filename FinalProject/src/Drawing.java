@@ -1017,7 +1017,7 @@ public class Drawing extends Canvas {
 			 
 			Vector datasimactor = new Vector();
 			Vector datasimgen = new Vector();
-			Vector datasindirc = new Vector();
+			Vector datasimdir = new Vector();
 			Vector datasimall = new Vector();
 			 
 			JScrollPane simactorpn = new JScrollPane(listsimactor);
@@ -1055,10 +1055,32 @@ public class Drawing extends Canvas {
 			
 
 			ArrayList<Pair> simactorMovies = Database.simActorMovie(currPassword,currUser);
+			ArrayList<Pair> simgenreMovies = Database.simGenreMovie(currPassword,currUser);
+			ArrayList<Pair> simdirMovies = Database.simDirMovie(currPassword,currUser);
+			ArrayList<Pair> simallMovies = Database.simAllMovie(currPassword,currUser);
+
 			for(int i =0;i<simactorMovies.size();i++) {
 				datasimactor.addElement(simactorMovies.get(i));
 			}
-		    listsimactor.setListData(datasimactor);
+
+			for(int i =0;i<simgenreMovies.size();i++) {
+				datasimgen.addElement(simgenreMovies.get(i));
+			}
+
+			for(int i =0;i<simdirMovies.size();i++) {
+				datasimdir.addElement(simdirMovies.get(i));
+			}
+
+			for(int i =0;i<simallMovies.size();i++) {
+				datasimall.addElement(simallMovies.get(i));
+			}
+
+
+			listsimactor.setListData(datasimactor);
+			
+			listsingen.setListData(datasimgen);
+			listsindirc.setListData(datasimdir);
+			listsinall.setListData(datasimall);
 		    
 		    
 		    listsimactor.addMouseListener(new MouseAdapter() {
