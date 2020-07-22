@@ -36,9 +36,13 @@ public class Drawing extends Canvas {
 	static boolean favoritactorfound = false;
 	static boolean backbtnpushed = false;
 	static boolean usercreated = false;
+	private static boolean settingchange = false;
 	private static TestJDBC Database = new TestJDBC();
 	private static ArrayList<Pair> searchMovies = new ArrayList<Pair>();
 	private static ArrayList<Pair> searchPeople = new ArrayList<Pair>();
+	private static ArrayList<String> movieInfo = new ArrayList<String>();
+	private static String currUser;
+	private static String currPassword;
 	
 	
 	// now for the things on the list
@@ -911,11 +915,11 @@ public class Drawing extends Canvas {
 	        	public void actionPerformed(ActionEvent e){
 	        		String username = UserNamefld.getText();
 	        		String password = Passwordfld.getText();
-//	        		TestJDBC Database = new TestJDBC();
-//	        		Database.Connection();
+
 //	        		
-//	        		if(Database.verifyLogin(username,password)) {
-	        			
+	        		if(Database.verifyLogin(username,password)) {
+						currUser = username;
+						currPassword = password;
 	        			inputframe.remove(UserNamefld);
 		        		inputframe.remove(Passwordfld);
 		        		inputframe.remove(UserNameLb);
@@ -924,7 +928,7 @@ public class Drawing extends Canvas {
 		        		inputframe.remove(newuserbtn);
 		        		inputframe.remove(canvas);
 		        		loginhome(inputframe);
-//	        		}
+	        		}
 	        		
 	            }  
 	        });  
@@ -1040,13 +1044,20 @@ public class Drawing extends Canvas {
 		    
 		    // Allen this is how to add the information to the list above you will need to do this of each 
 		    // of the fours lists
-		    
+		    /** 
 		    datasimactor.addElement("India");
 		    datasimactor.addElement("Australia");
 		    datasimactor.addElement("England");
 		    datasimactor.addElement("England");
 		    datasimactor.addElement("New Zealand");
-		    datasimactor.addElement("South Africa");
+			datasimactor.addElement("South Africa");
+			*/
+			
+
+			ArrayList<Pair> simactorMovies = Database.simActorMovie(currPassword,currUser);
+			for(int i =0;i<simactorMovies.size();i++) {
+				datasimactor.addElement(simactorMovies.get(i));
+			}
 		    listsimactor.setListData(datasimactor);
 		    
 		    
@@ -1283,17 +1294,22 @@ public class Drawing extends Canvas {
 		 // place in the strings and they should be in the properlocation
 		 // you also need to add the to the two vectors above
 		 // haveing the writers and actors in the list
-		 String Titlest = "Batman Beggins";
+		 String IDst = ((Pair)Movie).getKey();
+		 movieInfo.clear();
+		 movieInfo = Database.getMovieInfo(IDst);
+		 //create table movie(ID, Title, dateOfRelease, MovieGenre, Duration, country , Writers, worldgross, Director, mLanguage, listofactors
+
+		 String Titlest = movieInfo.get(1);
 		 String Synopsisst = "this is where allen is going \nto put in a text";
-		 String Directorsst = "THIS IS THE \nNAME OF THE DIRICTOR";
+		 String Directorsst = movieInfo.get(8);
 		 String Ratingst = "8.7";
-	     String grossst = "89000000";
-	     String contreyst = "USA";
-	     String langst = "English";
-	     String realsedatest = "9/13/34";
-	     String Durationst = "137 mins";
-	     String MovieGenrest = "Drama";
-	     String IDst = "mv0000045";
+	     String grossst = movieInfo.get(7);
+	     String contreyst = movieInfo.get(5);
+	     String langst = movieInfo.get(9);
+	     String realsedatest = movieInfo.get(2);
+	     String Durationst = movieInfo.get(4);
+	     String MovieGenrest = movieInfo.get(3);
+	     
 	     
 		 synopsislb.setForeground(white);
 		 synopsislb.setOpaque(true);
@@ -1544,14 +1560,16 @@ public class Drawing extends Canvas {
 		 
 		 likedbtn.addActionListener(new ActionListener(){  
 	        	public void actionPerformed(ActionEvent e){ 
-	        		// @ allen when this button the movie that is being refrencs must be added to the liked movies list
+					// @ allen when this button the movie that is being refrencs must be added to the liked movies list
+					Database.addLikedMovie(currPassword, currUser, IDst);
 	            }  
 	        });  
 		 
 		 notlikedbtn.addActionListener(new ActionListener(){  
 	        	public void actionPerformed(ActionEvent e){ 
 	        		// @ allen when this button the movie that is being refrencs must be added to the list that will never 
-	        		// show up on the recomended movies list again
+					// show up on the recomended movies list again
+					Database.addDislikedMovie(currPassword,currUser,IDst);
 	            }  
 	        }); 
 		 
@@ -1648,15 +1666,33 @@ public class Drawing extends Canvas {
 		 //@ Allen the four vectors above need to be populated with the corresposding names
 		 // if you can not figure out it by the name just asked me 
 		 
-		 datalikedmovies.addElement("India");
-		 datalikedmovies.addElement("Australia");
-		 datalikedmovies.addElement("England");
-		 datalikedmovies.addElement("England");
-		 datalikedmovies.addElement("New Zealand");
-		 datalikedmovies.addElement("South Africa");
+		 ArrayList<Pair> likedMovies = Database.likedMovie(currPassword,currUser);
+		 ArrayList<Pair> likedPeople = Database.likedPeople(currPassword,currUser);
+		 ArrayList<Pair> favoriteMovie = Database.favoriteMovie(currPassword,currUser);
+		 ArrayList<Pair> favoritePerson = Database.favoritePerson(currPassword,currUser);
+
+		 for(int i = 0; i<likedMovies.size();i++) {
+			 datalikedmovies.addElement(likedMovies.get(i));
+		 }
+
+		 for(int i = 0; i<likedPeople.size();i++) {
+			datalikedactor.addElement(likedPeople.get(i));
+		}
+
+		for(int i = 0; i<favoriteMovie.size();i++) {
+			datafavoritemovie.addElement(favoriteMovie.get(i));
+		}
+
+		for(int i = 0; i<favoritePerson.size();i++) {
+			datafavoriteactor.addElement(favoritePerson.get(i));
+		}
+
 		 listslikedmovies.setListData(datalikedmovies);
-		 datafavoritemovie.addElement("South Africa");
+		 listslikedactor.setListData(datalikedactor);
+		 listfavoriteactor.setListData(datafavoriteactor);
 		 listsfavoritemovie.setListData(datafavoritemovie);
+
+
 		 if(datafavoritemovie.size()>0) {
 			 favoritmoviefound = true;
 		 }else {
@@ -1807,7 +1843,7 @@ public class Drawing extends Canvas {
 		 
 		 deletebtn.addActionListener(new ActionListener(){
 			 public void actionPerformed(ActionEvent e){
-                 int res = JOptionPane.showConfirmDialog(null, "Are you sure you would like to delte Your User Account?");
+                 int res = JOptionPane.showConfirmDialog(null, "Are you sure you would like to delete your User Account?");
                  if(res==0) {
                 	 // hey allen this is where the current user will need to be removed
                 	 // so just removie this user tuple from the list
@@ -1842,6 +1878,12 @@ public class Drawing extends Canvas {
 		 UserNamebtn.addActionListener(new ActionListener(){
 			 public void actionPerformed(ActionEvent e){ 
 				 String UpdatedUserName = UserNamefld.getText();
+				 settingchange = false;
+				 if(!Database.verifyNewUser(UpdatedUserName)) {
+					return;
+				 }
+
+				 settingchange = true;
 				 // @ allen this is when the user want to change there user name
 				 // so check if its allowed to be changed to that 
 				 // return a boolean to make sure its okay 
@@ -1855,6 +1897,8 @@ public class Drawing extends Canvas {
 		 Passwordbtn.addActionListener(new ActionListener(){
 			 public void actionPerformed(ActionEvent e){ 
 				 String Updatedpassword = Passwordfld.getText();
+				 Database.changePassword(Updatedpassword,currUser,currPassword);
+				 settingchange = true;
 				 //@Allen user want to change password
 				 
 				
@@ -1865,6 +1909,8 @@ public class Drawing extends Canvas {
 			 public void actionPerformed(ActionEvent e){ 
 				 String UpdatedRealName = UserRealNamefld.getText();
 				 // @ Allen User wants to change the real name
+				 Database.changeName(UpdatedRealName,currUser,currPassword);
+				 settingchange = true;
 				 
 				
 			 }
@@ -1873,6 +1919,13 @@ public class Drawing extends Canvas {
 		 UserAgebtn.addActionListener(new ActionListener(){
 			 public void actionPerformed(ActionEvent e){ 
 				 String UpdatedUserage = UserAgefld.getText();
+				 settingchange=false;
+				 try {
+					 int newage = Integer.parseInt(UpdatedUserage);
+					 Database.changeAge(newage,currUser,currPassword);
+				 } catch(NumberFormatException ne) {
+					 return;
+				 }
 				 // @ Allen The user want to change the age
 				 // check to make sure it is and int and just assigne it to a boolne
 				 // and ill throw the message after ur done
