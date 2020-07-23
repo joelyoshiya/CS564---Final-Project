@@ -1017,7 +1017,7 @@ public class Drawing extends Canvas {
 			 
 			Vector datasimactor = new Vector();
 			Vector datasimgen = new Vector();
-			Vector datasindirc = new Vector();
+			Vector datasimdir = new Vector();
 			Vector datasimall = new Vector();
 			 
 			JScrollPane simactorpn = new JScrollPane(listsimactor);
@@ -1055,10 +1055,32 @@ public class Drawing extends Canvas {
 			
 
 			ArrayList<Pair> simactorMovies = Database.simActorMovie(currPassword,currUser);
+			ArrayList<Pair> simgenreMovies = Database.simGenreMovie(currPassword,currUser);
+			ArrayList<Pair> simdirMovies = Database.simDirMovie(currPassword,currUser);
+			ArrayList<Pair> simallMovies = Database.simAllMovie(currPassword,currUser);
+
 			for(int i =0;i<simactorMovies.size();i++) {
 				datasimactor.addElement(simactorMovies.get(i));
 			}
-		    listsimactor.setListData(datasimactor);
+
+			for(int i =0;i<simgenreMovies.size();i++) {
+				datasimgen.addElement(simgenreMovies.get(i));
+			}
+
+			for(int i =0;i<simdirMovies.size();i++) {
+				datasimdir.addElement(simdirMovies.get(i));
+			}
+
+			for(int i =0;i<simallMovies.size();i++) {
+				datasimall.addElement(simallMovies.get(i));
+			}
+
+
+			listsimactor.setListData(datasimactor);
+			
+			listsingen.setListData(datasimgen);
+			listsindirc.setListData(datasimdir);
+			listsinall.setListData(datasimall);
 		    
 		    
 		    listsimactor.addMouseListener(new MouseAdapter() {
@@ -1846,7 +1868,8 @@ public class Drawing extends Canvas {
                  int res = JOptionPane.showConfirmDialog(null, "Are you sure you would like to delete your User Account?");
                  if(res==0) {
                 	 // hey allen this is where the current user will need to be removed
-                	 // so just removie this user tuple from the list
+					 // so just removie this user tuple from the list
+					 Database.deleteUser(currUser,currPassword);
                 	 inputframe.remove(deletebtn);
     			     inputframe.remove(backbtn);
     			     inputframe.remove(likedmoviepn);
@@ -1882,7 +1905,7 @@ public class Drawing extends Canvas {
 				 if(!Database.verifyNewUser(UpdatedUserName)) {
 					return;
 				 }
-
+				 Database.changeUsername(UpdatedUserName,currUser,currPassword);
 				 settingchange = true;
 				 // @ allen this is when the user want to change there user name
 				 // so check if its allowed to be changed to that 
@@ -1923,6 +1946,7 @@ public class Drawing extends Canvas {
 				 try {
 					 int newage = Integer.parseInt(UpdatedUserage);
 					 Database.changeAge(newage,currUser,currPassword);
+					 settingchange=true;
 				 } catch(NumberFormatException ne) {
 					 return;
 				 }
@@ -1952,14 +1976,16 @@ public class Drawing extends Canvas {
 	                     }
 	                     if(res==0) {
 	                    	 //listliked.setSelectedIndex(0);
-	                    	 //@allen this item object needs to be removed from te like movie list
+							 //@allen this item object needs to be removed from te like movie list
+							 Database.removeLikedMovie(((Pair)item).getKey(),currUser,currPassword);
 	                    	 datalikedmovies.remove(item);
 	                    	 listslikedmovies.setListData(datalikedmovies);
 	                    	
 	                     }else if(res==2 && !favoritmoviefound) {
 	                    	 //@ allen this means that the item object needs to be added to
 	                    	 // the favorit movie
-	                    	 favoritmoviefound = true;
+							 favoritmoviefound = true;
+							 Database.addFavMovie(currPassword,currUser,((Pair)item).getKey());
 	                    	 datafavoritemovie.add(item);
 	                    	 listsfavoritemovie.setListData(datafavoritemovie);
  
@@ -1986,14 +2012,16 @@ public class Drawing extends Canvas {
 	                     }
 	                     if(res==0) {
 	                    	 //listliked.setSelectedIndex(0);
-	                    	 //@allen this item object needs to be removed from te like actor list
+							 //@allen this item object needs to be removed from te like actor list
+							 Database.removeLikedPerson(((Pair)item).getKey(),currUser,currPassword);
 	                    	 datalikedactor.remove(item);
 	                    	 listslikedactor.setListData(datalikedactor);
 	                    	
 	                     }else if(res==2 && !favoritactorfound ) {
 	                    	 //@ allen this means that the item object needs to be added to
 	                    	 // the favorit actor
-	                    	 favoritactorfound = true;
+							 favoritactorfound = true;
+							 Database.addFavPerson(currPassword,currUser,((Pair)item).getKey());
 	                    	 datafavoriteactor.add(item);
 	                    	 listfavoriteactor.setListData(datafavoriteactor); 
 	                     };
@@ -2008,9 +2036,10 @@ public class Drawing extends Canvas {
 	                  int index = target.locationToIndex(me.getPoint());
 	                  if (index >= 0) {
 	                     Object item = target.getModel().getElementAt(index);
-	                     int res = JOptionPane.showConfirmDialog(null, "Would you like to remove "+item.toString()+"from Your Favorite Movies?");
+	                     int res = JOptionPane.showConfirmDialog(null, "Would you like to remove "+item.toString()+" from Your Favorite Movies?");
 	                     if(res==0) {
-	                    	 favoritmoviefound = false;
+							 favoritmoviefound = false;
+							 Database.removeFavMovie(((Pair)item).getKey(),currUser,currPassword);
 	                    	 datafavoritemovie.remove(item);
 	                    	 listsfavoritemovie.setListData(datafavoritemovie);
 	                    	
@@ -2026,9 +2055,10 @@ public class Drawing extends Canvas {
 	                  int index = target.locationToIndex(me.getPoint());
 	                  if (index >= 0) {
 	                     Object item = target.getModel().getElementAt(index);
-	                     int res = JOptionPane.showConfirmDialog(null, "Would you like to remove "+item.toString()+"from Your Favorite Movies?");
+	                     int res = JOptionPane.showConfirmDialog(null, "Would you like to remove "+item.toString()+" from Your Favorite Movies?");
 	                     if(res==0) {
-	                    	 favoritactorfound = false;
+							 favoritactorfound = false;
+							 Database.removeFavPerson(((Pair)item).getKey(),currUser,currPassword);
 	                    	 datafavoriteactor.remove(item);
 	                    	 listfavoriteactor.setListData(datafavoriteactor);
 	                    	

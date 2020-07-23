@@ -7,7 +7,7 @@ public class TestJDBC {
     static final String SQLlogin ="root"; // TODO change if pulled
     static final String hostName ="localhost:3306"; //TODO CHANGE if you've just pulled
     static final String databaseURL ="jdbc:mysql://"+hostName+"/"+databasePrefix+"?autoReconnect=true&useSSL=false";
-    static final String SQLpassword="@Appletoes984"; // enter password TODO CHANGE if you've just pulled
+    static final String SQLpassword=""; // enter password TODO CHANGE if you've just pulled
     private Connection connection = null;
     private Statement statement = null;
     private ResultSet resultSet = null;
@@ -315,6 +315,18 @@ public class TestJDBC {
 		return likedMovie(password,user);
 	}
 
+	public ArrayList<Pair> simGenreMovie(String password,String user) {
+		return likedMovie(password,user);
+	}
+
+	public ArrayList<Pair> simDirMovie(String password,String user) {
+		return likedMovie(password,user);
+	}
+
+	public ArrayList<Pair> simAllMovie(String password,String user) {
+		return likedMovie(password,user);
+	}
+
     public ArrayList<Pair> searchPeople(String person) {
     	ArrayList<Pair> people = new ArrayList<Pair>();
     	
@@ -440,6 +452,61 @@ public class TestJDBC {
 		try {
     		statement = connection.createStatement();
     		statement.executeUpdate("update ProgramUser set RealName='"+newname+"' where UserName='"+user+"' and UserPassword='"+password+"';");
+    		//System.out.println("insert into ProgramUser(UserPassword,UserName,RealName,Age) values('"+password+"','"+username+"','"+name+"',"+age+");");
+    	}
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+	}
+
+	public void removeLikedMovie(String movieID, String user, String password) {
+		try {
+    		statement = connection.createStatement();
+    		statement.executeUpdate("delete from LikedMovie where ID='"+movieID+"' and UserName='"+user+"' and UserPassword='"+password+"';");
+    		//System.out.println("insert into ProgramUser(UserPassword,UserName,RealName,Age) values('"+password+"','"+username+"','"+name+"',"+age+");");
+    	}
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+	}
+
+	public void removeLikedPerson(String actorID, String user, String password) {
+		try {
+    		statement = connection.createStatement();
+    		statement.executeUpdate("delete from LikedPeople where actorID='"+actorID+"' and UserName='"+user+"' and UserPassword='"+password+"';");
+    		//System.out.println("insert into ProgramUser(UserPassword,UserName,RealName,Age) values('"+password+"','"+username+"','"+name+"',"+age+");");
+    	}
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+	}
+
+	public void removeFavMovie(String movieID, String user, String password) {
+		try {
+    		statement = connection.createStatement();
+    		statement.executeUpdate("delete from FavoriteMovie where ID='"+movieID+"' and UserName='"+user+"' and UserPassword='"+password+"';");
+    		//System.out.println("insert into ProgramUser(UserPassword,UserName,RealName,Age) values('"+password+"','"+username+"','"+name+"',"+age+");");
+    	}
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+	}
+
+	public void removeFavPerson(String actorID, String user, String password) {
+		try {
+    		statement = connection.createStatement();
+    		statement.executeUpdate("delete from FavoritePerson where actorID='"+actorID+"' and UserName='"+user+"' and UserPassword='"+password+"';");
+    		//System.out.println("insert into ProgramUser(UserPassword,UserName,RealName,Age) values('"+password+"','"+username+"','"+name+"',"+age+");");
+    	}
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+	}
+
+	public void deleteUser(String user, String password) {
+		try {
+    		statement = connection.createStatement();
+    		statement.executeUpdate("delete from ProgramUser where UserName='"+user+"' and UserPassword='"+password+"';");
     		//System.out.println("insert into ProgramUser(UserPassword,UserName,RealName,Age) values('"+password+"','"+username+"','"+name+"',"+age+");");
     	}
     	catch (SQLException e) {
