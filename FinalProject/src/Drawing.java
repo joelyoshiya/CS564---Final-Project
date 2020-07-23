@@ -48,7 +48,7 @@ public class Drawing extends Canvas {
 	private static ArrayList<Pair> searchPeople = new ArrayList<Pair>();
 	private static ArrayList<Double> longcord = new ArrayList<Double>();
 	private static ArrayList<Double> latcord = new ArrayList<Double>();
-	private static ArrayList<String> movieInfo = new ArrayList<String>();
+	private static ArrayList<Object> movieInfo = new ArrayList<Object>();
 	private static String currUser;
 	private static String currPassword;
 	
@@ -1511,16 +1511,17 @@ public class Drawing extends Canvas {
 		 movieInfo = Database.getMovieInfo(IDst);
 		// create table movie(ID, Title, dateOfRelease, MovieGenre, Duration, country , Writers, worldgross, Director, mLanguage, listofactors
 
-		 String Titlest = "asd";//movieInfo.get(1);
-		 String Synopsisst = "this is where allen is going \nto put in a text";
-		 String Directorsst = movieInfo.get(8);
+		 String Titlest = movieInfo.get(1).toString();
+		 String origSyn = movieInfo.get(2).toString();
+		 String Synopsisst = origSyn.replaceAll("(.{1,25})(?:$| )", "$1\n");
+		 String Directorsst = movieInfo.get(9).toString();
 		 String Ratingst = "8.7";
-	     String grossst =  movieInfo.get(7);
-	     String contreyst = movieInfo.get(5);
-	     String langst =movieInfo.get(9);
-	     String realsedatest =movieInfo.get(2);
-	     String Durationst =movieInfo.get(4);
-	     String MovieGenrest =movieInfo.get(3);
+	     String grossst =  movieInfo.get(8).toString();
+	     String contreyst = movieInfo.get(6).toString();
+	     String langst =movieInfo.get(10).toString();
+	     String realsedatest =movieInfo.get(3).toString();
+	     String Durationst =movieInfo.get(5).toString();
+	     String MovieGenrest =movieInfo.get(4).toString();
 	     
 		 synopsislb.setForeground(white);
 		 synopsislb.setOpaque(true);
@@ -2075,7 +2076,7 @@ public class Drawing extends Canvas {
 		 
 		 deletebtn.addActionListener(new ActionListener(){
 			 public void actionPerformed(ActionEvent e){
-                 int res = JOptionPane.showConfirmDialog(null, "Are you sure you would like to delte Your User Account?");
+                 int res = JOptionPane.showConfirmDialog(null, "Are you sure you would like to delete Your User Account?");
                  if(res==0) {
                 	 // hey allen this is where the current user will need to be removed
                 	 // so just removie this user tuple from the list
@@ -2118,6 +2119,7 @@ public class Drawing extends Canvas {
 				 }
 				 Database.changeUsername(UpdatedUserName,currUser,currPassword);
 				 settingchange = true;
+				 currUser = UpdatedUserName;
 				 // @ allen this is when the user want to change there user name
 				 // so check if its allowed to be changed to that 
 				 // return a boolean to make sure its okay 
@@ -2133,6 +2135,7 @@ public class Drawing extends Canvas {
 				 String Updatedpassword = Passwordfld.getText();
 				 Database.changePassword(Updatedpassword,currUser,currPassword);
 				 settingchange = true;
+				 currPassword = Updatedpassword;
 				 //@Allen user want to change password
 				 
 				
