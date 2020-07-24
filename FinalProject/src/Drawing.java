@@ -1521,8 +1521,29 @@ public class Drawing extends Canvas {
 	     String langst =movieInfo.get(10).toString();
 	     String realsedatest =movieInfo.get(3).toString();
 	     String Durationst =movieInfo.get(5).toString();
-	     String MovieGenrest =movieInfo.get(4).toString();
-	     
+		 String MovieGenrest =movieInfo.get(4).toString();
+		 
+		 String actors = movieInfo.get(11).toString();
+
+		 actors = actors.replaceAll(",\\s+",",");
+		 String [] listofactors = actors.split(",");
+		 ArrayList<Pair> actorsinMovie = Database.getPeople(listofactors);
+		 System.out.println("actors size:"+actorsinMovie.size());
+		 for(int i = 0; i<actorsinMovie.size();i++) {
+			 dataactor.addElement(actorsinMovie.get(i));
+		 }
+		 listactor.setListData(dataactor);
+
+		 String writers = movieInfo.get(7).toString();
+		 writers = writers.replaceAll(",\\s+",",");
+		 String[] listofwriters = writers.split(",");
+
+		 for(int i = 0;i<listofwriters.length;i++) {
+			 datawrtiers.addElement(listofwriters[i]);
+		 }
+		 listwriters.setListData(datawrtiers);
+
+
 		 synopsislb.setForeground(white);
 		 synopsislb.setOpaque(true);
 		 synopsislb.setBackground(grey);
@@ -1806,7 +1827,8 @@ public class Drawing extends Canvas {
 	                     Object item = target.getModel().getElementAt(index);
 	                     int res = JOptionPane.showConfirmDialog(null, "Would you like to add "+item.toString()+" to your liked actors List?");
 	                     if(res==0) {
-	                    	// @ Allen, this Iteam needs to be added to the liked actors list
+							// @ Allen, this Iteam needs to be added to the liked actors list
+							Database.addLikedPerson(currPassword,currUser,((Pair)item).getKey());
 	                    	
 	                     };
 	                  }

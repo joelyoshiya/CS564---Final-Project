@@ -312,19 +312,51 @@ public class TestJDBC {
 	
 	
 	public ArrayList<Pair> simActorMovie(String password,String user) {
-		return likedMovie(password,user);
+		ArrayList<Pair> movies = new ArrayList<Pair>();
+    	
+    	try {
+			statement = connection.createStatement();
+			
+    		resultSet = statement.executeQuery("select m.title, m.ID from movie m order by rand() limit 10");
+
+    		ResultSetMetaData metaData = resultSet.getMetaData();
+    		int columns = metaData.getColumnCount();
+
+    		for (int i=1; i<= columns; i++) {
+    			System.out.print(metaData.getColumnName(i)+"\t");
+    		}
+
+    		System.out.println();
+
+    		while (resultSet.next()) {
+       
+    			for (int i=1; i<= columns; i++) {
+    				System.out.print(resultSet.getObject(i)+"\t\t");
+    			}
+    			Pair p = new Pair((String)resultSet.getObject(2),(String)resultSet.getObject(1));
+    			//System.out.print(resultSet.getObject(1)+"\t\t");
+    			movies.add(p);
+    			
+    			System.out.println();
+    		}
+    	}
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return movies;
 	}
 
 	public ArrayList<Pair> simGenreMovie(String password,String user) {
-		return likedMovie(password,user);
+		return simActorMovie(password,user);
 	}
 
 	public ArrayList<Pair> simDirMovie(String password,String user) {
-		return likedMovie(password,user);
+		return simActorMovie(password,user);
 	}
 
 	public ArrayList<Pair> simAllMovie(String password,String user) {
-		return likedMovie(password,user);
+		return simActorMovie(password,user);
 	}
 
     public ArrayList<Pair> searchPeople(String person) {
@@ -352,6 +384,30 @@ public class TestJDBC {
     			
     			System.out.println();
     		}
+    	}
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return people;
+	}
+	
+	public ArrayList<Pair> getPeople(String[] person) {
+    	ArrayList<Pair> people = new ArrayList<Pair>();
+    	
+    	try {
+			for(int i = 0;i<person.length;i++) {
+    			statement = connection.createStatement();
+    			resultSet = statement.executeQuery("select castname,actorid from person where castname='"+person[i]+"';");
+				System.out.println(person[i]);
+    			while (resultSet.next()) {
+				
+				
+    				Pair p = new Pair((String)resultSet.getObject(2),(String)resultSet.getObject(1));
+    				//System.out.print(resultSet.getObject(1)+"\t\t");
+    				people.add(p);
+				}
+			}
     	}
     	catch (SQLException e) {
     		e.printStackTrace();
