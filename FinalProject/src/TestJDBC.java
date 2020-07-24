@@ -7,7 +7,7 @@ public class TestJDBC {
     static final String SQLlogin ="root"; // TODO change if pulled
     static final String hostName ="localhost:3306"; //TODO CHANGE if you've just pulled
     static final String databaseURL ="jdbc:mysql://"+hostName+"/"+databasePrefix+"?autoReconnect=true&useSSL=false";
-    static final String SQLpassword=""; // enter password TODO CHANGE if you've just pulled
+    static final String SQLpassword="@Appletoes984"; // enter password TODO CHANGE if you've just pulled
     private Connection connection = null;
     private Statement statement = null;
     private ResultSet resultSet = null;
@@ -57,8 +57,8 @@ public class TestJDBC {
     	}
 	}
 	
-	public ArrayList<String> getMovieInfo(String movieID) {
-		ArrayList<String> mInfo = new ArrayList<String>();
+	public ArrayList<Object> getMovieInfo(String movieID) {
+		ArrayList<Object> mInfo = new ArrayList<Object>();
 		try {
 			statement = connection.createStatement();
     		resultSet = statement.executeQuery("select * from movie where id='"+movieID+"';");
@@ -76,7 +76,7 @@ public class TestJDBC {
        
     			for (int i=1; i<= columns; i++) {
 					System.out.print(resultSet.getObject(i)+"\t\t");
-					mInfo.add((String)resultSet.getObject(i));
+					mInfo.add(resultSet.getObject(i));
 					//create table movie(ID, Title, dateOfRelease, MovieGenre, Duration, country , Writers, worldgross, Director, mLanguage, listofactors
     			}
     			System.out.println();

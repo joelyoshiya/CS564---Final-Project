@@ -40,7 +40,7 @@ Create Table LikedMovie(UserPassword varchar(255), UserName varchar(255), ID var
 Create Table WorkedON
 Select Distinct M.ID, A.ActorID
 From FinalMovie M, Person A 
-Where (A.CastName LIKE ('%' + @M.Writers + '%')) OR (A.CastName LIKE ('%' + @M.Director + '%')) OR (A.CastName LIKE ('%' + @listofacotrs + '%'));
+Where (A.CastName LIKE ('%' + @M.Writers + '%')) OR (A.CastName LIKE ('%' + @M.Director + '%')) OR (A.CastName LIKE ('%' + @M.listofactors + '%'));
 
 -- this one is going to be super interesting because we are joining two different data sets
 -- first step is to look through and connect the place and where the people were born in
