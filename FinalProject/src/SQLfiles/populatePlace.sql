@@ -17,6 +17,3 @@ create table Place(Country VARCHAR(2),
 ALTER TABLE place ALTER Population SET DEFAULT 0;
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/worldcitiespopRef.csv' INTO TABLE place
     FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';
-
-
-

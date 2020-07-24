@@ -7,13 +7,13 @@ create table person(
                        CastName varchar(255),
                        BirthName varchar(255),
                        Height double,
-                       Bio varchar(1000),
+                       Bio varchar(13000),
                        BirthDetails varchar(255),
                        BirthYear integer,
                        Birthday  varchar(10),
                        PlaceOfBirth varchar(255),
                        deathDetails varchar(1000),
-                       deathYear integer,
+                       deathYear varchar(8),
                        DateOfDeath  varchar(10),
                        PlaceOfDeath varchar(255),
                        ReasonOfDeath varchar(255),
@@ -26,6 +26,10 @@ create table person(
                        primary key(ActorID)
 );
 
+ALTER TABLE person ALTER deathYear SET DEFAULT 0;
+
 -- LOAD PERSON
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/IMDb namesRef.csv' INTO TABLE person
-    FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';
+-- IMDb namesOrig.csv
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/IMDb namesOrig.csv' INTO TABLE person
+    FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n';

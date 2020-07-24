@@ -3,7 +3,7 @@ use movieapp;
 -- DROP TABLE likedmovie;
 DROP TABLE movie;
 create table movie(
-                      ID varchar(9),
+                      ID varchar(10),
                       Title varchar(255),
                       Description varchar(1000),
                       dateOfRelease varchar(10),
@@ -11,7 +11,7 @@ create table movie(
                       Duration int,
                       country varchar(255),
                       Writers varchar(511),
-                      worldgross BIGINT,
+                      worldgross varchar(255),
                       Director varchar(255),
                       mLanguage varchar(255),
                       listofactors varchar(8000),
@@ -33,4 +33,4 @@ create table movie(
 
 -- LOAD MOVIE
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/IMDb moviesRef.csv' INTO TABLE movie
-    FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';
+    FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n';
