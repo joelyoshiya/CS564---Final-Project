@@ -2145,6 +2145,8 @@ public class Drawing extends Canvas {
 				 String UpdatedUserName = UserNamefld.getText();
 				 settingchange = false;
 				 if(!Database.verifyNewUser(UpdatedUserName)) {
+					 JOptionPane.showMessageDialog(null, "I am sorry, The UserName "+UpdatedUserName+""
+								+ " is aready taken. Please try another ");
 					return;
 				 }
 				 Database.changeUsername(UpdatedUserName,currUser,currPassword);
@@ -2192,6 +2194,8 @@ public class Drawing extends Canvas {
 					 Database.changeAge(newage,currUser,currPassword);
 					 settingchange=true;
 				 } catch(NumberFormatException ne) {
+					 JOptionPane.showMessageDialog(null, "I am sorry, "+UpdatedUserage+""
+								+ " is not an integer. Please try again ");
 					 return;
 				 }
 				 // @ Allen The user want to change the age
