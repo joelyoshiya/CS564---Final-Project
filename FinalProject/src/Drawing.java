@@ -821,7 +821,7 @@ public class Drawing extends Canvas {
 	        
 	        Searchactorfld.setBounds(3*width/5-30, height/2-150, 150,50 );
 	        Searchactorfld.setBackground(teal);
-	        Searchactorfld.setText("Search Movie name here");
+	        Searchactorfld.setText("Search Actor name here");
 	        
 	        likedactorlbtwo.setForeground(white);
 	        likedactorlbtwo.setOpaque(true);
@@ -1161,28 +1161,28 @@ public class Drawing extends Canvas {
 			SimActorlb.setForeground(white);
 			SimActorlb.setOpaque(true);
 			SimActorlb.setBackground(grey);
-			SimActorlb.setText("Similar Movies \nWith liked actors");
+			SimActorlb.setText("Recommended Movies \nWith liked actors");
 			SimActorlb.setBounds(width/5+70, 200, 200, 75);
 			SimActorlb.setFont(new Font("Courier", Font.BOLD,15));
 			
 			SimGenraLb.setForeground(white);
 			SimGenraLb.setOpaque(true);
 			SimGenraLb.setBackground(grey);
-			SimGenraLb.setText("Similar Movies \nWith liked Genres");
+			SimGenraLb.setText("Recommended Movies \nWith liked Genres");
 			SimGenraLb.setBounds(2*width/5+60, 200, 200, 75);
 			SimGenraLb.setFont(new Font("Courier", Font.BOLD,15));
 			
 			SimDirectorLb.setForeground(white);
 			SimDirectorLb.setOpaque(true);
 			SimDirectorLb.setBackground(grey);
-			SimDirectorLb.setText("Similar Movies \nWith liked Directors\nor Writers");
+			SimDirectorLb.setText("Recommended Movies \nWith liked Directors\nor Writers");
 			SimDirectorLb.setBounds(3*width/5+42, 200, 200, 75);
 			SimDirectorLb.setFont(new Font("Courier", Font.BOLD,15));
 			
 			ComboLb.setForeground(white);
 			ComboLb.setOpaque(true);
 			ComboLb.setBackground(grey);
-			ComboLb.setText("Similar Movies \nWith All Three\nAttributes");
+			ComboLb.setText("Recommended Movies \nWith All Three\nAttributes");
 			ComboLb.setBounds(4*width/5+22, 200, 200, 75);
 			ComboLb.setFont(new Font("Courier", Font.BOLD,15));
 			
@@ -1197,7 +1197,7 @@ public class Drawing extends Canvas {
 			instruclistLb.setForeground(white);
 			instruclistLb.setOpaque(true);
 			instruclistLb.setBackground(grey);
-			instruclistLb.setText("1) The left consistes of movie\nrecomendatons orginized by three \ncatigories and one combination\n"
+			instruclistLb.setText("1) The left consists of movie\nrecomendatons organized by three \ncategories and one combination\n"
 					+ "2) Click on the list box you wish \nto select more information about \na movie with in that box \n"
 					+"3) Select the movie inside \nthe list by clicking on it");
 			instruclistLb.setBounds(40, 300, 300, 400);
@@ -1962,13 +1962,13 @@ public class Drawing extends Canvas {
 		 
 		 UserNamefld.setBounds(width/5, height/2-160, 150,50 );
 	     UserNamefld.setBackground(teal);
-	     UserNamefld.setText("Change User Name Here");
+	     UserNamefld.setText(currUser);
 	     Border border = BorderFactory.createLineBorder(Color.ORANGE);
 	     UserNamefld.setBorder(border);
 	        
 	     Passwordfld.setBounds(width/5, height/2-60, 150,50 );
 	     Passwordfld.setBackground(teal);
-	     Passwordfld.setText("Change Password Here");
+	     Passwordfld.setText(currPassword);
 	     Border border2 = BorderFactory.createLineBorder(Color.ORANGE);
 	     Passwordfld.setBorder(border2);
 	        
@@ -1980,19 +1980,19 @@ public class Drawing extends Canvas {
 	     UserAgefld.setBackground(teal);
 	     UserAgefld.setText("change Age Here");
 	     
-	     UserNamebtn.setText("Submit User \nName");
+	     UserNamebtn.setText("Change User \nName");
 	     UserNamebtn.setBounds(3*width/10,height/2-160, 150, 50);
 	     UserNamebtn.setBackground(yellow);
 	     
-	     Passwordbtn.setText("Submit Password");
+	     Passwordbtn.setText("Change Password");
 	     Passwordbtn.setBounds(3*width/10,height/2-60, 150, 50);
 	     Passwordbtn.setBackground(yellow);
 	     
-	     UserRealNamebtn.setText("Submit Real \nName");
+	     UserRealNamebtn.setText("Change Real \nName");
 	     UserRealNamebtn.setBounds(3*width/10,height/2+40, 150, 50);
 	     UserRealNamebtn.setBackground(yellow);
 	     
-	     UserAgebtn.setText("Submit User \nAge");
+	     UserAgebtn.setText("Change User \nAge");
 	     UserAgebtn.setBounds(3*width/10,height/2+140, 150, 50);
 	     UserAgebtn.setBackground(yellow);
 	     
