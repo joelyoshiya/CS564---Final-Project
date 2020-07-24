@@ -864,7 +864,7 @@ public class Drawing extends Canvas {
 	               }
 	            }
 	         });
-	        searchedactors.setBounds(3*width/5-30,height/2-50,120,200);
+	        searchedactors.setBounds(3*width/5-30,height/2-50,150,200);
 	        listlikeactorsone.addMouseListener(new MouseAdapter() {
 	            public void mouseClicked(MouseEvent me) {
 	               if (me.getClickCount() == 1) {
