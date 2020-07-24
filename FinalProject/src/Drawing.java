@@ -367,15 +367,18 @@ public class Drawing extends Canvas {
 	        UserAgefld.setText("Enter Age Here");
 	        
 	        submitbtn.addActionListener(new ActionListener(){  
-	        	public void actionPerformed(ActionEvent e){ 
+	public void actionPerformed(ActionEvent e){ 
 	        		//System.out.println("search botton was pushed");
 	        		String username = UserNamefld.getText();
 	        		String Userpassword = Passwordfld.getText();
 	        		String UserRealName = UserRealNamefld.getText();
 					String Userage = UserAgefld.getText();
 					
+
 					if(!Database.verifyNewUser(username)) {
 	        			usercreated = false;
+	        			JOptionPane.showMessageDialog(null, "I am sorry, The User Name "+username+""
+	    						+ " Has already Been taken, please choose anouther ");
 	        			return;
 	        		}
 	        		
@@ -408,6 +411,8 @@ public class Drawing extends Canvas {
 	        			
 	        			usercreated = true;
 	        		} catch (NumberFormatException ne) {
+	        			JOptionPane.showMessageDialog(null, "I am sorry, The age "+Userage+""
+								+ " is not an Integer, please try again ");
 	        			usercreated = false;
 	        			return;
 	        		} catch (Exception e1) {
@@ -427,7 +432,7 @@ public class Drawing extends Canvas {
 	        		
 	        	// return a boolen to false if the user infor allready is in the data base
 	            }  
-	        });  
+	        });   
 	        
 	        backbtn.addActionListener(new ActionListener(){  
 	        	public void actionPerformed(ActionEvent e){ 
@@ -1104,7 +1109,10 @@ public class Drawing extends Canvas {
 		        		inputframe.remove(newuserbtn);
 		        		inputframe.remove(canvas);
 		        		loginhome(inputframe);
-	        		}
+	        		} else{
+					
+					JOptionPane.showMessageDialog(null, "I am sorry, The Username or Password is incorrect, Please try again");
+				}
 	        		
 	            }  
 	        });  
