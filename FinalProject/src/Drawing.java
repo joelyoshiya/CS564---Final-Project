@@ -38,8 +38,30 @@ import java.awt.Font;
  * between frames and therefore would create a sort of loop
  * so for ogization purposes, this will be almost like a table of contents
  * 
+ * All the methods apart from paint follow the same basic layout
  * 
+ * Defining all the objects in this order:
+ * Labels, buttons, Texts Areas, Data, Lists, and finally pains
+ * Then We set the location and text of all the objects in this order:
+ * Labels, buttons, Texts Areas, Data, Lists, and finally pains
+ * Then we have all the actions that can be done in this order
+ * Button click then panel clicks
+ * Then we have addition user methods
  * 
+ ************ Start The Table of Contents ***************
+ *	Paint
+ *
+ *	newuser
+ *
+ *	loginscreen
+ *
+ *	loginhome
+ *
+ *	selectedMovie
+ *
+ * 	UserInfo
+ * 
+ * 	Map
  * 
  * 
  * 
@@ -57,7 +79,6 @@ public class Drawing extends Canvas {
 	static int framecount=0;
 	static boolean favoritmoviefound = false;
 	static boolean favoritactorfound = false;
-	static boolean backbtnpushed = false;
 	static boolean usercreated = false;
 	private static boolean settingchange = false;
 	private static TestJDBC Database = new TestJDBC();
